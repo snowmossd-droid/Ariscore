@@ -1,0 +1,76 @@
+title: ᴇɴᴅ
+size: 27
+
+items:
+  ender_chest:
+    slot: 9
+    material: ENDER_CHEST
+    name: '&fEnder Chest'
+    stack: 64
+    price: 2500
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  ender_pearl:
+    slot: 10
+    material: ENDER_PEARL
+    name: '&fEnder Pearl'
+    stack: 16
+    price: 75
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  end_stone:
+    slot: 11
+    material: END_STONE
+    name: '&fEnd Stone'
+    stack: 64
+    price: 8
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  dragon_breath:
+    slot: 12
+    material: DRAGON_BREATH
+    name: '&fDragon Breath'
+    stack: 1
+    price: 1000
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  end_rod:
+    slot: 13
+    material: END_ROD
+    name: '&fEnd Rod'
+    stack: 64
+    price: 100
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  chorus_fruit:
+    slot: 14
+    material: CHORUS_FRUIT
+    name: '&fChorus Fruit'
+    stack: 64
+    price: 10
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  popped_chorus_fruit:
+    slot: 15
+    material: POPPED_CHORUS_FRUIT
+    name: '&fPopped Chorus Fruit'
+    stack: 64
+    price: 15
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  shulker_shell:
+    slot: 16
+    material: SHULKER_SHELL
+    name: '&fShulker Shell'
+    stack: 64
+    price: 350
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  shulker_box:
+    slot: 17
+    material: SHULKER_BOX
+    name: '&fShulker Box'
+    stack: 64
+    price: 800
+    lore:
+    - '&fGiá mua: #54FC54${price}'
