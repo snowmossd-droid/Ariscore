@@ -1,34 +1,35 @@
-name: Extract and Push
+name: Build AristTpa
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  extract:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Unzip plugin
-        run: unzip ariscore-plugin.zip -d extracted
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
 
-      - name: Check extracted folder
-        run: ls extracted/
+      - name: Build with Maven
+        run: mvn clean package -B
 
-      - name: Move files to root
-        run: |
-          FOLDER=$(ls extracted/ | head -1)
-          cp -r extracted/$FOLDER/. .
-          rm -rf extracted
-
-      - name: Commit and push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Extract plugin structure"
-          git push
-
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: ArisShop
+          path: target/arisshop-*.jar
           
