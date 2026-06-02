@@ -19,14 +19,14 @@ public class ShopManager {
     }
 
     private void loadAll() {
-        File dir = new File(plugin.getPlugin().getDataFolder(), "categories");
+        File dir = new File(plugin.getPlugin().getDataFolder(), "shop/categories");
         if (!dir.exists()) dir.mkdirs();
 
         String[] cats = {"food", "gear", "nether", "shards", "end"};
         for (String cat : cats) {
             File f = new File(dir, cat + ".yml");
             if (!f.exists()) {
-                plugin.getPlugin().saveResource("categories/" + cat + ".yml", false);
+                plugin.getPlugin().saveResource("shop/categories/" + cat + ".yml", false);
             }
             loadCategory(cat, f);
             categories.add(cat);
@@ -72,4 +72,4 @@ public class ShopManager {
         }
         return null;
     }
-}
+    }
