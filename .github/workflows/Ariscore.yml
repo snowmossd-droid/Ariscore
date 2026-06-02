@@ -31,5 +31,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Ariscore
-          path: ariscore-plugin/target/ariscore-*.jar
+          path: '**/target/ariscore-*.jar'
           
