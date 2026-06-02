@@ -125,7 +125,8 @@ public class ShopListener implements Listener {
 
         SoundUtil.play(player, "click");
         session.setAmount(amount);
-        player.getScheduler().run(plugin.getPlugin(), t -> player.openInventory(GuiBuilder.buildPurchase(plugin, item, amount)), null);
+        final int finalAmount = amount;
+        player.getScheduler().run(plugin.getPlugin(), t -> player.openInventory(GuiBuilder.buildPurchase(plugin, item, finalAmount)), null);
     }
 
     private void processPurchase(Player player, ShopItem item, int amount, GuiSession session) {
@@ -218,4 +219,5 @@ public class ShopListener implements Listener {
             sessions.remove(player.getUniqueId());
         }
     }
-}
+    }
+        
