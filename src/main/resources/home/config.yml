@@ -45,6 +45,10 @@ sounds:
     sound: UI_BUTTON_CLICK
     volume: 1.0
     pitch: 1.0
+  countdown:
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 1.0
+    pitch: 1.2
 
 messages:
   sethome: "&aHome &f%home% &aset successfully."
@@ -53,6 +57,8 @@ messages:
   deletehome_ab: "&cHome deleted!"
   teleport_success: "&aTeleported to &f%home%&a."
   teleport_success_ab: "&aTeleported!"
+  teleporting_chat: "&eTeleporting to &f%home% &ein &f{seconds}s&e... Don't move!"
+  teleporting_ab: "&eTeleporting to &f%home% &ein &f{seconds}s&e... Don't move!"
   world_blocked: "&cThe world doesn't allow sethome."
   world_blocked_ab: "&cSethome not allowed here."
   world_not_found: "&cWorld not found."
@@ -138,11 +144,3 @@ gui-confirm-delete:
 
 warmup: 3
 cancel_distance: 0.1
-
-  teleporting_chat: "&eTeleporting to &f%home% &ein &f{seconds}s&e... Don't move!"
-  teleporting_ab: "&eTeleporting to &f%home% &ein &f{seconds}s&e... Don't move!"
-
-  countdown:
-    sound: BLOCK_NOTE_BLOCK_HAT
-    volume: 1.0
-    pitch: 1.2
