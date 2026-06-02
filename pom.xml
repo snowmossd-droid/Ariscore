@@ -91,10 +91,6 @@
                             <pattern>com.zaxxer.hikari</pattern>
                             <shadedPattern>me.vennlmao.ariscore.libs.hikari</shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>org.sqlite</pattern>
-                            <shadedPattern>me.vennlmao.ariscore.libs.sqlite</shadedPattern>
-                        </relocation>
                     </relocations>
                 </configuration>
             </plugin>
@@ -107,3 +103,4 @@
         </resources>
     </build>
 </project>
+                 
