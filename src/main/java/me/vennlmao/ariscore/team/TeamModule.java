@@ -7,6 +7,7 @@ import me.vennlmao.ariscore.team.listeners.TeamDamageListener;
 import me.vennlmao.ariscore.team.listeners.TeamGuiListener;
 import me.vennlmao.ariscore.team.listeners.TeamMoveListener;
 import me.vennlmao.ariscore.team.managers.TeamDatabaseManager;
+import me.vennlmao.ariscore.team.managers.TeamData;
 import me.vennlmao.ariscore.team.managers.TeamManager;
 import me.vennlmao.ariscore.team.managers.TeamPlaceholder;
 import me.vennlmao.ariscore.team.managers.TeamWarmupManager;
