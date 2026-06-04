@@ -1,14 +1,14 @@
-package me.vennlmao.ariscore.tpa.utils;
+package me.vennlmao.ariscore.home.utils;
 
-import me.vennlmao.ariscore.tpa.TpaModule;
+import me.vennlmao.ariscore.home.HomeModule;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 public class SoundUtil {
 
-    private static TpaModule plugin;
+    private static HomeModule plugin;
 
-    public static void init(TpaModule pl) {
+    public static void init(HomeModule pl) {
         plugin = pl;
     }
 
@@ -16,13 +16,22 @@ public class SoundUtil {
         String soundName = plugin.getConfig().getString("sounds." + key + ".sound", "");
         float volume = (float) plugin.getConfig().getDouble("sounds." + key + ".volume", 1.0);
         float pitch = (float) plugin.getConfig().getDouble("sounds." + key + ".pitch", 1.0);
-
         if (soundName.isEmpty()) return;
-
-        try {
-            Sound sound = Sound.valueOf(soundName);
-            player.playSound(player.getLocation(), sound, volume, pitch);
-        } catch (IllegalArgumentException ignored) {
-        }
+        Sound sound = resolveSound(soundName);
+        if (sound == null) return;
+        player.playSound(player, sound, volume, pitch);
     }
-}
+
+    private static Sound resolveSound(String name) {
+        try {
+            return Sound.valueOf(name.toUpperCase());
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            String key = name.toLowerCase().replace(" ", "_");
+            if (!key.contains(":")) key = "minecraft:" + key;
+            org.bukkit.NamespacedKey nk = org.bukkit.NamespacedKey.fromString(key);
+            if (nk != null) return org.bukkit.Registry.SOUNDS.get(nk);
+        } catch (Exception ignored) {}
+        return null;
+    }
+    }
