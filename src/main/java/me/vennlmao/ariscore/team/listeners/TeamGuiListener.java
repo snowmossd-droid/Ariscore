@@ -1,6 +1,7 @@
 package me.vennlmao.ariscore.team.listeners;
 
 import me.vennlmao.ariscore.team.TeamModule;
+import me.vennlmao.ariscore.team.managers.TeamData;
 import me.vennlmao.ariscore.team.gui.TeamGuiBuilder;
 import me.vennlmao.ariscore.team.utils.ColorUtil;
 import me.vennlmao.ariscore.team.utils.MessageUtil;
@@ -280,5 +281,5 @@ public class TeamGuiListener implements Listener {
             openMain(player, playerPage.getOrDefault(player.getUniqueId(), 0));
         }
     }
-            }
-            
+                }
+                                                            
