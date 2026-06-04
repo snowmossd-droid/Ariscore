@@ -7,7 +7,6 @@ import java.util.*;
 public class TeamData {
 
     public enum Role { OWNER, CO_OWNER, MEMBER }
-    public enum SortType { JOIN_DATE, ALPHABETICALLY, ONLINE_MEMBERS, PERMISSIONS, MONEY }
 
     public static class MemberData {
         public final UUID uuid;
@@ -62,4 +61,5 @@ public class TeamData {
         if (r == null) return "None";
         return switch (r) { case OWNER -> "Owner"; case CO_OWNER -> "Co-Owner"; case MEMBER -> "Member"; };
     }
-}
+    }
+    
