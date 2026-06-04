@@ -2,7 +2,6 @@ package me.vennlmao.ariscore.team.listeners;
 
 import me.vennlmao.ariscore.team.TeamModule;
 import me.vennlmao.ariscore.team.gui.TeamGuiBuilder;
-import me.vennlmao.ariscore.team.managers.TeamData;
 import me.vennlmao.ariscore.team.utils.ColorUtil;
 import me.vennlmao.ariscore.team.utils.MessageUtil;
 import me.vennlmao.ariscore.team.utils.SoundUtil;
@@ -27,7 +26,6 @@ public class TeamGuiListener implements Listener {
 
     private final TeamModule module;
     private final Map<UUID, Integer> playerPage = new HashMap<>();
-    private final Map<UUID, TeamData.SortType> playerSort = new HashMap<>();
     private final Map<UUID, UUID> pendingKick = new HashMap<>();
 
     public TeamGuiListener(TeamModule module) { this.module = module; }
@@ -37,9 +35,8 @@ public class TeamGuiListener implements Listener {
         if (team == null) return;
         int p = Math.max(0, page);
         playerPage.put(player.getUniqueId(), p);
-        TeamData.SortType sort = playerSort.getOrDefault(player.getUniqueId(), TeamData.SortType.JOIN_DATE);
         player.getScheduler().run(module.getPlugin(), t ->
-                player.openInventory(module.getGuiBuilder().buildMain(player, team, p, sort)), null);
+                player.openInventory(module.getGuiBuilder().buildMain(player, team, p)), null);
     }
 
     @EventHandler
@@ -51,7 +48,6 @@ public class TeamGuiListener implements Listener {
 
         String mainBase = ColorUtil.strip(module.getConfig().getString("gui.main.title", "ᴛᴇᴀᴍ"))
                 .replace("(Page {page})", "").replace("{team-name}", "").replace("{page}", "").trim();
-        String sortTitle = ColorUtil.strip(module.getConfig().getString("sort-gui.title", "ѕᴏʀᴛ"));
         String permTitle = ColorUtil.strip(module.getConfig().getString("permission-gui.title", "ᴇᴅɪᴛ ᴘᴇʀᴍɪssɪᴏɴs"));
         String kickTitle = ColorUtil.strip(module.getConfig().getString("kick-confirmation-gui.title", "ᴄᴏɴғɪʀᴍ ᴋɪᴄᴋ"));
         String leaveTitle = ColorUtil.strip(module.getConfig().getString("leave-confirmation-gui.title", "ᴄᴏɴғɪʀᴍ ʟᴇᴀᴠɪɴɢ ᴛᴇᴀᴍ"));
@@ -60,9 +56,7 @@ public class TeamGuiListener implements Listener {
         if (title.contains(mainBase)) {
             event.setCancelled(true);
             handleMain(player, event.getSlot(), event.getCurrentItem());
-        } else if (title.equals(sortTitle)) {
-            event.setCancelled(true);
-            handleSort(player, event.getSlot());
+
         } else if (title.equals(permTitle)) {
             event.setCancelled(true);
             handlePerm(player, event.getSlot());
@@ -161,28 +155,6 @@ public class TeamGuiListener implements Listener {
         }
     }
 
-    private void handleSort(Player player, int slot) {
-        ConfigurationSection opts = module.getConfig().getConfigurationSection("sort-gui.options");
-        if (opts == null) return;
-
-        int footerSlot = module.getConfig().getInt("sort-gui.current-slot", 22);
-        if (slot == footerSlot) return;
-
-        for (String key : opts.getKeys(false)) {
-            if (opts.getInt(key + ".slot") != slot) continue;
-            String sortTypeStr = opts.getString(key + ".sort-type", key).toUpperCase().replace("-", "_");
-            TeamData.SortType sort;
-            try {
-                sort = TeamData.SortType.valueOf(sortTypeStr);
-            } catch (IllegalArgumentException e) {
-                sort = TeamData.SortType.JOIN_DATE;
-            }
-            playerSort.put(player.getUniqueId(), sort);
-            SoundUtil.play(player, "click");
-            openMain(player, playerPage.getOrDefault(player.getUniqueId(), 0));
-            return;
-        }
-    }
 
     private void handlePerm(Player player, int slot) {
         TeamData team = module.getTeamManager().getPlayerTeam(player.getUniqueId());
@@ -298,7 +270,6 @@ public class TeamGuiListener implements Listener {
             module.getTeamManager().disbandTeam(teamName);
             pendingKick.remove(player.getUniqueId());
             playerPage.remove(player.getUniqueId());
-            playerSort.remove(player.getUniqueId());
             player.closeInventory();
             MessageUtil.sendChat(player, "disband", s -> s.replace("{team}", teamName));
             MessageUtil.sendActionbar(player, "disband_ab");
@@ -309,4 +280,5 @@ public class TeamGuiListener implements Listener {
             openMain(player, playerPage.getOrDefault(player.getUniqueId(), 0));
         }
     }
-}
+            }
+            
