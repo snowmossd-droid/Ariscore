@@ -46,4 +46,5 @@ public class ColorUtil {
                 .replaceAll("§[0-9a-fk-or]", "")
                 .trim();
     }
-}
+                }
+                                
