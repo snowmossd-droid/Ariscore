@@ -1,6 +1,5 @@
 package me.vennlmao.ariscore.team.gui;
 
-import me.vennlmao.ariscore.ArisCore;
 import me.vennlmao.ariscore.team.TeamModule;
 import me.vennlmao.ariscore.team.managers.TeamData;
 import me.vennlmao.ariscore.team.utils.ColorUtil;
@@ -25,14 +24,16 @@ public class TeamGuiBuilder {
 
     public TeamGuiBuilder(TeamModule module) { this.module = module; }
 
-    public Inventory buildMain(Player viewer, TeamData team, int page, TeamData.SortType sort) {
+    public Inventory buildMain(Player viewer, TeamData team, int page) {
         String title = module.getConfig().getString("gui.main.title", "&8ᴛᴇᴀᴍ (Page {page})")
                 .replace("{page}", String.valueOf(page + 1))
                 .replace("{team-name}", team.getName());
         int size = module.getConfig().getInt("gui.main.size", 54);
         Inventory inv = Bukkit.createInventory(null, size, ColorUtil.parse(title));
 
-        List<TeamData.MemberData> sorted = sortMembers(team, sort);
+        List<TeamData.MemberData> sorted = new ArrayList<>(team.getMembers().values());
+        sorted.sort(java.util.Comparator.comparingLong(m -> m.joinDate));
+        sorted.sort((a, b) -> Integer.compare(roleOrder(a.role), roleOrder(b.role)));
         int start = page * PAGE_SIZE;
         int end = Math.min(start + PAGE_SIZE, sorted.size());
 
@@ -63,46 +64,8 @@ public class TeamGuiBuilder {
         return inv;
     }
 
-    private List<TeamData.MemberData> sortMembers(TeamData team, TeamData.SortType sort) {
-        List<TeamData.MemberData> list = new ArrayList<>(team.getMembers().values());
-        if (sort == null) sort = TeamData.SortType.JOIN_DATE;
-        switch (sort) {
-            case JOIN_DATE -> list.sort(Comparator.comparingLong(m -> m.joinDate));
-            case ALPHABETICALLY -> list.sort(Comparator.comparing(m -> {
-                OfflinePlayer op = Bukkit.getOfflinePlayer(m.uuid);
-                return op.getName() != null ? op.getName().toLowerCase() : "";
-            }));
-            case ONLINE_MEMBERS -> list.sort((a, b) -> {
-                boolean aOnline = Bukkit.getPlayer(a.uuid) != null;
-                boolean bOnline = Bukkit.getPlayer(b.uuid) != null;
-                return Boolean.compare(bOnline, aOnline);
-            });
-            case PERMISSIONS -> list.sort((a, b) -> Integer.compare(countPerms(b), countPerms(a)));
-            case MONEY -> list.sort((a, b) -> Double.compare(getBalance(b.uuid), getBalance(a.uuid)));
-        }
-        list.sort((a, b) -> Integer.compare(roleOrder(a.role), roleOrder(b.role)));
-        return list;
-    }
 
-    private int countPerms(TeamData.MemberData md) {
-        int count = 0;
-        if (md.permEditHome) count++;
-        if (md.permKick) count++;
-        if (md.permManageTeammates) count++;
-        if (md.permPvpToggle) count++;
-        if (md.permVisitHome) count++;
-        if (md.permTeamChat) count++;
-        if (md.permInvite) count++;
-        return count;
-    }
 
-    private double getBalance(UUID uuid) {
-        try {
-            net.milkbowl.vault.economy.Economy eco = ArisCore.getInstance().getShopModule().getEconomy();
-            if (eco != null) return eco.getBalance(Bukkit.getOfflinePlayer(uuid));
-        } catch (Exception ignored) {}
-        return 0;
-    }
 
     private int roleOrder(TeamData.Role r) {
         return switch (r) { case OWNER -> 0; case CO_OWNER -> 1; case MEMBER -> 2; };
@@ -142,69 +105,7 @@ public class TeamGuiBuilder {
         return buildItem(mat, name, lore, s -> s);
     }
 
-    public Inventory buildSortGui(TeamData.SortType currentSort) {
-        String title = module.getConfig().getString("sort-gui.title", "&#34eb9bѕᴏʀᴛ");
-        int size = module.getConfig().getInt("sort-gui.size", 27);
-        Inventory inv = Bukkit.createInventory(null, size, ColorUtil.parse(title));
 
-        ConfigurationSection opts = module.getConfig().getConfigurationSection("sort-gui.options");
-        if (opts != null) {
-            for (String key : opts.getKeys(false)) {
-                String path = "sort-gui.options." + key;
-                int slot = module.getConfig().getInt(path + ".slot", 0);
-                String defaultMatName = module.getConfig().getString(path + ".material", "PAPER");
-                Material mat = Material.matchMaterial(defaultMatName);
-                if (mat == null) mat = Material.PAPER;
-                String displayName = module.getConfig().getString(path + ".display-name", key);
-
-                TeamData.SortType optSort = configKeyToSortType(opts, key);
-                boolean isCurrent = optSort == currentSort;
-
-                Material activeMat = mat;
-                if (isCurrent) {
-                    String activeMatName = module.getConfig().getString("sort-gui.active-material", "LIME_DYE");
-                    Material parsed = Material.matchMaterial(activeMatName);
-                    if (parsed != null) activeMat = parsed;
-                }
-
-                List<String> extraLore = isCurrent
-                        ? List.of(module.getConfig().getString("sort-gui.active-lore", "&7▶ Current"))
-                        : List.of();
-
-                inv.setItem(slot, buildItem(activeMat, displayName, extraLore, s -> s));
-            }
-        }
-
-        int footerSlot = module.getConfig().getInt("sort-gui.current-slot", 22);
-        String footerMatName = module.getConfig().getString("sort-gui.current-material", "COMPASS");
-        Material footerMat = Material.matchMaterial(footerMatName);
-        if (footerMat == null) footerMat = Material.COMPASS;
-
-        String currentDisplayName = "";
-        if (opts != null) {
-            for (String key : opts.getKeys(false)) {
-                if (configKeyToSortType(opts, key) == currentSort) {
-                    currentDisplayName = ColorUtil.strip(module.getConfig().getString("sort-gui.options." + key + ".display-name", key));
-                    break;
-                }
-            }
-        }
-
-        String footerMsg = module.getConfig().getString("sort-gui.current-label", "&7Current: &#34eb9b{sort}")
-                .replace("{sort}", currentDisplayName);
-        inv.setItem(footerSlot, buildItem(footerMat, footerMsg, List.of(), s -> s));
-
-        return inv;
-    }
-
-    private TeamData.SortType configKeyToSortType(ConfigurationSection opts, String key) {
-        String sortTypeStr = opts.getString(key + ".sort-type", key).toUpperCase().replace("-", "_");
-        try {
-            return TeamData.SortType.valueOf(sortTypeStr);
-        } catch (IllegalArgumentException e) {
-            return TeamData.SortType.JOIN_DATE;
-        }
-    }
 
     public Inventory buildPermissionGui(TeamData team, UUID targetUuid) {
         String title = module.getConfig().getString("permission-gui.title", "ᴇᴅɪᴛ ᴘᴇʀᴍɪssɪᴏɴs");
@@ -320,4 +221,5 @@ public class TeamGuiBuilder {
         item.setItemMeta(meta);
         return item;
     }
-}
+    }
+            
