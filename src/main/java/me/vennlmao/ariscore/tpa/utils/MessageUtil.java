@@ -3,7 +3,6 @@ package me.vennlmao.ariscore.tpa.utils;
 import me.vennlmao.ariscore.tpa.TpaModule;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -13,25 +12,14 @@ public class MessageUtil {
 
     private static TpaModule plugin;
     private static final MiniMessage MM = MiniMessage.miniMessage();
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
 
     public static void init(TpaModule pl) {
         plugin = pl;
     }
 
-    public static Component parse(String raw) {
-        String converted = raw
-                .replace("&", "§")
-                .replaceAll("#([0-9A-Fa-f]{6})", "<#$1>");
-        converted = converted.replace("§", "&");
-        return MM.deserialize(converted
-                .replaceAll("&([0-9a-fk-or])", "<reset>")
-        );
-    }
-
     private static Component parseRaw(String raw) {
         String s = raw;
-        s = s.replaceAll("#([0-9A-Fa-f]{6})", "<color:#$1>");
+        s = s.replaceAll("&#([0-9A-Fa-f]{6})", "<color:#$1>");
         s = s.replace("&a", "<green>")
                 .replace("&b", "<aqua>")
                 .replace("&c", "<red>")
@@ -84,4 +72,5 @@ public class MessageUtil {
     public static List<String> getList(String key) {
         return plugin.getConfig().getStringList("messages." + key);
     }
-}
+                     }
+    
