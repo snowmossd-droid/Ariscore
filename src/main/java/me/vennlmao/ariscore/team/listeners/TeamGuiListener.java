@@ -1,8 +1,8 @@
 package me.vennlmao.ariscore.team.listeners;
 
 import me.vennlmao.ariscore.team.TeamModule;
-import me.vennlmao.ariscore.team.managers.TeamData;
 import me.vennlmao.ariscore.team.gui.TeamGuiBuilder;
+import me.vennlmao.ariscore.team.managers.TeamData;
 import me.vennlmao.ariscore.team.utils.ColorUtil;
 import me.vennlmao.ariscore.team.utils.MessageUtil;
 import me.vennlmao.ariscore.team.utils.SoundUtil;
@@ -47,16 +47,14 @@ public class TeamGuiListener implements Listener {
 
         String title = PlainTextComponentSerializer.plainText().serialize(event.getView().title());
 
-        String mainBase = ColorUtil.strip(module.getConfig().getString("gui.main.title", "ᴛᴇᴀᴍ"))
-                .replace("(Page {page})", "").replace("{team-name}", "").replace("{page}", "").trim();
-        String permTitle = ColorUtil.strip(module.getConfig().getString("permission-gui.title", "ᴇᴅɪᴛ ᴘᴇʀᴍɪssɪᴏɴs"));
-        String kickTitle = ColorUtil.strip(module.getConfig().getString("kick-confirmation-gui.title", "ᴄᴏɴғɪʀᴍ ᴋɪᴄᴋ"));
-        String leaveTitle = ColorUtil.strip(module.getConfig().getString("leave-confirmation-gui.title", "ᴄᴏɴғɪʀᴍ ʟᴇᴀᴠɪɴɢ ᴛᴇᴀᴍ"));
-        String disbandTitle = ColorUtil.strip(module.getConfig().getString("disband-confirmation-gui.title", "ᴄᴏɴғɪʀᴍ ᴅɪsʙᴀɴᴅɪɴɢ ᴛᴇᴀᴍ"));
-
-        if (title.contains(mainBase)) {
-            event.setCancelled(true);
-            handleMain(player, event.getSlot(), event.getCurrentItem());
+        String mainBase = ColorUtil.strip(module.getConfig().getString("gui.main.title", ""))
+                .replaceAll("\\([^)]*\\{[^}]*}[^)]*\\)", "")
+                .replaceAll("\\{[^}]*}", "")
+                .trim();
+        String permTitle = ColorUtil.strip(module.getConfig().getString("permission-gui.title", ""));
+        String kickTitle = ColorUtil.strip(module.getConfig().getString("kick-confirmation-gui.title", ""));
+        String leaveTitle = ColorUtil.strip(module.getConfig().getString("leave-confirmation-gui.title", ""));
+        String disbandTitle = ColorUtil.strip(module.getConfig().getString("disband-confirmation-gui.title", ""));
 
         } else if (title.equals(permTitle)) {
             event.setCancelled(true);
@@ -70,6 +68,9 @@ public class TeamGuiListener implements Listener {
         } else if (title.equals(disbandTitle)) {
             event.setCancelled(true);
             handleDisbandConfirm(player, event.getSlot());
+        } else if (title.contains(mainBase)) {
+            event.setCancelled(true);
+            handleMain(player, event.getSlot(), event.getCurrentItem());
         }
     }
 
@@ -77,10 +78,10 @@ public class TeamGuiListener implements Listener {
         TeamData team = module.getTeamManager().getPlayerTeam(player.getUniqueId());
         if (team == null) return;
 
-        int backSlot = module.getConfig().getInt("items.back.slot", 48);
-        int nextSlot = module.getConfig().getInt("items.next.slot", 50);
-        int homeSlot = module.getConfig().getInt("items.team-home.slot", 52);
-        int pvpSlot  = module.getConfig().getInt("items.pvp.slot", 53);
+        int backSlot = module.getConfig().getInt("items.back.slot");
+        int nextSlot = module.getConfig().getInt("items.next.slot");
+        int homeSlot = module.getConfig().getInt("items.team-home.slot");
+        int pvpSlot  = module.getConfig().getInt("items.pvp.slot");
 
         if (slot == backSlot) {
             SoundUtil.play(player, "page_turn");
@@ -161,7 +162,7 @@ public class TeamGuiListener implements Listener {
         TeamData team = module.getTeamManager().getPlayerTeam(player.getUniqueId());
         if (team == null) return;
 
-        int backSlot = module.getConfig().getInt("permission-gui.back-button.slot", 18);
+        int backSlot = module.getConfig().getInt("permission-gui.back-button.slot");
         if (slot == backSlot) {
             SoundUtil.play(player, "click");
             openMain(player, playerPage.getOrDefault(player.getUniqueId(), 0));
@@ -199,8 +200,8 @@ public class TeamGuiListener implements Listener {
         TeamData team = module.getTeamManager().getPlayerTeam(player.getUniqueId());
         if (team == null) return;
 
-        int confirmSlot = module.getConfig().getInt("kick-confirmation-gui.confirm.slot", 15);
-        int cancelSlot  = module.getConfig().getInt("kick-confirmation-gui.cancel.slot", 11);
+        int confirmSlot = module.getConfig().getInt("kick-confirmation-gui.confirm.slot");
+        int cancelSlot  = module.getConfig().getInt("kick-confirmation-gui.cancel.slot");
 
         if (slot == confirmSlot) {
             UUID targetUuid = pendingKick.remove(player.getUniqueId());
@@ -233,8 +234,8 @@ public class TeamGuiListener implements Listener {
         TeamData team = module.getTeamManager().getPlayerTeam(player.getUniqueId());
         if (team == null) { player.closeInventory(); return; }
 
-        int confirmSlot = module.getConfig().getInt("leave-confirmation-gui.confirm.slot", 15);
-        int cancelSlot  = module.getConfig().getInt("leave-confirmation-gui.cancel.slot", 11);
+        int confirmSlot = module.getConfig().getInt("leave-confirmation-gui.confirm.slot");
+        int cancelSlot  = module.getConfig().getInt("leave-confirmation-gui.cancel.slot");
 
         if (slot == confirmSlot) {
             if (team.isOwner(player.getUniqueId())) return;
@@ -257,8 +258,8 @@ public class TeamGuiListener implements Listener {
     private void handleDisbandConfirm(Player player, int slot) {
         TeamData team = module.getTeamManager().getPlayerTeam(player.getUniqueId());
 
-        int confirmSlot = module.getConfig().getInt("disband-confirmation-gui.confirm.slot", 15);
-        int cancelSlot  = module.getConfig().getInt("disband-confirmation-gui.cancel.slot", 11);
+        int confirmSlot = module.getConfig().getInt("disband-confirmation-gui.confirm.slot");
+        int cancelSlot  = module.getConfig().getInt("disband-confirmation-gui.cancel.slot");
 
         if (slot == confirmSlot) {
             if (team == null || !team.isOwner(player.getUniqueId())) { player.closeInventory(); return; }
@@ -281,5 +282,5 @@ public class TeamGuiListener implements Listener {
             openMain(player, playerPage.getOrDefault(player.getUniqueId(), 0));
         }
     }
-                }
-                                                            
+                            }
+        
