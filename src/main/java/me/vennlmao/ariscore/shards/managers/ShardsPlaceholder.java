@@ -29,7 +29,11 @@ public class ShardsPlaceholder extends PlaceholderExpansion {
     public String onPlaceholderRequest(Player player, @NotNull String params) {
         if (player == null) return "0";
         if (params.equals("shards")) {
-            return String.valueOf(module.getShardsManager().getShards(player));
+            try {
+                return String.valueOf(module.getShardsManager().getShards(player));
+            } catch (Exception e) {
+                return "0";
+            }
         }
         return null;
     }
