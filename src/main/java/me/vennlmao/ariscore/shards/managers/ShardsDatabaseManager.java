@@ -62,6 +62,7 @@ public class ShardsDatabaseManager {
     }
 
     public long getShards(UUID uuid) {
+        if (dataSource == null) return 0;
         String prefix = module.getConfig().getString("mysql.table-prefix", "ariscore_");
         String sql = "SELECT amount FROM " + prefix + "shards WHERE uuid = ?";
         try (Connection conn = dataSource.getConnection();
@@ -69,7 +70,7 @@ public class ShardsDatabaseManager {
             ps.setString(1, uuid.toString());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) return rs.getLong("amount");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             module.getPlugin().getLogger().severe("[Shards] Failed to get shards: " + e.getMessage());
         }
         return 0;
@@ -109,4 +110,5 @@ public class ShardsDatabaseManager {
     public void close() {
         if (dataSource != null && !dataSource.isClosed()) dataSource.close();
     }
-}
+                }
+                                      
