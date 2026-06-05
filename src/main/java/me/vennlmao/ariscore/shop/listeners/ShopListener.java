@@ -182,8 +182,8 @@ public class ShopListener implements Listener {
         sendMessage(player, "messages.purchase.success");
         sendActionbar(player, "messages.purchase.success_ab");
 
-        session.setAmount(1);
-        navigate(player, session, () -> player.openInventory(GuiBuilder.buildPurchase(plugin, item, 1)));
+        final int finalAmount = amount;
+        navigate(player, session, () -> player.openInventory(GuiBuilder.buildPurchase(plugin, item, finalAmount)));
     }
 
     private void giveItems(Player player, ShopItem item, int amount) {
@@ -232,4 +232,5 @@ public class ShopListener implements Listener {
             sessions.remove(player.getUniqueId());
         }
     }
-}
+    }
+            
