@@ -26,14 +26,14 @@ public class TeamGuiBuilder {
     public TeamGuiBuilder(TeamModule module) { this.module = module; }
 
     public Inventory buildMain(Player viewer, TeamData team, int page) {
-        TeamData.SortType sort = TeamData.SortType.JOIN_DATE;
         String title = module.getConfig().getString("gui.main.title", "")
                 .replace("{page}", String.valueOf(page + 1))
                 .replace("{team-name}", team.getName());
         int size = module.getConfig().getInt("gui.main.size");
         Inventory inv = Bukkit.createInventory(null, size, ColorUtil.parse(title));
 
-        List<TeamData.MemberData> sorted = sortMembers(team, sort);
+        List<TeamData.MemberData> sorted = new ArrayList<>(team.getMembers().values());
+        sorted.sort(Comparator.comparingLong(m -> m.joinDate));
         int start = page * PAGE_SIZE;
         int end = Math.min(start + PAGE_SIZE, sorted.size());
 
@@ -64,26 +64,6 @@ public class TeamGuiBuilder {
         return inv;
     }
 
-    private List<TeamData.MemberData> sortMembers(TeamData team, TeamData.SortType sort) {
-        List<TeamData.MemberData> list = new ArrayList<>(team.getMembers().values());
-        if (sort == null) sort = TeamData.SortType.JOIN_DATE;
-        switch (sort) {
-            case JOIN_DATE -> list.sort(Comparator.comparingLong(m -> m.joinDate));
-            case ALPHABETICALLY -> list.sort(Comparator.comparing(m -> {
-                OfflinePlayer op = Bukkit.getOfflinePlayer(m.uuid);
-                return op.getName() != null ? op.getName().toLowerCase() : "";
-            }));
-            case ONLINE_MEMBERS -> list.sort((a, b) -> {
-                boolean aOnline = Bukkit.getPlayer(a.uuid) != null;
-                boolean bOnline = Bukkit.getPlayer(b.uuid) != null;
-                return Boolean.compare(bOnline, aOnline);
-            });
-            case PERMISSIONS -> list.sort((a, b) -> Integer.compare(countPerms(b), countPerms(a)));
-            case MONEY -> list.sort((a, b) -> Double.compare(getBalance(b.uuid), getBalance(a.uuid)));
-        }
-        list.sort((a, b) -> Integer.compare(roleOrder(a.role), roleOrder(b.role)));
-        return list;
-    }
 
     private int countPerms(TeamData.MemberData md) {
         int count = 0;
@@ -260,5 +240,4 @@ public class TeamGuiBuilder {
         item.setItemMeta(meta);
         return item;
     }
-            }
-                                               
+}
