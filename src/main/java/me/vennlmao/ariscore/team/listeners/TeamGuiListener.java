@@ -56,7 +56,7 @@ public class TeamGuiListener implements Listener {
         String leaveTitle = ColorUtil.strip(module.getConfig().getString("leave-confirmation-gui.title", ""));
         String disbandTitle = ColorUtil.strip(module.getConfig().getString("disband-confirmation-gui.title", ""));
 
-        } else if (title.equals(permTitle)) {
+        if (title.equals(permTitle)) {
             event.setCancelled(true);
             handlePerm(player, event.getSlot());
         } else if (title.equals(kickTitle)) {
@@ -282,5 +282,5 @@ public class TeamGuiListener implements Listener {
             openMain(player, playerPage.getOrDefault(player.getUniqueId(), 0));
         }
     }
-                            }
-        
+                }
+                
