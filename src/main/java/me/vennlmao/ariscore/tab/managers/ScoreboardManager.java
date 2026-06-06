@@ -1,5 +1,10 @@
 package me.vennlmao.ariscore.tab.managers;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardDisplay;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardTeam;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateScore;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.vennlmao.ariscore.tab.TabModule;
@@ -8,12 +13,12 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.*;
 
 import java.util.*;
 
 public class ScoreboardManager {
 
+    private static final String OBJ = "arsb";
     private static final String[] ENTRIES = {
         "§0","§1","§2","§3","§4","§5","§6","§7",
         "§8","§9","§a","§b","§c","§d","§e","§f",
@@ -23,7 +28,9 @@ public class ScoreboardManager {
 
     private final TabModule module;
     private final Map<UUID, ScheduledTask> tasks = new HashMap<>();
+    private final Map<UUID, Integer> lineCounts = new HashMap<>();
     private final Set<UUID> disabled = new HashSet<>();
+    private final Set<UUID> active = new HashSet<>();
 
     public ScoreboardManager(TabModule module) {
         this.module = module;
@@ -31,7 +38,7 @@ public class ScoreboardManager {
 
     public void startFor(Player player) {
         if (disabled.contains(player.getUniqueId())) return;
-        setupBoard(player);
+        createObjective(player);
         long period = module.getConfig().getLong("scoreboard.update-tick", 2) * 20L;
         ScheduledTask task = player.getScheduler().runAtFixedRate(module.getPlugin(), t -> {
             if (!player.isOnline()) { t.cancel(); return; }
@@ -43,6 +50,8 @@ public class ScoreboardManager {
     public void stopFor(Player player) {
         ScheduledTask task = tasks.remove(player.getUniqueId());
         if (task != null) task.cancel();
+        if (active.remove(player.getUniqueId())) removeObjective(player);
+        lineCounts.remove(player.getUniqueId());
     }
 
     public void toggle(Player player) {
@@ -53,7 +62,6 @@ public class ScoreboardManager {
         } else {
             disabled.add(uuid);
             stopFor(player);
-            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
     }
 
@@ -64,6 +72,12 @@ public class ScoreboardManager {
     public void removeAll() {
         new ArrayList<>(tasks.values()).forEach(ScheduledTask::cancel);
         tasks.clear();
+        new HashSet<>(active).forEach(uuid -> {
+            Player p = Bukkit.getPlayer(uuid);
+            if (p != null) removeObjective(p);
+        });
+        active.clear();
+        lineCounts.clear();
     }
 
     public void reloadAll() {
@@ -77,46 +91,127 @@ public class ScoreboardManager {
         player.getScheduler().run(module.getPlugin(), t -> updateBoard(player), null);
     }
 
-    private void setupBoard(Player player) {
-        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+    private void createObjective(Player player) {
         String title = getWorldField(player.getWorld().getName(), "title", "&lDonutSMP");
-        Objective obj = board.registerNewObjective("sb", Criteria.DUMMY, ColorUtil.parse(resolve(player, title)));
-        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-        if (module.getConfig().getBoolean("belowname.enabled", false)) {
-            String bnTitle = module.getConfig().getString("belowname.title", "&c❤");
-            Objective bn = board.registerNewObjective("bn", Criteria.HEALTH, ColorUtil.parse(bnTitle));
-            bn.setDisplaySlot(DisplaySlot.BELOW_NAME);
-        }
-        module.getTabManager().applySortingTeams(player, board);
-        player.setScoreboard(board);
-        renderLines(player, board, obj);
+        Component titleComp = ColorUtil.parse(resolve(player, title));
+
+        sendPacket(player, new WrapperPlayServerScoreboardObjective(
+            OBJ,
+            WrapperPlayServerScoreboardObjective.ObjectiveMode.CREATE,
+            Optional.of(titleComp),
+            Optional.of(WrapperPlayServerScoreboardObjective.RenderType.INTEGER)
+        ));
+        sendPacket(player, new WrapperPlayServerScoreboardDisplay(1, OBJ));
+        active.add(player.getUniqueId());
+        renderLines(player, getWorldLines(player.getWorld().getName()));
+    }
+
+    private void removeObjective(Player player) {
+        int prev = lineCounts.getOrDefault(player.getUniqueId(), 0);
+        for (int i = 0; i < prev; i++) removeTeam(player, i);
+        sendPacket(player, new WrapperPlayServerScoreboardObjective(
+            OBJ,
+            WrapperPlayServerScoreboardObjective.ObjectiveMode.REMOVE,
+            Optional.empty(),
+            Optional.empty()
+        ));
     }
 
     private void updateBoard(Player player) {
-        Scoreboard board = player.getScoreboard();
-        Objective obj = board.getObjective("sb");
-        if (obj == null) { setupBoard(player); return; }
+        if (!active.contains(player.getUniqueId())) { createObjective(player); return; }
         String title = getWorldField(player.getWorld().getName(), "title", "&lDonutSMP");
-        obj.displayName(ColorUtil.parse(resolve(player, title)));
-        renderLines(player, board, obj);
+        sendPacket(player, new WrapperPlayServerScoreboardObjective(
+            OBJ,
+            WrapperPlayServerScoreboardObjective.ObjectiveMode.UPDATE,
+            Optional.of(ColorUtil.parse(resolve(player, title))),
+            Optional.of(WrapperPlayServerScoreboardObjective.RenderType.INTEGER)
+        ));
+        renderLines(player, getWorldLines(player.getWorld().getName()));
     }
 
-    private void renderLines(Player player, Scoreboard board, Objective obj) {
-        List<String> lines = buildLines(player, getWorldLines(player.getWorld().getName()));
-        for (String entry : new HashSet<>(board.getEntries())) {
-            if (entry.startsWith("§") && entry.length() <= 4) board.resetScores(entry);
-        }
-        for (Team team : new HashSet<>(board.getTeams())) {
-            if (team.getName().startsWith("line_")) team.unregister();
-        }
+    private void renderLines(Player player, List<String> rawLines) {
+        List<String> lines = buildLines(player, rawLines);
+        int prev = lineCounts.getOrDefault(player.getUniqueId(), -1);
+
         for (int i = 0; i < Math.min(lines.size(), ENTRIES.length); i++) {
             String entry = ENTRIES[i];
-            Team team = board.registerNewTeam("line_" + i);
-            team.addEntry(entry);
-            team.prefix(lines.get(i).isEmpty() ? Component.empty() : ColorUtil.parse(lines.get(i)));
-            team.suffix(Component.empty());
-            obj.getScore(entry).setScore(lines.size() - i);
+            Component prefix = lines.get(i).isEmpty() ? Component.empty() : ColorUtil.parse(lines.get(i));
+            if (i < prev) {
+                updateTeamPrefix(player, i, prefix);
+            } else {
+                createTeam(player, i, entry, prefix);
+                setScore(player, entry, lines.size() - i);
+            }
         }
+        if (prev > lines.size()) {
+            for (int i = lines.size(); i < prev; i++) {
+                removeScore(player, ENTRIES[i]);
+                removeTeam(player, i);
+            }
+        } else if (prev >= 0 && lines.size() != prev) {
+            for (int i = 0; i < lines.size(); i++) {
+                setScore(player, ENTRIES[i], lines.size() - i);
+            }
+        }
+        lineCounts.put(player.getUniqueId(), lines.size());
+    }
+
+    private void createTeam(Player player, int index, String entry, Component prefix) {
+        WrapperPlayServerScoreboardTeam.ScoreboardTeamInfo info =
+            new WrapperPlayServerScoreboardTeam.ScoreboardTeamInfo(
+                Component.empty(), prefix, Component.empty(),
+                WrapperPlayServerScoreboardTeam.NameTagVisibility.ALWAYS,
+                WrapperPlayServerScoreboardTeam.CollisionRule.ALWAYS,
+                null, EnumSet.noneOf(WrapperPlayServerScoreboardTeam.OptionData.class)
+            );
+        sendPacket(player, new WrapperPlayServerScoreboardTeam(
+            "arsb_" + index,
+            WrapperPlayServerScoreboardTeam.TeamMode.CREATE,
+            Optional.of(info), Optional.of(List.of(entry))
+        ));
+    }
+
+    private void updateTeamPrefix(Player player, int index, Component prefix) {
+        WrapperPlayServerScoreboardTeam.ScoreboardTeamInfo info =
+            new WrapperPlayServerScoreboardTeam.ScoreboardTeamInfo(
+                Component.empty(), prefix, Component.empty(),
+                WrapperPlayServerScoreboardTeam.NameTagVisibility.ALWAYS,
+                WrapperPlayServerScoreboardTeam.CollisionRule.ALWAYS,
+                null, EnumSet.noneOf(WrapperPlayServerScoreboardTeam.OptionData.class)
+            );
+        sendPacket(player, new WrapperPlayServerScoreboardTeam(
+            "arsb_" + index,
+            WrapperPlayServerScoreboardTeam.TeamMode.UPDATE,
+            Optional.of(info), Optional.empty()
+        ));
+    }
+
+    private void removeTeam(Player player, int index) {
+        sendPacket(player, new WrapperPlayServerScoreboardTeam(
+            "arsb_" + index,
+            WrapperPlayServerScoreboardTeam.TeamMode.REMOVE,
+            Optional.empty(), Optional.empty()
+        ));
+    }
+
+    private void setScore(Player player, String entry, int score) {
+        sendPacket(player, new WrapperPlayServerUpdateScore(
+            entry,
+            WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM,
+            OBJ, Optional.of(score)
+        ));
+    }
+
+    private void removeScore(Player player, String entry) {
+        sendPacket(player, new WrapperPlayServerUpdateScore(
+            entry,
+            WrapperPlayServerUpdateScore.Action.REMOVE_ITEM,
+            OBJ, Optional.empty()
+        ));
+    }
+
+    private void sendPacket(Player player, Object packet) {
+        PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
     }
 
     private List<String> buildLines(Player player, List<String> rawLines) {
@@ -140,9 +235,7 @@ public class ScoreboardManager {
         if (worlds != null) {
             for (String key : worlds.getKeys(false)) {
                 String w = module.getConfig().getString("scoreboard.worlds." + key + ".world", "");
-                if (w.equals(worldName)) {
-                    return module.getConfig().getStringList("scoreboard.worlds." + key + ".lines");
-                }
+                if (w.equals(worldName)) return module.getConfig().getStringList("scoreboard.worlds." + key + ".lines");
             }
         }
         return module.getConfig().getStringList("scoreboard.default.lines");
@@ -153,9 +246,7 @@ public class ScoreboardManager {
         if (worlds != null) {
             for (String key : worlds.getKeys(false)) {
                 String w = module.getConfig().getString("scoreboard.worlds." + key + ".world", "");
-                if (w.equals(worldName)) {
-                    return module.getConfig().getString("scoreboard.worlds." + key + "." + field, def);
-                }
+                if (w.equals(worldName)) return module.getConfig().getString("scoreboard.worlds." + key + "." + field, def);
             }
         }
         return module.getConfig().getString("scoreboard.default." + field, def);
@@ -168,4 +259,5 @@ public class ScoreboardManager {
         }
         return text;
     }
-}
+        }
+                              
