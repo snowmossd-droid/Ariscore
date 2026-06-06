@@ -200,7 +200,7 @@ public class ScoreboardManager {
         ));
     }
 
-    private void sendPacket(Player player, Object packet) {
+    private void sendPacket(Player player, com.github.retrooper.packetevents.wrapper.PacketWrapper<?> packet) {
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
     }
 
@@ -250,5 +250,4 @@ public class ScoreboardManager {
         }
         return text;
     }
-    }
-            
+}
