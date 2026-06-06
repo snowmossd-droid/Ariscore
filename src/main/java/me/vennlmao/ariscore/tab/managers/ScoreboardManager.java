@@ -159,11 +159,11 @@ public class ScoreboardManager {
         WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
             Component.empty(), prefix, Component.empty(),
             WrapperPlayServerTeams.NameTagVisibility.ALWAYS, WrapperPlayServerTeams.CollisionRule.ALWAYS,
-            null, (byte) 0
+            null, WrapperPlayServerTeams.OptionData.NONE
         );
         sendPacket(player, new WrapperPlayServerTeams(
             "arsb_" + index, WrapperPlayServerTeams.TeamMode.CREATE,
-            info, Collections.singletonList(entry)
+            Optional.of(info), Collections.singletonList(entry)
         ));
     }
 
@@ -171,18 +171,18 @@ public class ScoreboardManager {
         WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
             Component.empty(), prefix, Component.empty(),
             WrapperPlayServerTeams.NameTagVisibility.ALWAYS, WrapperPlayServerTeams.CollisionRule.ALWAYS,
-            null, (byte) 0
+            null, WrapperPlayServerTeams.OptionData.NONE
         );
         sendPacket(player, new WrapperPlayServerTeams(
             "arsb_" + index, WrapperPlayServerTeams.TeamMode.UPDATE,
-            Optional.of(info), Optional.<Collection<String>>empty()
+            Optional.of(info), Collections.emptyList()
         ));
     }
 
     private void removeTeam(Player player, int index) {
         sendPacket(player, new WrapperPlayServerTeams(
             "arsb_" + index, WrapperPlayServerTeams.TeamMode.REMOVE,
-            Optional.<WrapperPlayServerTeams.ScoreBoardTeamInfo>empty(), Optional.<Collection<String>>empty()
+            Optional.empty(), Collections.emptyList()
         ));
     }
 
