@@ -1,8 +1,6 @@
 package me.vennlmao.ariscore.tab.managers;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.protocol.score.CollisionRule;
-import com.github.retrooper.packetevents.protocol.score.NameTagVisibility;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisplayScoreboard;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
@@ -159,7 +157,7 @@ public class ScoreboardManager {
     private void createTeam(Player player, int index, String entry, Component prefix) {
         WrapperPlayServerTeams.ScoreboardTeamInfo info = new WrapperPlayServerTeams.ScoreboardTeamInfo(
             Component.empty(), prefix, Component.empty(),
-            NameTagVisibility.ALWAYS, CollisionRule.ALWAYS,
+            WrapperPlayServerTeams.NameTagVisibility.ALWAYS, WrapperPlayServerTeams.CollisionRule.ALWAYS,
             null, EnumSet.noneOf(WrapperPlayServerTeams.OptionData.class)
         );
         sendPacket(player, new WrapperPlayServerTeams(
@@ -171,7 +169,7 @@ public class ScoreboardManager {
     private void updateTeam(Player player, int index, Component prefix) {
         WrapperPlayServerTeams.ScoreboardTeamInfo info = new WrapperPlayServerTeams.ScoreboardTeamInfo(
             Component.empty(), prefix, Component.empty(),
-            NameTagVisibility.ALWAYS, CollisionRule.ALWAYS,
+            WrapperPlayServerTeams.NameTagVisibility.ALWAYS, WrapperPlayServerTeams.CollisionRule.ALWAYS,
             null, EnumSet.noneOf(WrapperPlayServerTeams.OptionData.class)
         );
         sendPacket(player, new WrapperPlayServerTeams(
@@ -250,5 +248,5 @@ public class ScoreboardManager {
         }
         return text;
     }
-            }
-            
+        }
+        
