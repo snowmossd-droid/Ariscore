@@ -92,12 +92,12 @@ public class ScoreboardManager {
     }
 
     private void createObjective(Player player) {
-        String title = getWorldField(player.getWorld().getName(), "title", "&lDonutSMP");
+        String title = getWorldField(player.getWorld().getName(), "title");
         sendPacket(player, new WrapperPlayServerScoreboardObjective(
             OBJ,
             WrapperPlayServerScoreboardObjective.ObjectiveMode.CREATE,
-            Optional.of(ColorUtil.parse(resolve(player, title))),
-            Optional.of(WrapperPlayServerScoreboardObjective.RenderType.INTEGER)
+            ColorUtil.parse(resolve(player, title)),
+            WrapperPlayServerScoreboardObjective.RenderType.INTEGER
         ));
         sendPacket(player, new WrapperPlayServerDisplayScoreboard(1, OBJ));
         active.add(player.getUniqueId());
@@ -110,19 +110,19 @@ public class ScoreboardManager {
         sendPacket(player, new WrapperPlayServerScoreboardObjective(
             OBJ,
             WrapperPlayServerScoreboardObjective.ObjectiveMode.REMOVE,
-            Optional.empty(),
-            Optional.empty()
+            null,
+            null
         ));
     }
 
     private void updateBoard(Player player) {
         if (!active.contains(player.getUniqueId())) { createObjective(player); return; }
-        String title = getWorldField(player.getWorld().getName(), "title", "&lDonutSMP");
+        String title = getWorldField(player.getWorld().getName(), "title");
         sendPacket(player, new WrapperPlayServerScoreboardObjective(
             OBJ,
             WrapperPlayServerScoreboardObjective.ObjectiveMode.UPDATE,
-            Optional.of(ColorUtil.parse(resolve(player, title))),
-            Optional.of(WrapperPlayServerScoreboardObjective.RenderType.INTEGER)
+            ColorUtil.parse(resolve(player, title)),
+            WrapperPlayServerScoreboardObjective.RenderType.INTEGER
         ));
         renderLines(player, getWorldLines(player.getWorld().getName()));
     }
@@ -155,33 +155,33 @@ public class ScoreboardManager {
     }
 
     private void createTeam(Player player, int index, String entry, Component prefix) {
-        WrapperPlayServerTeams.ScoreboardTeamInfo info = new WrapperPlayServerTeams.ScoreboardTeamInfo(
+        WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
             Component.empty(), prefix, Component.empty(),
             WrapperPlayServerTeams.NameTagVisibility.ALWAYS, WrapperPlayServerTeams.CollisionRule.ALWAYS,
             null, EnumSet.noneOf(WrapperPlayServerTeams.OptionData.class)
         );
         sendPacket(player, new WrapperPlayServerTeams(
             "arsb_" + index, WrapperPlayServerTeams.TeamMode.CREATE,
-            Optional.of(info), Optional.of(List.of(entry))
+            info, List.of(entry)
         ));
     }
 
     private void updateTeam(Player player, int index, Component prefix) {
-        WrapperPlayServerTeams.ScoreboardTeamInfo info = new WrapperPlayServerTeams.ScoreboardTeamInfo(
+        WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
             Component.empty(), prefix, Component.empty(),
             WrapperPlayServerTeams.NameTagVisibility.ALWAYS, WrapperPlayServerTeams.CollisionRule.ALWAYS,
             null, EnumSet.noneOf(WrapperPlayServerTeams.OptionData.class)
         );
         sendPacket(player, new WrapperPlayServerTeams(
             "arsb_" + index, WrapperPlayServerTeams.TeamMode.UPDATE,
-            Optional.of(info), Optional.empty()
+            info, null
         ));
     }
 
     private void removeTeam(Player player, int index) {
         sendPacket(player, new WrapperPlayServerTeams(
             "arsb_" + index, WrapperPlayServerTeams.TeamMode.REMOVE,
-            Optional.empty(), Optional.empty()
+            null, null
         ));
     }
 
@@ -230,7 +230,8 @@ public class ScoreboardManager {
         return module.getConfig().getStringList("scoreboard.default.lines");
     }
 
-    private String getWorldField(String worldName, String field, String def) {
+    private String getWorldField(String worldName, String field) {
+        String def = module.getConfig().getString("scoreboard.default." + field, "");
         ConfigurationSection worlds = module.getConfig().getConfigurationSection("scoreboard.worlds");
         if (worlds != null) {
             for (String key : worlds.getKeys(false)) {
@@ -238,7 +239,7 @@ public class ScoreboardManager {
                 if (w.equals(worldName)) return module.getConfig().getString("scoreboard.worlds." + key + "." + field, def);
             }
         }
-        return module.getConfig().getString("scoreboard.default." + field, def);
+        return def;
     }
 
     private String resolve(Player player, String text) {
@@ -248,5 +249,5 @@ public class ScoreboardManager {
         }
         return text;
     }
-        }
-        
+                            }
+                                           
