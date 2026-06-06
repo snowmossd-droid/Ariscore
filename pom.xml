@@ -18,6 +18,7 @@
         <hikari.version>5.1.0</hikari.version>
         <sqlite.version>3.45.3.0</sqlite.version>
         <packetevents.version>2.12.1</packetevents.version>
+        <luckperms.version>5.4</luckperms.version>
     </properties>
 
     <repositories>
@@ -40,6 +41,10 @@
         <repository>
             <id>codemc-releases</id>
             <url>https://repo.codemc.io/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>luckperms</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 
@@ -86,6 +91,12 @@
             <version>${packetevents.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>${luckperms.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -123,3 +134,4 @@
         </resources>
     </build>
 </project>
+                     
