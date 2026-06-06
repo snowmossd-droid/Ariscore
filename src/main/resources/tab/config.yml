@@ -1,0 +1,85 @@
+tab:
+  enabled: true
+  update-tick: 2
+  default:
+    header:
+      - ''
+      - '<#00ADFC>&lDonutSMP</#00ADFC>'
+      - '&f%server_online% Players'
+      - ''
+    footer:
+      - ''
+      - '   &#37BFF9/ᴅɪꜱᴄᴏʀᴅ  /ɢᴜɪᴅᴇ  /ꜱᴛᴏʀᴇ   '
+      - ''
+
+luckperms-name:
+  enabled: true
+  format: '%luckperms_prefix%%player_name%%luckperms_suffix%'
+
+luckperms-sorting:
+  enabled: true
+  groups:
+    - 'owner'
+    - 'admin'
+    - 'mod'
+    - 'helper'
+    - 'builder'
+    - 'vip'
+    - 'default'
+
+belowname:
+  enabled: true
+  title: '&c❤'
+
+scoreboard:
+  update-tick: 2
+  team-line:
+    format: '#00A4FC🪓 &fTeam #00A4FC%ariscore_team%'
+  default:
+    title: '  <#007CF9>&lDonutSMP</#00C6F9>  '
+    lines:
+      - ''
+      - '#00FC00$ &fMoney #00FC00%donutstats_money%'
+      - '#A303F9★ &fShards #A303F9%donutstats_shards%'
+      - '#FC0000🗡 &fKills #FC0000%donutstats_kills%'
+      - '#F97603☠ &fDeaths #F97603%donutstats_deaths%'
+      - '#00A4FC⌛ &fKeyall #00A4FC%donutkeyall_countdown%'
+      - '#FCE300⌚ &fPlaytime #FCE300%donutstats_playtime%'
+      - '{team}'
+      - ''
+      - '#A8A8A8Europe (#00A4FC%player_ping%#A8A8A8)'
+  worlds:
+    rtpqueue:
+      world: 'rtpqueue'
+      title: '  <#007CF9>&lDonutSMP</#00C6F9>  '
+      lines:
+        - ''
+        - '#00FC00$ &fMoney #00FC00%donutstats_money%'
+        - '#A303F9★ &fShards #A303F9%donutstats_shards%'
+        - '#FC0000🗡 &fKills #FC0000%donutstats_kills%'
+        - '#F97603☠ &fDeaths #F97603%donutstats_deaths%'
+        - '#00A4FC⌛ &fKeyall #00A4FC%donutkeyall_countdown%'
+        - '#FCE300⌚ &fPlaytime #FCE300%donutstats_playtime%'
+        - '{team}'
+        - ''
+        - '#A8A8A8Europe (#00A4FC%player_ping%#A8A8A8)'
+
+messages:
+  enabled: '&#00FC00Scoreboard đã bật.'
+  disabled: '&#FC0000Scoreboard đã tắt.'
+
+sounds:
+  tabtoggle_enabled:
+    sound: 'UI_BUTTON_CLICK'
+    volume: 1.0
+    pitch: 1.2
+  tabtoggle_disabled:
+    sound: 'UI_BUTTON_CLICK'
+    volume: 1.0
+    pitch: 0.8
+
+messages:
+  tabtoggle_enabled: '&#00FC00Scoreboard đã bật.'
+  tabtoggle_enabled_ab: '&#00FC00✔ Scoreboard bật'
+  tabtoggle_disabled: '&#FC0000Scoreboard đã tắt.'
+  tabtoggle_disabled_ab: '&#FC0000✘ Scoreboard tắt'
