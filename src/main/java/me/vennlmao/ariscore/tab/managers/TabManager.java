@@ -5,6 +5,10 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.vennlmao.ariscore.tab.TabModule;
 import me.vennlmao.ariscore.tab.utils.ColorUtil;
 import net.kyori.adventure.text.Component;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.event.EventBus;
+import net.luckperms.api.event.user.UserDataRecalculateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
@@ -16,10 +20,12 @@ public class TabManager {
 
     private final TabModule module;
     private ScheduledTask globalTask;
+    private final Map<UUID, Scoreboard> playerBoards = new HashMap<>();
 
     public TabManager(TabModule module) {
         this.module = module;
         startGlobalTask();
+        hookLuckPerms();
     }
 
     private void startGlobalTask() {
@@ -30,31 +36,66 @@ public class TabManager {
         );
     }
 
+    private void hookLuckPerms() {
+        try {
+            LuckPerms lp = LuckPermsProvider.get();
+            EventBus bus = lp.getEventBus();
+            bus.subscribe(module.getPlugin(), UserDataRecalculateEvent.class, event -> {
+                UUID uuid = event.getUser().getUniqueId();
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null && player.isOnline()) {
+                    player.getScheduler().run(module.getPlugin(), t -> {
+                        applyLpName(player);
+                        Scoreboard board = playerBoards.get(uuid);
+                        if (board != null) rebuildSortingTeam(board, player);
+                    }, null);
+                }
+            });
+        } catch (IllegalStateException | NoClassDefFoundError ignored) {
+        }
+    }
+
     public void setupFor(Player player) {
+        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+        playerBoards.put(player.getUniqueId(), board);
+        player.setScoreboard(board);
         applyLpName(player);
-        applySortingTeams(player, player.getScoreboard());
+        applySortingTeams(player, board);
         updateTab(player);
     }
 
     public void removeAll() {
         if (globalTask != null) globalTask.cancel();
+        playerBoards.clear();
     }
 
     public void reloadAll() {
         startGlobalTask();
-        Bukkit.getOnlinePlayers().forEach(this::setupFor);
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            playerBoards.remove(p.getUniqueId());
+            setupFor(p);
+        });
     }
 
     public void onPlayerJoin(Player joining) {
-        Bukkit.getOnlinePlayers().forEach(viewer -> {
-            if (!viewer.equals(joining)) addSortingTeam(viewer.getScoreboard(), joining);
-        });
         setupFor(joining);
+        UUID joiningUuid = joining.getUniqueId();
+        Bukkit.getOnlinePlayers().forEach(viewer -> {
+            if (!viewer.getUniqueId().equals(joiningUuid)) {
+                Scoreboard board = playerBoards.get(viewer.getUniqueId());
+                if (board != null) addSortingTeam(board, joining);
+            }
+        });
     }
 
     public void onPlayerQuit(Player quitting) {
+        UUID quittingUuid = quitting.getUniqueId();
+        playerBoards.remove(quittingUuid);
         Bukkit.getOnlinePlayers().forEach(viewer -> {
-            if (!viewer.equals(quitting)) removeSortingTeam(viewer.getScoreboard(), quitting);
+            if (!viewer.getUniqueId().equals(quittingUuid)) {
+                Scoreboard board = playerBoards.get(viewer.getUniqueId());
+                if (board != null) removeSortingTeam(board, quitting);
+            }
         });
     }
 
@@ -65,15 +106,20 @@ public class TabManager {
 
     private void addSortingTeam(Scoreboard board, Player player) {
         if (!module.getConfig().getBoolean("luckperms-sorting.enabled", false)) return;
+        removeSortingTeam(board, player);
         List<String> groups = module.getConfig().getStringList("luckperms-sorting.groups");
         String group = resolve(player, "%luckperms_primary_group%");
         int rank = groups.indexOf(group);
         if (rank < 0) rank = groups.size();
         String teamName = "lp_" + String.format("%03d", rank) + "_" + player.getName();
         if (teamName.length() > 16) teamName = teamName.substring(0, 16);
-        Team existing = board.getTeam(teamName);
-        if (existing == null) existing = board.registerNewTeam(teamName);
-        if (!existing.hasEntry(player.getName())) existing.addEntry(player.getName());
+        Team team = board.getTeam(teamName);
+        if (team == null) team = board.registerNewTeam(teamName);
+        if (!team.hasEntry(player.getName())) team.addEntry(player.getName());
+    }
+
+    private void rebuildSortingTeam(Scoreboard board, Player player) {
+        addSortingTeam(board, player);
     }
 
     private void removeSortingTeam(Scoreboard board, Player player) {
@@ -115,4 +161,5 @@ public class TabManager {
         }
         return text;
     }
-}
+            }
+                
