@@ -1,5 +1,9 @@
 package me.vennlmao.ariscore.tab.managers;
 
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.event.user.UserDataRecalculateEvent;
+
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.vennlmao.ariscore.tab.TabModule;
@@ -34,21 +38,19 @@ public class TabManager {
 
     private void hookLuckPerms() {
         try {
-            org.bukkit.plugin.Plugin lp = module.getPlugin().getServer().getPluginManager().getPlugin("LuckPerms");
-            if (lp == null) return;
-            net.luckperms.api.LuckPerms api = net.luckperms.api.LuckPermsProvider.get();
-            api.getEventBus().subscribe(module.getPlugin(),
-                net.luckperms.api.event.user.UserDataRecalculateEvent.class, event -> {
-                    UUID uuid = event.getUser().getUniqueId();
-                    Player player = Bukkit.getPlayer(uuid);
-                    if (player != null && player.isOnline()) {
-                        player.getScheduler().run(module.getPlugin(), t -> {
-                            applyLpName(player);
-                            Scoreboard board = playerBoards.get(uuid);
-                            if (board != null) rebuildSortingTeam(board, player);
-                        }, null);
-                    }
-                });
+            if (module.getPlugin().getServer().getPluginManager().getPlugin("LuckPerms") == null) return;
+            LuckPerms api = LuckPermsProvider.get();
+            api.getEventBus().subscribe(module.getPlugin(), UserDataRecalculateEvent.class, event -> {
+                UUID uuid = event.getUser().getUniqueId();
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null && player.isOnline()) {
+                    player.getScheduler().run(module.getPlugin(), t -> {
+                        applyLpName(player);
+                        Scoreboard board = playerBoards.get(uuid);
+                        if (board != null) rebuildSortingTeam(board, player);
+                    }, null);
+                }
+            });
         } catch (Throwable ignored) {
         }
     }
@@ -159,5 +161,5 @@ public class TabManager {
         }
         return text;
     }
-                                                  }
-            
+            }
+    
