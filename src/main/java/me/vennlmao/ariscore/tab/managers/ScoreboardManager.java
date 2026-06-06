@@ -15,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.Collection;
 
 public class ScoreboardManager {
 
@@ -158,11 +159,11 @@ public class ScoreboardManager {
         WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
             Component.empty(), prefix, Component.empty(),
             WrapperPlayServerTeams.NameTagVisibility.ALWAYS, WrapperPlayServerTeams.CollisionRule.ALWAYS,
-            null, EnumSet.noneOf(WrapperPlayServerTeams.OptionData.class)
+            null, (byte) 0
         );
         sendPacket(player, new WrapperPlayServerTeams(
             "arsb_" + index, WrapperPlayServerTeams.TeamMode.CREATE,
-            info, List.of(entry)
+            info, Collections.singletonList(entry)
         ));
     }
 
@@ -170,18 +171,18 @@ public class ScoreboardManager {
         WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
             Component.empty(), prefix, Component.empty(),
             WrapperPlayServerTeams.NameTagVisibility.ALWAYS, WrapperPlayServerTeams.CollisionRule.ALWAYS,
-            null, EnumSet.noneOf(WrapperPlayServerTeams.OptionData.class)
+            null, (byte) 0
         );
         sendPacket(player, new WrapperPlayServerTeams(
             "arsb_" + index, WrapperPlayServerTeams.TeamMode.UPDATE,
-            info, null
+            Optional.of(info), Optional.<Collection<String>>empty()
         ));
     }
 
     private void removeTeam(Player player, int index) {
         sendPacket(player, new WrapperPlayServerTeams(
             "arsb_" + index, WrapperPlayServerTeams.TeamMode.REMOVE,
-            null, null
+            Optional.<WrapperPlayServerTeams.ScoreBoardTeamInfo>empty(), Optional.<Collection<String>>empty()
         ));
     }
 
@@ -249,5 +250,5 @@ public class ScoreboardManager {
         }
         return text;
     }
-                            }
-                                           
+    }
+            
