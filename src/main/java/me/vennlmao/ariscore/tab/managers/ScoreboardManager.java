@@ -1,9 +1,11 @@
 package me.vennlmao.ariscore.tab.managers;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardDisplay;
+import com.github.retrooper.packetevents.protocol.score.CollisionRule;
+import com.github.retrooper.packetevents.protocol.score.NameTagVisibility;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisplayScoreboard;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardTeam;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateScore;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -93,15 +95,13 @@ public class ScoreboardManager {
 
     private void createObjective(Player player) {
         String title = getWorldField(player.getWorld().getName(), "title", "&lDonutSMP");
-        Component titleComp = ColorUtil.parse(resolve(player, title));
-
         sendPacket(player, new WrapperPlayServerScoreboardObjective(
             OBJ,
             WrapperPlayServerScoreboardObjective.ObjectiveMode.CREATE,
-            Optional.of(titleComp),
+            Optional.of(ColorUtil.parse(resolve(player, title))),
             Optional.of(WrapperPlayServerScoreboardObjective.RenderType.INTEGER)
         ));
-        sendPacket(player, new WrapperPlayServerScoreboardDisplay(1, OBJ));
+        sendPacket(player, new WrapperPlayServerDisplayScoreboard(1, OBJ));
         active.add(player.getUniqueId());
         renderLines(player, getWorldLines(player.getWorld().getName()));
     }
@@ -137,7 +137,7 @@ public class ScoreboardManager {
             String entry = ENTRIES[i];
             Component prefix = lines.get(i).isEmpty() ? Component.empty() : ColorUtil.parse(lines.get(i));
             if (i < prev) {
-                updateTeamPrefix(player, i, prefix);
+                updateTeam(player, i, prefix);
             } else {
                 createTeam(player, i, entry, prefix);
                 setScore(player, entry, lines.size() - i);
@@ -157,55 +157,46 @@ public class ScoreboardManager {
     }
 
     private void createTeam(Player player, int index, String entry, Component prefix) {
-        WrapperPlayServerScoreboardTeam.ScoreboardTeamInfo info =
-            new WrapperPlayServerScoreboardTeam.ScoreboardTeamInfo(
-                Component.empty(), prefix, Component.empty(),
-                WrapperPlayServerScoreboardTeam.NameTagVisibility.ALWAYS,
-                WrapperPlayServerScoreboardTeam.CollisionRule.ALWAYS,
-                null, EnumSet.noneOf(WrapperPlayServerScoreboardTeam.OptionData.class)
-            );
-        sendPacket(player, new WrapperPlayServerScoreboardTeam(
-            "arsb_" + index,
-            WrapperPlayServerScoreboardTeam.TeamMode.CREATE,
+        WrapperPlayServerTeams.ScoreboardTeamInfo info = new WrapperPlayServerTeams.ScoreboardTeamInfo(
+            Component.empty(), prefix, Component.empty(),
+            NameTagVisibility.ALWAYS, CollisionRule.ALWAYS,
+            null, EnumSet.noneOf(WrapperPlayServerTeams.OptionData.class)
+        );
+        sendPacket(player, new WrapperPlayServerTeams(
+            "arsb_" + index, WrapperPlayServerTeams.TeamMode.CREATE,
             Optional.of(info), Optional.of(List.of(entry))
         ));
     }
 
-    private void updateTeamPrefix(Player player, int index, Component prefix) {
-        WrapperPlayServerScoreboardTeam.ScoreboardTeamInfo info =
-            new WrapperPlayServerScoreboardTeam.ScoreboardTeamInfo(
-                Component.empty(), prefix, Component.empty(),
-                WrapperPlayServerScoreboardTeam.NameTagVisibility.ALWAYS,
-                WrapperPlayServerScoreboardTeam.CollisionRule.ALWAYS,
-                null, EnumSet.noneOf(WrapperPlayServerScoreboardTeam.OptionData.class)
-            );
-        sendPacket(player, new WrapperPlayServerScoreboardTeam(
-            "arsb_" + index,
-            WrapperPlayServerScoreboardTeam.TeamMode.UPDATE,
+    private void updateTeam(Player player, int index, Component prefix) {
+        WrapperPlayServerTeams.ScoreboardTeamInfo info = new WrapperPlayServerTeams.ScoreboardTeamInfo(
+            Component.empty(), prefix, Component.empty(),
+            NameTagVisibility.ALWAYS, CollisionRule.ALWAYS,
+            null, EnumSet.noneOf(WrapperPlayServerTeams.OptionData.class)
+        );
+        sendPacket(player, new WrapperPlayServerTeams(
+            "arsb_" + index, WrapperPlayServerTeams.TeamMode.UPDATE,
             Optional.of(info), Optional.empty()
         ));
     }
 
     private void removeTeam(Player player, int index) {
-        sendPacket(player, new WrapperPlayServerScoreboardTeam(
-            "arsb_" + index,
-            WrapperPlayServerScoreboardTeam.TeamMode.REMOVE,
+        sendPacket(player, new WrapperPlayServerTeams(
+            "arsb_" + index, WrapperPlayServerTeams.TeamMode.REMOVE,
             Optional.empty(), Optional.empty()
         ));
     }
 
     private void setScore(Player player, String entry, int score) {
         sendPacket(player, new WrapperPlayServerUpdateScore(
-            entry,
-            WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM,
+            entry, WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM,
             OBJ, Optional.of(score)
         ));
     }
 
     private void removeScore(Player player, String entry) {
         sendPacket(player, new WrapperPlayServerUpdateScore(
-            entry,
-            WrapperPlayServerUpdateScore.Action.REMOVE_ITEM,
+            entry, WrapperPlayServerUpdateScore.Action.REMOVE_ITEM,
             OBJ, Optional.empty()
         ));
     }
@@ -259,5 +250,5 @@ public class ScoreboardManager {
         }
         return text;
     }
-        }
-                              
+            }
+            
