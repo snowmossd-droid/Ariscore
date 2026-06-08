@@ -1,12 +1,14 @@
 package me.vennlmao.ariscore.tab.managers;
 
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisplayScoreboard;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateScore;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.vennlmao.ariscore.ArisCore;
 import me.vennlmao.ariscore.tab.TabModule;
 import me.vennlmao.ariscore.tab.utils.ColorUtil;
 import net.kyori.adventure.text.Component;
@@ -15,7 +17,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.Collection;
 
 public class ScoreboardManager {
 
@@ -107,7 +108,10 @@ public class ScoreboardManager {
 
     private void removeObjective(Player player) {
         int prev = lineCounts.getOrDefault(player.getUniqueId(), 0);
-        for (int i = 0; i < prev; i++) removeTeam(player, i);
+        for (int i = 0; i < prev; i++) {
+            removeScore(player, ENTRIES[i]);
+            removeTeam(player, i);
+        }
         sendPacket(player, new WrapperPlayServerScoreboardObjective(
             OBJ,
             WrapperPlayServerScoreboardObjective.ObjectiveMode.REMOVE,
@@ -131,28 +135,33 @@ public class ScoreboardManager {
     private void renderLines(Player player, List<String> rawLines) {
         List<String> lines = buildLines(player, rawLines);
         int prev = lineCounts.getOrDefault(player.getUniqueId(), -1);
+        int size = Math.min(lines.size(), ENTRIES.length);
 
-        for (int i = 0; i < Math.min(lines.size(), ENTRIES.length); i++) {
+        if (prev > size) {
+            for (int i = size; i < prev; i++) {
+                removeScore(player, ENTRIES[i]);
+                removeTeam(player, i);
+            }
+        }
+
+        for (int i = 0; i < size; i++) {
             String entry = ENTRIES[i];
             Component prefix = lines.get(i).isEmpty() ? Component.empty() : ColorUtil.parse(lines.get(i));
+
+            int score = -1000 + (size - i);
             if (i < prev) {
                 updateTeam(player, i, prefix);
             } else {
                 createTeam(player, i, entry, prefix);
-                setScore(player, entry, lines.size() - i);
+                setScore(player, entry, score);
+            }
+
+            if (prev != size) {
+                setScore(player, entry, score);
             }
         }
-        if (prev > lines.size()) {
-            for (int i = lines.size(); i < prev; i++) {
-                removeScore(player, ENTRIES[i]);
-                removeTeam(player, i);
-            }
-        } else if (prev >= 0 && lines.size() != prev) {
-            for (int i = 0; i < lines.size(); i++) {
-                setScore(player, ENTRIES[i], lines.size() - i);
-            }
-        }
-        lineCounts.put(player.getUniqueId(), lines.size());
+
+        lineCounts.put(player.getUniqueId(), size);
     }
 
     private void createTeam(Player player, int index, String entry, Component prefix) {
@@ -200,7 +209,7 @@ public class ScoreboardManager {
         ));
     }
 
-    private void sendPacket(Player player, com.github.retrooper.packetevents.wrapper.PacketWrapper<?> packet) {
+    private void sendPacket(Player player, PacketWrapper<?> packet) {
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
     }
 
@@ -209,8 +218,8 @@ public class ScoreboardManager {
         String teamFormat = module.getConfig().getString("scoreboard.team-line.format", "");
         for (String line : rawLines) {
             if ("{team}".equals(line)) {
-                String teamName = resolve(player, "%ariscore_team%");
-                if (!teamName.isEmpty() && !teamName.startsWith("%")) {
+                String teamName = getTeamName(player);
+                if (teamName != null && !teamName.isEmpty()) {
                     result.add(resolve(player, teamFormat));
                 }
             } else {
@@ -218,6 +227,18 @@ public class ScoreboardManager {
             }
         }
         return result;
+    }
+
+    private String getTeamName(Player player) {
+        try {
+            ArisCore core = ArisCore.getInstance();
+            if (core != null && core.getTeamModule() != null) {
+                return core.getTeamModule().getTeamManager().getPlayerTeamName(player.getUniqueId());
+            }
+        } catch (Throwable ignored) {}
+        // fallback to placeholder
+        String val = resolve(player, "%ariscore_team%");
+        return (val.startsWith("%") || val.isEmpty()) ? null : val;
     }
 
     private List<String> getWorldLines(String worldName) {
@@ -250,5 +271,5 @@ public class ScoreboardManager {
         }
         return text;
     }
-                                                }
-                                     
+        }
+                
