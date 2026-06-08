@@ -145,4 +145,4 @@ public class TeamManager {
 
     public void removeInvite(UUID uuid) { pendingInvites.remove(uuid); }
             }
-    
+            
