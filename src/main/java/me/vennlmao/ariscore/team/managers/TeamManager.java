@@ -4,6 +4,8 @@ import me.vennlmao.ariscore.team.TeamModule;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import me.vennlmao.ariscore.ArisCore;
+import me.vennlmao.ariscore.tab.TabModule;
 import java.util.*;
 
 public class TeamManager {
@@ -40,15 +42,21 @@ public class TeamManager {
         playerTeam.put(owner.getUniqueId(), name);
         db.saveTeam(team);
         db.saveMember(md, name);
+        refreshScoreboard(owner);
         return true;
     }
 
     public void disbandTeam(String name) {
         TeamData team = getTeam(name);
         if (team == null) return;
-        for (UUID uuid : team.getMembers().keySet()) { playerTeam.remove(uuid); db.removeMember(uuid); }
+        Set<UUID> members = new HashSet<>(team.getMembers().keySet());
+        for (UUID uuid : members) { playerTeam.remove(uuid); db.removeMember(uuid); }
         teams.remove(name.toLowerCase());
         db.deleteTeam(name);
+        members.forEach(uuid -> {
+            org.bukkit.entity.Player p = org.bukkit.Bukkit.getPlayer(uuid);
+            if (p != null) refreshScoreboard(p);
+        });
     }
 
     public boolean addMember(String teamName, Player player) {
@@ -60,6 +68,7 @@ public class TeamManager {
         team.addMember(md);
         playerTeam.put(player.getUniqueId(), teamName);
         db.saveMember(md, teamName);
+        refreshScoreboard(player);
         return true;
     }
 
@@ -70,6 +79,13 @@ public class TeamManager {
         if (team == null) return;
         team.removeMember(uuid);
         db.removeMember(uuid);
+        org.bukkit.entity.Player p = org.bukkit.Bukkit.getPlayer(uuid);
+        if (p != null) refreshScoreboard(p);
+    }
+
+    private void refreshScoreboard(org.bukkit.entity.Player player) {
+        TabModule tab = ArisCore.getInstance().getTabModule();
+        if (tab != null) tab.getScoreboardManager().refreshWorld(player);
     }
 
     public void saveMemberPerms(TeamData.MemberData md, String teamName) {
@@ -128,4 +144,5 @@ public class TeamManager {
     }
 
     public void removeInvite(UUID uuid) { pendingInvites.remove(uuid); }
-}
+            }
+    
