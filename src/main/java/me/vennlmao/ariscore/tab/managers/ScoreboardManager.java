@@ -5,7 +5,6 @@ import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisplayScoreboard;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
-import com.github.retrooper.packetevents.protocol.score.ScoreFormat;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateScore;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -31,9 +30,10 @@ public class ScoreboardManager {
 
     private final TabModule module;
     private final Map<UUID, ScheduledTask> tasks = new HashMap<>();
-    private final Map<UUID, Integer> lineCounts = new HashMap<>();
     private final Set<UUID> disabled = new HashSet<>();
     private final Set<UUID> active = new HashSet<>();
+
+    private final Map<UUID, List<String>> currentLines = new HashMap<>();
 
     public ScoreboardManager(TabModule module) {
         this.module = module;
@@ -41,11 +41,11 @@ public class ScoreboardManager {
 
     public void startFor(Player player) {
         if (disabled.contains(player.getUniqueId())) return;
-        createObjective(player);
+        setupObjective(player);
         long period = module.getConfig().getLong("scoreboard.update-tick", 2) * 20L;
         ScheduledTask task = player.getScheduler().runAtFixedRate(module.getPlugin(), t -> {
             if (!player.isOnline()) { t.cancel(); return; }
-            updateBoard(player);
+            tick(player);
         }, null, 1L, period);
         if (task != null) tasks.put(player.getUniqueId(), task);
     }
@@ -53,8 +53,8 @@ public class ScoreboardManager {
     public void stopFor(Player player) {
         ScheduledTask task = tasks.remove(player.getUniqueId());
         if (task != null) task.cancel();
-        if (active.remove(player.getUniqueId())) removeObjective(player);
-        lineCounts.remove(player.getUniqueId());
+        if (active.remove(player.getUniqueId())) teardownObjective(player);
+        currentLines.remove(player.getUniqueId());
     }
 
     public void toggle(Player player) {
@@ -77,10 +77,10 @@ public class ScoreboardManager {
         tasks.clear();
         new HashSet<>(active).forEach(uuid -> {
             Player p = Bukkit.getPlayer(uuid);
-            if (p != null) removeObjective(p);
+            if (p != null) teardownObjective(p);
         });
         active.clear();
-        lineCounts.clear();
+        currentLines.clear();
     }
 
     public void reloadAll() {
@@ -91,10 +91,10 @@ public class ScoreboardManager {
     }
 
     public void refreshWorld(Player player) {
-        player.getScheduler().run(module.getPlugin(), t -> updateBoard(player), null);
+        player.getScheduler().run(module.getPlugin(), t -> tick(player), null);
     }
 
-    private void createObjective(Player player) {
+    private void setupObjective(Player player) {
         String title = getWorldField(player.getWorld().getName(), "title");
         sendPacket(player, new WrapperPlayServerScoreboardObjective(
             OBJ,
@@ -104,25 +104,30 @@ public class ScoreboardManager {
         ));
         sendPacket(player, new WrapperPlayServerDisplayScoreboard(1, OBJ));
         active.add(player.getUniqueId());
-        renderLines(player, getWorldLines(player.getWorld().getName()));
+        currentLines.put(player.getUniqueId(), new ArrayList<>());
+        applyLines(player, buildLines(player, getWorldLines(player.getWorld().getName())));
     }
 
-    private void removeObjective(Player player) {
-        int prev = lineCounts.getOrDefault(player.getUniqueId(), 0);
-        for (int i = 0; i < prev; i++) {
-            removeScore(player, ENTRIES[i]);
-            removeTeam(player, i);
+    private void teardownObjective(Player player) {
+        List<String> lines = currentLines.remove(player.getUniqueId());
+        if (lines != null) {
+            for (int i = 0; i < lines.size(); i++) {
+                sendRemoveScore(player, ENTRIES[i]);
+                sendRemoveTeam(player, i);
+            }
         }
         sendPacket(player, new WrapperPlayServerScoreboardObjective(
             OBJ,
             WrapperPlayServerScoreboardObjective.ObjectiveMode.REMOVE,
-            null,
-            null
+            null, null
         ));
     }
 
-    private void updateBoard(Player player) {
-        if (!active.contains(player.getUniqueId())) { createObjective(player); return; }
+    private void tick(Player player) {
+        if (!active.contains(player.getUniqueId())) {
+            setupObjective(player);
+            return;
+        }
         String title = getWorldField(player.getWorld().getName(), "title");
         sendPacket(player, new WrapperPlayServerScoreboardObjective(
             OBJ,
@@ -130,46 +135,44 @@ public class ScoreboardManager {
             ColorUtil.parse(resolve(player, title)),
             WrapperPlayServerScoreboardObjective.RenderType.HEARTS
         ));
-        renderLines(player, getWorldLines(player.getWorld().getName()));
+        applyLines(player, buildLines(player, getWorldLines(player.getWorld().getName())));
     }
 
-    private void renderLines(Player player, List<String> rawLines) {
-        List<String> lines = buildLines(player, rawLines);
-        int prev = lineCounts.getOrDefault(player.getUniqueId(), -1);
-        int size = Math.min(lines.size(), ENTRIES.length);
+    private void applyLines(Player player, List<String> newLines) {
+        UUID uuid = player.getUniqueId();
+        List<String> prev = currentLines.getOrDefault(uuid, new ArrayList<>());
+        int prevSize = prev.size();
+        int newSize = Math.min(newLines.size(), ENTRIES.length);
 
-        // Remove excess lines first (score then team to avoid ghost)
-        if (prev > size) {
-            for (int i = size; i < prev; i++) {
-                removeScore(player, ENTRIES[i]);
-                removeTeam(player, i);
+        if (prevSize != newSize) {
+
+            for (int i = 0; i < prevSize; i++) {
+                sendRemoveScore(player, ENTRIES[i]);
+                sendRemoveTeam(player, i);
+            }
+            for (int i = 0; i < newSize; i++) {
+                sendCreateTeam(player, i, ENTRIES[i], newLines.get(i));
+                sendSetScore(player, ENTRIES[i], newSize - i);
+            }
+        } else {
+
+            for (int i = 0; i < newSize; i++) {
+                String newLine = newLines.get(i);
+                if (i >= prevSize || !newLine.equals(prev.get(i))) {
+                    sendUpdateTeam(player, i, newLine);
+                }
             }
         }
 
-        for (int i = 0; i < size; i++) {
-            String entry = ENTRIES[i];
-            Component prefix = lines.get(i).isEmpty() ? Component.empty() : ColorUtil.parse(lines.get(i));
-            // Score value: use large negative so the number is hidden off-screen on client
-            int score = size - i;
-            if (i < prev) {
-                updateTeam(player, i, prefix);
-            } else {
-                createTeam(player, i, entry, prefix);
-                setScore(player, entry, score);
-            }
-            // Always keep score in sync when line count changes
-            if (prev != size) {
-                setScore(player, entry, score);
-            }
-        }
-
-        lineCounts.put(player.getUniqueId(), size);
+        currentLines.put(uuid, new ArrayList<>(newLines.subList(0, newSize)));
     }
 
-    private void createTeam(Player player, int index, String entry, Component prefix) {
+    private void sendCreateTeam(Player player, int index, String entry, String text) {
+        Component prefix = text.isEmpty() ? Component.empty() : ColorUtil.parse(text);
         WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
             Component.empty(), prefix, Component.empty(),
-            WrapperPlayServerTeams.NameTagVisibility.ALWAYS, WrapperPlayServerTeams.CollisionRule.ALWAYS,
+            WrapperPlayServerTeams.NameTagVisibility.ALWAYS,
+            WrapperPlayServerTeams.CollisionRule.ALWAYS,
             null, WrapperPlayServerTeams.OptionData.NONE
         );
         sendPacket(player, new WrapperPlayServerTeams(
@@ -178,10 +181,12 @@ public class ScoreboardManager {
         ));
     }
 
-    private void updateTeam(Player player, int index, Component prefix) {
+    private void sendUpdateTeam(Player player, int index, String text) {
+        Component prefix = text.isEmpty() ? Component.empty() : ColorUtil.parse(text);
         WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
             Component.empty(), prefix, Component.empty(),
-            WrapperPlayServerTeams.NameTagVisibility.ALWAYS, WrapperPlayServerTeams.CollisionRule.ALWAYS,
+            WrapperPlayServerTeams.NameTagVisibility.ALWAYS,
+            WrapperPlayServerTeams.CollisionRule.ALWAYS,
             null, WrapperPlayServerTeams.OptionData.NONE
         );
         sendPacket(player, new WrapperPlayServerTeams(
@@ -190,21 +195,21 @@ public class ScoreboardManager {
         ));
     }
 
-    private void removeTeam(Player player, int index) {
+    private void sendRemoveTeam(Player player, int index) {
         sendPacket(player, new WrapperPlayServerTeams(
             "arsb_" + index, WrapperPlayServerTeams.TeamMode.REMOVE,
             Optional.empty(), Collections.emptyList()
         ));
     }
 
-    private void setScore(Player player, String entry, int score) {
+    private void sendSetScore(Player player, String entry, int score) {
         sendPacket(player, new WrapperPlayServerUpdateScore(
             entry, WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM,
-            OBJ, score, null, ScoreFormat.blankScore()
+            OBJ, Optional.of(score)
         ));
     }
 
-    private void removeScore(Player player, String entry) {
+    private void sendRemoveScore(Player player, String entry) {
         sendPacket(player, new WrapperPlayServerUpdateScore(
             entry, WrapperPlayServerUpdateScore.Action.REMOVE_ITEM,
             OBJ, Optional.empty()
@@ -273,4 +278,4 @@ public class ScoreboardManager {
         return text;
     }
             }
-        
+            
