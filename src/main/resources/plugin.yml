@@ -25,6 +25,9 @@ commands:
   tpacancel:
     description: Cancel your teleport request
     usage: /tpacancel
+  tpadeny:
+    description: Deny an incoming teleport request
+    usage: /tpadeny
   tpauto:
     description: Toggle auto-accept
     usage: /tpauto
@@ -62,3 +65,4 @@ commands:
   ariscore:
     description: ArisCore admin command
     usage: /ariscore reload [module]
+    
