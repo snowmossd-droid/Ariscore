@@ -5,6 +5,7 @@ import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisplayScoreboard;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
+import com.github.retrooper.packetevents.protocol.score.ScoreFormat;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateScore;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -99,7 +100,7 @@ public class ScoreboardManager {
             OBJ,
             WrapperPlayServerScoreboardObjective.ObjectiveMode.CREATE,
             ColorUtil.parse(resolve(player, title)),
-            WrapperPlayServerScoreboardObjective.RenderType.INTEGER
+            WrapperPlayServerScoreboardObjective.RenderType.HEARTS
         ));
         sendPacket(player, new WrapperPlayServerDisplayScoreboard(1, OBJ));
         active.add(player.getUniqueId());
@@ -127,7 +128,7 @@ public class ScoreboardManager {
             OBJ,
             WrapperPlayServerScoreboardObjective.ObjectiveMode.UPDATE,
             ColorUtil.parse(resolve(player, title)),
-            WrapperPlayServerScoreboardObjective.RenderType.INTEGER
+            WrapperPlayServerScoreboardObjective.RenderType.HEARTS
         ));
         renderLines(player, getWorldLines(player.getWorld().getName()));
     }
@@ -137,6 +138,7 @@ public class ScoreboardManager {
         int prev = lineCounts.getOrDefault(player.getUniqueId(), -1);
         int size = Math.min(lines.size(), ENTRIES.length);
 
+        // Remove excess lines first (score then team to avoid ghost)
         if (prev > size) {
             for (int i = size; i < prev; i++) {
                 removeScore(player, ENTRIES[i]);
@@ -147,15 +149,15 @@ public class ScoreboardManager {
         for (int i = 0; i < size; i++) {
             String entry = ENTRIES[i];
             Component prefix = lines.get(i).isEmpty() ? Component.empty() : ColorUtil.parse(lines.get(i));
-
-            int score = -1000 + (size - i);
+            // Score value: use large negative so the number is hidden off-screen on client
+            int score = size - i;
             if (i < prev) {
                 updateTeam(player, i, prefix);
             } else {
                 createTeam(player, i, entry, prefix);
                 setScore(player, entry, score);
             }
-
+            // Always keep score in sync when line count changes
             if (prev != size) {
                 setScore(player, entry, score);
             }
@@ -198,7 +200,7 @@ public class ScoreboardManager {
     private void setScore(Player player, String entry, int score) {
         sendPacket(player, new WrapperPlayServerUpdateScore(
             entry, WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM,
-            OBJ, Optional.of(score)
+            OBJ, Optional.of(score), Optional.empty(), Optional.of(ScoreFormat.blankScore())
         ));
     }
 
@@ -272,4 +274,4 @@ public class ScoreboardManager {
         return text;
     }
         }
-                
+    
