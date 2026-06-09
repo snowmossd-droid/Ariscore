@@ -39,6 +39,8 @@ public class GuiListener implements Listener {
         ItemStack clicked = event.getCurrentItem();
         if (clicked == null || !clicked.hasItemMeta()) return;
 
+        SoundUtil.play(player, "gui_click");
+
         ItemMeta meta = clicked.getItemMeta();
         if (meta == null || meta.displayName() == null) return;
 
@@ -47,11 +49,9 @@ public class GuiListener implements Listener {
         String denyName = strip(plugin.getConfig().getString("gui.items.cancel.name", "Deny"));
 
         if (itemName.equalsIgnoreCase(strip(confirmName))) {
-            SoundUtil.play(player, "gui_click");
             player.closeInventory();
 
             TpaRequest request = plugin.getRequestManager().getRequest(player);
-
             if (request != null) {
                 handleAccept(player, request);
                 return;
@@ -63,7 +63,6 @@ public class GuiListener implements Listener {
             }
 
         } else if (itemName.equalsIgnoreCase(strip(denyName))) {
-            SoundUtil.play(player, "gui_click");
             player.closeInventory();
 
             TpaRequest request = plugin.getRequestManager().getRequest(player);
@@ -177,4 +176,5 @@ public class GuiListener implements Listener {
                 .replaceAll("#[0-9A-Fa-f]{6}", "")
                 .trim();
     }
-}
+                                              }
+                       
