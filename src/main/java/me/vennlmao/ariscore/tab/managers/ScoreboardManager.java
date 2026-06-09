@@ -1,11 +1,11 @@
 package me.vennlmao.ariscore.tab.managers;
 
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.score.ScoreFormat;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisplayScoreboard;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
-import com.github.retrooper.packetevents.protocol.score.ScoreFormat;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateScore;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -33,7 +33,6 @@ public class ScoreboardManager {
     private final Map<UUID, ScheduledTask> tasks = new HashMap<>();
     private final Set<UUID> disabled = new HashSet<>();
     private final Set<UUID> active = new HashSet<>();
-
     private final Map<UUID, List<String>> currentLines = new HashMap<>();
 
     public ScoreboardManager(TabModule module) {
@@ -92,7 +91,10 @@ public class ScoreboardManager {
     }
 
     public void refreshWorld(Player player) {
-        player.getScheduler().run(module.getPlugin(), t -> tick(player), null);
+        player.getScheduler().run(module.getPlugin(), t -> {
+            currentLines.put(player.getUniqueId(), new ArrayList<>());
+            tick(player);
+        }, null);
     }
 
     private void setupObjective(Player player) {
@@ -146,7 +148,6 @@ public class ScoreboardManager {
         int newSize = Math.min(newLines.size(), ENTRIES.length);
 
         if (prevSize != newSize) {
-
             for (int i = 0; i < prevSize; i++) {
                 sendRemoveScore(player, ENTRIES[i]);
                 sendRemoveTeam(player, i);
@@ -156,7 +157,6 @@ public class ScoreboardManager {
                 sendSetScore(player, ENTRIES[i], newSize - i);
             }
         } else {
-
             for (int i = 0; i < newSize; i++) {
                 String newLine = newLines.get(i);
                 if (i >= prevSize || !newLine.equals(prev.get(i))) {
@@ -278,4 +278,5 @@ public class ScoreboardManager {
         }
         return text;
     }
-    }
+                                      }
+            
