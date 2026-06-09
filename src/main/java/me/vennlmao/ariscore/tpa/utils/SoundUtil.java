@@ -20,9 +20,10 @@ public class SoundUtil {
         if (soundName.isEmpty()) return;
 
         try {
-            Sound sound = Sound.valueOf(soundName);
+            Sound sound = Sound.valueOf(soundName.toUpperCase());
             player.playSound(player.getLocation(), sound, volume, pitch);
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException e) {
+            player.playSound(player.getLocation(), soundName, volume, pitch);
         }
     }
 }
