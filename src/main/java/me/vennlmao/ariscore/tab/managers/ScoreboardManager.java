@@ -218,11 +218,12 @@ public class ScoreboardManager {
     private List<String> buildLines(Player player, List<String> rawLines) {
         List<String> result = new ArrayList<>();
         String teamFormat = module.getConfig().getString("scoreboard.team-line.format", "");
+        String teamName = getTeamName(player);
         for (String line : rawLines) {
             if ("{team}".equals(line)) {
-                String teamName = getTeamName(player);
                 if (teamName != null && !teamName.isEmpty()) {
-                    result.add(resolve(player, teamFormat));
+                    String formatted = teamFormat.replace("%ariscore_team%", teamName);
+                    result.add(resolve(player, formatted));
                 }
             } else {
                 result.add(resolve(player, line));
@@ -238,9 +239,7 @@ public class ScoreboardManager {
                 return core.getTeamModule().getTeamManager().getPlayerTeamName(player.getUniqueId());
             }
         } catch (Throwable ignored) {}
-        // fallback to placeholder
-        String val = resolve(player, "%ariscore_team%");
-        return (val.startsWith("%") || val.isEmpty()) ? null : val;
+        return null;
     }
 
     private List<String> getWorldLines(String worldName) {
@@ -273,5 +272,5 @@ public class ScoreboardManager {
         }
         return text;
     }
-        }
+    }
     
