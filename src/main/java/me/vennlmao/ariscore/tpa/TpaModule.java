@@ -46,6 +46,7 @@ public class TpaModule {
 
         plugin.getCommand("tpaccept").setExecutor(new TpAcceptCommand(this));
         plugin.getCommand("tpacancel").setExecutor(new TpaCancelCommand(this));
+        plugin.getCommand("tpadeny").setExecutor(new TpaDenyCommand(this));
         plugin.getCommand("tpauto").setExecutor(new TpautoCommand(this));
         plugin.getCommand("tpatoggle").setExecutor(new TpaToggleCommand(this));
         plugin.getCommand("tpaheretoggle").setExecutor(new TpaHereToggleCommand(this));
