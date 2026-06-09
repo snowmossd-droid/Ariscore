@@ -113,6 +113,7 @@ public class GuiUtil {
                 .replace("&2", "<dark_green>").replace("&l", "<bold>").replace("&o", "<italic>")
                 .replace("&n", "<underlined>").replace("&m", "<strikethrough>")
                 .replace("&k", "<obfuscated>").replace("&r", "<reset>");
-        return MM.deserialize(s);
+        return MM.deserialize("<italic:false>" + s);
     }
-}
+                  }
+        
