@@ -10,8 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,9 +40,11 @@ public class HomesListener implements Listener {
 
         if (title.equals(homesTitle)) {
             event.setCancelled(true);
+            if (event.getCurrentItem() != null) SoundUtil.play(player, "click");
             handleHomesClick(player, event.getSlot());
         } else if (title.equals(confirmTitle)) {
             event.setCancelled(true);
+            if (event.getCurrentItem() != null) SoundUtil.play(player, "click");
             handleConfirmClick(player, event.getSlot());
         }
     }
@@ -62,7 +62,6 @@ public class HomesListener implements Listener {
 
             if (index < homes.size()) {
                 String homeName = homes.get(index);
-                SoundUtil.play(player, "click");
                 player.closeInventory();
                 plugin.getWarmupManager().startWarmup(player, homeName);
             } else {
@@ -93,7 +92,6 @@ public class HomesListener implements Listener {
             if (index >= homes.size()) return;
 
             String homeName = homes.get(index);
-            SoundUtil.play(player, "click");
             pendingDelete.put(player.getUniqueId(), homeName);
             player.getScheduler().run(plugin.getPlugin(), t ->
                     player.openInventory(GuiBuilder.buildConfirmDelete(plugin, homeName)), null);
@@ -114,10 +112,10 @@ public class HomesListener implements Listener {
             player.closeInventory();
             player.getScheduler().run(plugin.getPlugin(), t -> openHomesGui(player), null);
         } else if (slot == cancelSlot) {
-            SoundUtil.play(player, "click");
             pendingDelete.remove(player.getUniqueId());
             player.closeInventory();
             player.getScheduler().run(plugin.getPlugin(), t -> openHomesGui(player), null);
         }
     }
-}
+                }
+                                     
