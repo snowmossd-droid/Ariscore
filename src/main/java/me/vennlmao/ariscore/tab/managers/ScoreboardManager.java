@@ -200,7 +200,7 @@ public class ScoreboardManager {
     private void setScore(Player player, String entry, int score) {
         sendPacket(player, new WrapperPlayServerUpdateScore(
             entry, WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM,
-            OBJ, score, Optional.empty(), Optional.of(ScoreFormat.blankScore())
+            OBJ, score, null, ScoreFormat.blankScore()
         ));
     }
 
@@ -272,5 +272,5 @@ public class ScoreboardManager {
         }
         return text;
     }
-        }
-                
+            }
+        
