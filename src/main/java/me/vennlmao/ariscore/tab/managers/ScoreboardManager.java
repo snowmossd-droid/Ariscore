@@ -5,6 +5,7 @@ import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisplayScoreboard;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
+import com.github.retrooper.packetevents.protocol.score.ScoreFormat;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateScore;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -205,14 +206,14 @@ public class ScoreboardManager {
     private void sendSetScore(Player player, String entry, int score) {
         sendPacket(player, new WrapperPlayServerUpdateScore(
             entry, WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM,
-            OBJ, Optional.of(score)
+            OBJ, score, null, ScoreFormat.blankScore()
         ));
     }
 
     private void sendRemoveScore(Player player, String entry) {
         sendPacket(player, new WrapperPlayServerUpdateScore(
             entry, WrapperPlayServerUpdateScore.Action.REMOVE_ITEM,
-            OBJ, Optional.empty()
+            OBJ, 0, null, null
         ));
     }
 
@@ -277,5 +278,4 @@ public class ScoreboardManager {
         }
         return text;
     }
-            }
-            
+    }
