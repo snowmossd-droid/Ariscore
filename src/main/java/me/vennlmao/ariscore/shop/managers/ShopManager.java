@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.util.*;
+import java.util.Arrays;
 
 public class ShopManager {
 
@@ -22,12 +23,19 @@ public class ShopManager {
         File dir = new File(plugin.getPlugin().getDataFolder(), "shop/categories");
         if (!dir.exists()) dir.mkdirs();
 
-        String[] cats = {"food", "gear", "nether", "shards", "end"};
-        for (String cat : cats) {
+        String[] defaults = {"food", "gear", "nether", "shards", "end"};
+        for (String cat : defaults) {
             File f = new File(dir, cat + ".yml");
             if (!f.exists()) {
                 plugin.getPlugin().saveResource("shop/categories/" + cat + ".yml", false);
             }
+        }
+
+        File[] files = dir.listFiles((d, name) -> name.endsWith(".yml"));
+        if (files == null) return;
+        Arrays.sort(files);
+        for (File f : files) {
+            String cat = f.getName().replace(".yml", "");
             loadCategory(cat, f);
             categories.add(cat);
         }
@@ -72,4 +80,4 @@ public class ShopManager {
         }
         return null;
     }
-    }
+                                           }
