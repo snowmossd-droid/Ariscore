@@ -67,7 +67,6 @@ public class AuctionCommand implements CommandExecutor {
                         if (newAmt <= 0) p.getInventory().setItemInMainHand(toList);
                         else hand.setAmount(newAmt + 1);
                         MessageUtil.sendChat(p,"max_listings"); MessageUtil.sendActionbar(p,"max_listings"); SoundUtil.play(p,"error"); return true;
-                        MessageUtil.sendActionbar(p, "max_listings");
                     }
                     MessageUtil.sendChat(p,"listed",s->s.replace("{item}",toList.getType().name()).replace("{price}","$"+DF.format(price)));
                     MessageUtil.sendActionbar(p,"listed",s->s.replace("{item}",toList.getType().name()).replace("{price}","$"+DF.format(price)));
@@ -91,4 +90,4 @@ public class AuctionCommand implements CommandExecutor {
         }, null);
         return true;
     }
-}
+                    }
