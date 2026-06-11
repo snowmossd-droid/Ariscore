@@ -1,3 +1,16 @@
+mysql:
+  enabled: false
+  host: "host"
+  port: 3306
+  database: "database"
+  username: "username"
+  password: "password"
+  table-prefix: "ariscore_"
+  use-ssl: false
+
+sqlite:
+  enabled: true
+
 custom-abbreviations: {}
 
 expire-after-seconds: 86400
@@ -301,3 +314,4 @@ messages:
   enter_price: "&eNhập giá bán vào chat. Gõ 'cancel' để hủy."
   tx_search_prompt: "&eNhập tên người chơi để tìm kiếm."
   tx_search_result: "&eTìm thấy giao dịch liên quan đến &f{player} &e({count} kết quả)."
+  
