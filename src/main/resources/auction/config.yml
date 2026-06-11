@@ -1,0 +1,303 @@
+custom-abbreviations: {}
+
+expire-after-seconds: 86400
+max-listings-per-player: 25
+disallow-renamed-items: true
+click-cooldown-ms: 50
+min-price: 1.0
+max-price: 10000000.0
+
+search-sign:
+  material: OAK_SIGN
+  dye-color: BLACK
+  lines:
+    - ''
+    - '↑↑↑↑↑↑↑↑↑↑↑↑'
+    - 'Search'
+    - ''
+
+price-sign:
+  material: OAK_SIGN
+  dye-color: BLACK
+  lines:
+    - ''
+    - '↑↑↑↑↑↑↑↑↑↑↑↑'
+    - 'Type price'
+    - ''
+
+tx-search-sign:
+  material: OAK_SIGN
+  dye-color: BLACK
+  lines:
+    - ''
+    - '↑↑↑↑↑↑↑↑↑↑↑↑'
+    - 'Search'
+    - ''
+
+listing-display:
+  lore:
+    - '&#00fc00{price}'
+  buy-action: '&aClick to buy'
+  own-action: '&eClick to collect'
+  shulker-hint: '&7Click to preview contents'
+
+selection-format:
+  selected-prefix: '&a• '
+  unselected-prefix: '&f• '
+
+gui:
+  title: 'ᴀᴜᴄᴛɪᴏɴ (Page {page})'
+  size: 54
+  listing-slots: 45
+  items:
+    back:
+      slot: 45
+      material: ARROW
+      name: '&aʙᴀᴄᴋ'
+      lore:
+        - '&fClick to go to the previous page'
+    sort:
+      slot: 47
+      material: CAULDRON
+      name: '&aѕᴏʀᴛ'
+      lore:
+        - 'Lowest Price'
+        - 'Highest Price'
+        - 'Recently Listed'
+    filter:
+      slot: 48
+      material: HOPPER
+      name: '&aꜰɪʟᴛᴇʀ'
+      lore:
+        - 'All'
+        - 'Blocks'
+        - 'Tools'
+        - 'Food'
+        - 'Combat'
+        - 'Potions'
+        - 'Books'
+        - 'Ingredients'
+        - 'Utilities'
+    refresh:
+      slot: 49
+      material: MAP
+      name: '&aʀᴇꜰʀᴇѕʜ'
+      lore:
+        - '&fClick to refresh'
+    search:
+      slot: 50
+      material: OAK_SIGN
+      name: '&aѕᴇᴀʀᴄʜ'
+      lore:
+        - '&fClick to search'
+    your_listings:
+      slot: 51
+      material: CHEST
+      name: '&aʏᴏᴜʀ ɪᴛᴇᴍѕ'
+      lore:
+        - '&fClick to view your listed items'
+    next:
+      slot: 53
+      material: ARROW
+      name: '&aɴᴇхᴛ'
+      lore:
+        - '&fClick to go to the next page'
+
+your-listings-menu:
+  title: 'ᴀᴜᴄᴛɪᴏɴ -> ʏᴏᴜʀ ɪᴛᴇᴍѕ'
+  size: 27
+  listing-lore:
+    - '&#00fc00{price}'
+    - '&8Time left:'
+    - '&8{expires}'
+  expired-title-prefix: '&cYour item was not sold'
+  items:
+    sell:
+      slot: 20
+      material: GOLD_INGOT
+      name: '&aѕᴇʟʟ ɪᴛᴇᴍ'
+      lore:
+        - '&fClick to list an item'
+        - ''
+        - '&8Or...'
+        - '&8Hold an item and type'
+        - '&8/ah sell (price)'
+    transactions:
+      slot: 22
+      material: BOOK
+      name: '&aᴛʀᴀɴѕᴀᴄᴛɪᴏɴѕ'
+      lore:
+        - '&fClick to view your purchases and sales'
+    back_page:
+      slot: 9
+      material: ARROW
+      name: '&aʙᴀᴄᴋ'
+      lore: []
+    next_page:
+      slot: 17
+      material: ARROW
+      name: '&aɴᴇхᴛ'
+      lore: []
+
+sell-item-input-menu:
+  title: 'ɪɴѕᴇʀᴛ ᴀ ɪᴛᴇᴍ'
+  filler-material: GRAY_STAINED_GLASS_PANE
+  items:
+    cancel:
+      slot: 3
+      material: RED_STAINED_GLASS_PANE
+      name: '&cᴄᴀɴᴄᴇʟ'
+      lore:
+        - '&fClick to cancel'
+    confirm:
+      slot: 5
+      material: GREEN_STAINED_GLASS_PANE
+      name: '&aᴄᴏɴꜰɪʀᴍ'
+      lore:
+        - '&fClick to confirm'
+
+sell-confirm-menu:
+  title: 'ᴄᴏɴꜰɪʀᴍ ʟɪѕᴛɪɴɢ'
+  size: 27
+  info-lore:
+    - '&fYou are going to sell'
+    - '&fthis item for &#00fc00{price}'
+  items:
+    cancel:
+      slot: 11
+      material: RED_STAINED_GLASS_PANE
+      name: '&cᴄᴀɴᴄᴇʟ'
+      lore:
+        - '&fClick to cancel'
+    confirm:
+      slot: 15
+      material: GREEN_STAINED_GLASS_PANE
+      name: '&aᴄᴏɴꜰɪʀᴍ'
+      lore:
+        - '&fClick to list'
+
+buy-confirm-menu:
+  title: 'ᴄᴏɴꜰɪʀᴍ ᴘᴜʀᴄʜᴀѕᴇ'
+  size: 27
+  info-lore:
+    - '&fPrice: &a{price}'
+    - '&fSeller: &a{seller}'
+    - '&fTime left: &a{time_left}'
+  items:
+    cancel:
+      slot: 11
+      material: RED_STAINED_GLASS_PANE
+      name: '&cᴄᴀɴᴄᴇʟ'
+      lore:
+        - '&fClick to cancel'
+    confirm:
+      slot: 15
+      material: GREEN_STAINED_GLASS_PANE
+      name: '&aᴄᴏɴꜰɪʀᴍ'
+      lore:
+        - '&fClick to buy'
+
+shulker-preview-menu:
+  title: 'ᴄᴏɴꜰɪʀᴍ ᴘᴜʀᴄʜᴀѕᴇ ᴀɴᴅ ᴘʀᴇᴠɪᴇᴡ'
+  size: 54
+  items:
+    cancel:
+      slot: 11
+      material: RED_STAINED_GLASS_PANE
+      name: '&cᴄᴀɴᴄᴇʟ'
+      lore:
+        - '&fClick to cancel'
+    confirm:
+      slot: 15
+      material: GREEN_STAINED_GLASS_PANE
+      name: '&aᴄᴏɴꜰɪʀᴍ'
+      lore:
+        - '&fClick to buy'
+
+transactions-menu:
+  title: 'ᴛʀᴀɴѕᴀᴄᴛɪᴏɴѕ (Page {page})'
+  size: 54
+  bought-lore:
+    - '&fYou bought &a{other}&f''s &f{item} for &a{price}'
+    - '&a{time_ago}'
+  sold-lore:
+    - '&a{other} &fbought your {item} for &a{price}'
+    - '&a{time_ago}'
+  items:
+    stats:
+      slot: 47
+      material: PAPER
+      name: '&aѕᴛᴀᴛѕ'
+      lore:
+        - '&fTotal spent: &a{spent}'
+        - '&fTotal made: &a{earned}'
+    refresh:
+      slot: 49
+      material: MAP
+      name: '&aʀᴇꜰʀᴇѕʜ'
+      lore:
+        - '&fClick to refresh'
+    search:
+      slot: 50
+      material: OAK_SIGN
+      name: '&aѕᴇᴀʀᴄʜ'
+      lore:
+        - '&fClick to search'
+
+sounds:
+  open:
+    sound: BLOCK_CHEST_OPEN
+    volume: 1.0
+    pitch: 1.0
+  click:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+  page:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.2
+  buy_success:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.0
+  list_success:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.5
+  error:
+    sound: minecraft:entity.villager.no
+    volume: 1.0
+    pitch: 1.0
+
+messages:
+  usage: "&eUsage: /ah sell <price> | /ah [search]"
+  usage_ab: "&e/ah sell <price>"
+  listed: "&aBạn đã đăng &f{item} &avới giá &f{price}&a."
+  listed_ab: "&a✔ Đã đăng bán!"
+  bought: "&aBạn đã mua &f{item} &avới giá &f{price}&a."
+  bought_ab: "&a✔ Mua thành công!"
+  item_sold: "&aBạn đã bán &f{item} &acho &f{buyer} &avới giá &f{price}&a."
+  item_sold_ab: "&a✔ Đã bán!"
+  collected: "&aBạn đã thu hồi &f{item}&a."
+  collected_ab: "&a✔ Đã thu hồi!"
+  no_money: "&cBạn không đủ tiền."
+  no_money_ab: "&cKhông đủ tiền!"
+  inventory_full: "&cTúi đồ của bạn đầy."
+  inventory_full_ab: "&cTúi đầy!"
+  no_item: "&cBạn chưa đặt vật phẩm vào ô."
+  no_item_ab: "&cChưa có vật phẩm!"
+  max_listings: "&cBạn đã đạt giới hạn đăng bán."
+  max_listings_ab: "&cĐạt giới hạn!"
+  invalid_price: "&cGiá phải từ &f{min} &cđến &f{max}&c."
+  invalid_price_ab: "&cGiá không hợp lệ!"
+  invalid_price_format: "&cGiá không hợp lệ. VD: /ah sell 1000"
+  invalid_price_format_ab: "&cGiá không hợp lệ!"
+  renamed_not_allowed: "&cVật phẩm đã đổi tên không được phép đăng bán."
+  renamed_not_allowed_ab: "&cKhông được đổi tên!"
+  listing_expired: "&cVật phẩm này đã hết hạn."
+  listing_expired_ab: "&cHết hạn!"
+  search_prompt: "&eNhập từ khóa vào chat. Gõ 'cancel' để hủy."
+  enter_price: "&eNhập giá bán vào chat. Gõ 'cancel' để hủy."
+  tx_search_prompt: "&eNhập tên người chơi để tìm kiếm."
+  tx_search_result: "&eTìm thấy giao dịch liên quan đến &f{player} &e({count} kết quả)."
