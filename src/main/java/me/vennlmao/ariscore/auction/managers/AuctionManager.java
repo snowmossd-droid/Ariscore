@@ -1,6 +1,7 @@
 package me.vennlmao.ariscore.auction.managers;
 
 import me.vennlmao.ariscore.auction.AuctionModule;
+import me.vennlmao.ariscore.auction.managers.AuctionDatabaseManager;
 import me.vennlmao.ariscore.auction.data.AuctionListing;
 import me.vennlmao.ariscore.auction.data.Transaction;
 import org.bukkit.inventory.ItemStack;
@@ -14,10 +15,16 @@ public class AuctionManager {
     private final AuctionModule module;
     private final List<AuctionListing> listings = new ArrayList<>();
     private final Map<UUID, List<Transaction>> transactions = new HashMap<>();
+    private AuctionDatabaseManager db;
     private static final DecimalFormat DF = new DecimalFormat("#,###.##");
 
     public AuctionManager(AuctionModule module) {
         this.module = module;
+    }
+
+    public void initDatabase(AuctionDatabaseManager db) {
+        this.db = db;
+        listings.addAll(db.loadListings());
     }
 
     public boolean addListing(UUID sellerUuid, String sellerName, ItemStack item, double price) {
@@ -26,12 +33,16 @@ public class AuctionManager {
         if (count >= max) return false;
         long dur = module.getConfig().getLong("expire-after-seconds", 86400) * 1000L;
         long now = System.currentTimeMillis();
-        listings.add(new AuctionListing(UUID.randomUUID(), sellerUuid, sellerName, item.clone(), price, now, now + dur));
+        AuctionListing listing = new AuctionListing(UUID.randomUUID(), sellerUuid, sellerName, item.clone(), price, now, now + dur);
+        listings.add(listing);
+        if (db != null) db.saveListings(listings);
         return true;
     }
 
     public boolean removeListing(UUID id) {
-        return listings.removeIf(l -> l.getId().equals(id));
+        boolean removed = listings.removeIf(l -> l.getId().equals(id));
+        if (removed && db != null) db.saveListings(listings);
+        return removed;
     }
 
     public AuctionListing getListing(UUID id) {
@@ -77,11 +88,16 @@ public class AuctionManager {
     }
 
     public void addTransaction(UUID uuid, String otherName, ItemStack item, double amount, Transaction.Type type) {
-        transactions.computeIfAbsent(uuid, k -> new ArrayList<>())
-                .add(new Transaction(uuid, otherName, item, amount, type, System.currentTimeMillis()));
+        Transaction tx = new Transaction(uuid, otherName, item, amount, type, System.currentTimeMillis());
+        transactions.computeIfAbsent(uuid, k -> new ArrayList<>()).add(tx);
+        if (db != null) db.saveTransaction(tx);
     }
 
     public List<Transaction> getTransactions(UUID uuid) {
+        if (!transactions.containsKey(uuid) && db != null) {
+            List<Transaction> loaded = db.loadTransactions(uuid);
+            if (!loaded.isEmpty()) transactions.put(uuid, loaded);
+        }
         return transactions.getOrDefault(uuid, new ArrayList<>());
     }
 
@@ -112,4 +128,5 @@ public class AuctionManager {
             t.contains("DIRT")||t.contains("GRAVEL")||t.endsWith("_BLOCK")) return "BLOCKS";
         return "UTILITIES";
     }
-}
+            }
+                
