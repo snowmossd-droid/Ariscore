@@ -3,7 +3,6 @@ package me.vennlmao.ariscore.auction.listeners;
 import me.vennlmao.ariscore.auction.AuctionModule;
 import me.vennlmao.ariscore.auction.data.AuctionListing;
 import me.vennlmao.ariscore.auction.gui.GuiBuilder;
-import me.vennlmao.ariscore.auction.utils.ColorUtil;
 import me.vennlmao.ariscore.auction.utils.MessageUtil;
 import me.vennlmao.ariscore.auction.utils.SoundUtil;
 import org.bukkit.entity.Player;
@@ -23,17 +22,7 @@ public class AuctionChatListener implements Listener {
 
     public AuctionChatListener(AuctionModule module) {
         this.module = module;
-    
-    private String getDefaultSort() {
-        List<String> opts = module.getConfig().getStringList("gui.items.sort.lore");
-        return opts.isEmpty() ? "" : opts.get(opts.size() - 1).trim();
     }
-
-    private String getDefaultFilter() {
-        List<String> opts = module.getConfig().getStringList("gui.items.filter.lore");
-        return opts.isEmpty() ? "" : opts.get(0).trim();
-    }
-}
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent event) {
@@ -67,7 +56,7 @@ public class AuctionChatListener implements Listener {
                     double max = module.getConfig().getDouble("max-price", 10000000.0);
                     if (price < min || price > max) {
                         MessageUtil.sendChat(p, "invalid_price", s -> s.replace("{min}", DF.format(min)).replace("{max}", DF.format(max)));
-                        MessageUtil.sendActionbar(p, "invalid_price");
+                        MessageUtil.sendActionbar(p, "invalid_price", s -> s.replace("{min}", DF.format(min)).replace("{max}", DF.format(max)));
                         SoundUtil.play(p, "error");
                         return;
                     }
@@ -88,4 +77,15 @@ public class AuctionChatListener implements Listener {
             }
         }
     }
-}
+
+    private String getDefaultSort() {
+        List<String> opts = module.getConfig().getStringList("gui.items.sort.lore");
+        return opts.isEmpty() ? "" : opts.get(opts.size() - 1).trim();
+    }
+
+    private String getDefaultFilter() {
+        List<String> opts = module.getConfig().getStringList("gui.items.filter.lore");
+        return opts.isEmpty() ? "" : opts.get(0).trim();
+    }
+                                                             }
+                        
