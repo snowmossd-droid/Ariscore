@@ -35,15 +35,19 @@ public class AuctionManager {
         long now = System.currentTimeMillis();
         AuctionListing listing = new AuctionListing(UUID.randomUUID(), sellerUuid, sellerName, item.clone(), price, now, now + dur);
         listings.add(listing);
-        if (db != null) module.getPlugin().getServer().getScheduler().runTaskAsynchronously(
-                module.getPlugin(), () -> db.saveListings(new java.util.ArrayList<>(listings)));
+        if (db != null) {
+            List<AuctionListing> snapshot = new java.util.ArrayList<>(listings);
+            module.getPlugin().getServer().getAsyncScheduler().runNow(module.getPlugin(), t -> db.saveListings(snapshot));
+        }
         return true;
     }
 
     public boolean removeListing(UUID id) {
         boolean removed = listings.removeIf(l -> l.getId().equals(id));
-        if (removed && db != null) module.getPlugin().getServer().getScheduler().runTaskAsynchronously(
-                module.getPlugin(), () -> db.saveListings(new java.util.ArrayList<>(listings)));
+        if (removed && db != null) {
+            List<AuctionListing> snapshot = new java.util.ArrayList<>(listings);
+            module.getPlugin().getServer().getAsyncScheduler().runNow(module.getPlugin(), t -> db.saveListings(snapshot));
+        }
         return removed;
     }
 
@@ -92,8 +96,7 @@ public class AuctionManager {
     public void addTransaction(UUID uuid, String otherName, ItemStack item, double amount, Transaction.Type type) {
         Transaction tx = new Transaction(uuid, otherName, item, amount, type, System.currentTimeMillis());
         transactions.computeIfAbsent(uuid, k -> new ArrayList<>()).add(tx);
-        if (db != null) module.getPlugin().getServer().getScheduler().runTaskAsynchronously(
-                module.getPlugin(), () -> db.saveTransaction(tx));
+        if (db != null) module.getPlugin().getServer().getAsyncScheduler().runNow(module.getPlugin(), t -> db.saveTransaction(tx));
     }
 
     public List<Transaction> getTransactions(UUID uuid) {
@@ -131,5 +134,5 @@ public class AuctionManager {
             t.contains("DIRT")||t.contains("GRAVEL")||t.endsWith("_BLOCK")) return "BLOCKS";
         return "UTILITIES";
     }
-            }
-                                     
+        }
+                
