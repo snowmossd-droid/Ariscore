@@ -49,7 +49,7 @@ tx-search-sign:
 
 listing-display:
   lore:
-    - '&#00fc00{price}'
+    - '&#00fc00${price}'
   buy-action: '&aClick to buy'
   own-action: '&eClick to collect'
   shulker-hint: '&7Click to preview contents'
@@ -120,7 +120,7 @@ your-listings-menu:
   title: 'ᴀᴜᴄᴛɪᴏɴ -> ʏᴏᴜʀ ɪᴛᴇᴍѕ'
   size: 27
   listing-lore:
-    - '&#00fc00{price}'
+    - '&#00fc00${price}'
     - '&8Time left:'
     - '&8{expires}'
   expired-title-prefix: '&cYour item was not sold'
@@ -259,7 +259,7 @@ transactions-menu:
 
 sounds:
   open:
-    sound: BLOCK_CHEST_OPEN
+    sound: ITEM_BOOK_PAGE_TURN
     volume: 1.0
     pitch: 1.0
   click:
@@ -267,9 +267,9 @@ sounds:
     volume: 1.0
     pitch: 1.0
   page:
-    sound: UI_BUTTON_CLICK
+    sound: ITEM_BOOK_PAGE_TURN
     volume: 1.0
-    pitch: 1.2
+    pitch: 1.0
   buy_success:
     sound: ENTITY_PLAYER_LEVELUP
     volume: 1.0
