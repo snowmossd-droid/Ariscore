@@ -1,35 +1,23 @@
-name: Build Ariscore
+name: Unzip
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
-
-permissions:
-  contents: write
+    branches: [ main ]
 
 jobs:
-  build:
+  unzip:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Java 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
+      - name: Extract
+        run: unzip -o src.zip
 
-      - name: Build with Maven
-        run: mvn clean package -B
-
-      - name: Upload JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: Ariscore
-          path: '**/target/ariscore-*.jar'
-          
+      - name: Commit extracted files
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Extract zip" || echo "Nothing to commit"
+          git push
