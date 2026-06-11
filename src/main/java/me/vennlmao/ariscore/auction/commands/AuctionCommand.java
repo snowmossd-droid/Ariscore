@@ -58,14 +58,11 @@ public class AuctionCommand implements CommandExecutor {
                         SoundUtil.play(p, "error");
                         return true;
                     }
-                    ItemStack toList = hand.clone(); toList.setAmount(1);
-                    int newAmt = hand.getAmount() - 1;
-                    if (newAmt <= 0) p.getInventory().setItemInMainHand(null);
-                    else hand.setAmount(newAmt);
+                    ItemStack toList = hand.clone();
+                    p.getInventory().setItemInMainHand(null);
                     boolean listed = module.getAuctionManager().addListing(p.getUniqueId(), p.getName(), toList, price);
                     if (!listed) {
-                        if (newAmt <= 0) p.getInventory().setItemInMainHand(toList);
-                        else hand.setAmount(newAmt + 1);
+                        p.getInventory().setItemInMainHand(toList);
                         MessageUtil.sendChat(p,"max_listings"); MessageUtil.sendActionbar(p,"max_listings"); SoundUtil.play(p,"error"); return true;
                     }
                     MessageUtil.sendChat(p,"listed",s->s.replace("{item}",toList.getType().name()).replace("{price}","$"+DF.format(price)));
@@ -90,4 +87,5 @@ public class AuctionCommand implements CommandExecutor {
         }, null);
         return true;
     }
-                    }
+    }
+                    
