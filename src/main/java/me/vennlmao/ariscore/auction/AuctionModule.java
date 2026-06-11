@@ -5,6 +5,7 @@ import me.vennlmao.ariscore.auction.listeners.AuctionChatListener;
 import me.vennlmao.ariscore.auction.listeners.AuctionSignListener;
 import me.vennlmao.ariscore.auction.utils.SignEditorUtil;
 import me.vennlmao.ariscore.auction.listeners.AuctionGuiListener;
+import me.vennlmao.ariscore.auction.managers.AuctionDatabaseManager;
 import me.vennlmao.ariscore.auction.managers.AuctionManager;
 import me.vennlmao.ariscore.auction.utils.MessageUtil;
 import me.vennlmao.ariscore.auction.utils.SoundUtil;
@@ -25,6 +26,7 @@ public class AuctionModule {
     private FileConfiguration config;
     private Economy economy;
     private AuctionManager auctionManager;
+    private AuctionDatabaseManager databaseManager;
     private AuctionGuiListener guiListener;
     private final Map<UUID, String> searching = new HashMap<>();
     private final Map<UUID, java.util.function.Consumer<String[]>> pendingSign = new HashMap<>();
@@ -36,7 +38,10 @@ public class AuctionModule {
     public void enable() {
         loadConfig();
         setupEconomy();
+        databaseManager = new AuctionDatabaseManager(this);
+        databaseManager.init();
         auctionManager = new AuctionManager(this);
+        auctionManager.initDatabase(databaseManager);
         guiListener = new AuctionGuiListener(this);
         MessageUtil.init(this);
         SoundUtil.init(this);
@@ -49,7 +54,9 @@ public class AuctionModule {
         plugin.getCommand("auction").setExecutor(cmd);
     }
 
-    public void disable() {}
+    public void disable() {
+        if (databaseManager != null) databaseManager.close();
+    }
 
     public void reload() { loadConfig(); }
 
@@ -71,7 +78,9 @@ public class AuctionModule {
     public JavaPlugin getPlugin() { return plugin; }
     public Economy getEconomy() { return economy; }
     public AuctionManager getAuctionManager() { return auctionManager; }
+    public AuctionDatabaseManager getDatabaseManager() { return databaseManager; }
     public AuctionGuiListener getGuiListener() { return guiListener; }
     public Map<UUID, String> getSearching() { return searching; }
     public Map<UUID, java.util.function.Consumer<String[]>> getPendingSign() { return pendingSign; }
-}
+        }
+    
