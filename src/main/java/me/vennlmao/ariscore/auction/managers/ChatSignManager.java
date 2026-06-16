@@ -1,20 +1,18 @@
 package me.vennlmao.ariscore.auction.managers;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.vennlmao.ariscore.ArisCore;
 import me.vennlmao.ariscore.auction.utils.ColorUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.List;
 import java.util.function.Consumer;
 
 public class ChatSignManager implements Listener {
@@ -22,7 +20,7 @@ public class ChatSignManager implements Listener {
     private final ArisCore plugin;
     private final Map<UUID, Consumer<String>> chatCallbacks = new HashMap<>();
     private final Map<UUID, Long> callbackTimestamps = new HashMap<>();
-    private BukkitTask cleanupTask;
+    private ScheduledTask cleanupTask;
     private static final long TIMEOUT_MS = 30_000;
 
     public ChatSignManager(ArisCore plugin) {
@@ -30,7 +28,7 @@ public class ChatSignManager implements Listener {
     }
 
     public void startCleanupTask() {
-        cleanupTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+        cleanupTask = plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, t -> {
             long now = System.currentTimeMillis();
             callbackTimestamps.entrySet().removeIf(e -> {
                 if (now - e.getValue() > TIMEOUT_MS) {
@@ -40,6 +38,10 @@ public class ChatSignManager implements Listener {
                 return false;
             });
         }, 200L, 200L);
+    }
+
+    public void stopCleanupTask() {
+        if (cleanupTask != null) cleanupTask.cancel();
     }
 
     public void requestInput(Player player, Consumer<String> callback) {
@@ -86,7 +88,7 @@ public class ChatSignManager implements Listener {
             player.sendMessage(ColorUtil.colorize(plugin.getAuctionModule().getLangManager().getSearchCancelled()));
             return;
         }
-        Bukkit.getScheduler().runTask(plugin, () -> callback.accept(input));
+        player.getScheduler().run(plugin, t -> callback.accept(input), null);
     }
 
     @EventHandler
@@ -95,4 +97,4 @@ public class ChatSignManager implements Listener {
         chatCallbacks.remove(uuid);
         callbackTimestamps.remove(uuid);
     }
-}
+            }
