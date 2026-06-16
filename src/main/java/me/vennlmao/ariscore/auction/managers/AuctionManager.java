@@ -1,5 +1,6 @@
 package me.vennlmao.ariscore.auction.managers;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.vennlmao.ariscore.ArisCore;
 import me.vennlmao.ariscore.auction.utils.AuctionItem;
 import me.vennlmao.ariscore.auction.utils.EcoUtil;
@@ -9,7 +10,6 @@ import me.vennlmao.ariscore.auction.utils.Transaction;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class AuctionManager {
     private final List<AuctionItem> activeAuctions = new ArrayList<>();
     private final List<PendingPayment> pendingPayments = new ArrayList<>();
     private AuctionDataManager dataManager;
-    private BukkitTask expireTask;
+    private ScheduledTask expireTask;
 
     public AuctionManager(ArisCore plugin) {
         this.plugin = plugin;
@@ -40,7 +40,13 @@ public class AuctionManager {
 
     private void startExpireTask() {
         int interval = plugin.getAuctionModule().getConfigManager().getExpireCheckInterval();
-        expireTask = Bukkit.getScheduler().runTaskTimer(plugin, this::checkExpired, interval * 20L, interval * 20L);
+        expireTask = plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(
+            plugin, t -> checkExpired(), interval * 20L, interval * 20L
+        );
+    }
+
+    public void stopExpireTask() {
+        if (expireTask != null) expireTask.cancel();
     }
 
     private void checkExpired() {
@@ -232,4 +238,4 @@ public class AuctionManager {
     }
 
     public AuctionDataManager getDataManager() { return dataManager; }
-}
+        }
