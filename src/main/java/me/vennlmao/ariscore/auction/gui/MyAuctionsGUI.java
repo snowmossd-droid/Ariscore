@@ -1,5 +1,6 @@
 package me.vennlmao.ariscore.auction.gui;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.vennlmao.ariscore.ArisCore;
 import me.vennlmao.ariscore.auction.managers.AuctionConfigManager;
 import me.vennlmao.ariscore.auction.managers.GUIManager;
@@ -13,7 +14,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +24,7 @@ public class MyAuctionsGUI implements Listener {
 
     private final ArisCore plugin;
     private final Map<UUID, Integer> playerPage = new HashMap<>();
-    private final Map<UUID, BukkitTask> autoUpdateTasks = new HashMap<>();
+    private final Map<UUID, ScheduledTask> autoUpdateTasks = new HashMap<>();
 
     public MyAuctionsGUI(ArisCore plugin) {
         this.plugin = plugin;
@@ -66,7 +66,7 @@ public class MyAuctionsGUI implements Listener {
     private void startAutoUpdate(Player player) {
         stopAutoUpdate(player.getUniqueId());
         int ticks = plugin.getAuctionModule().getGuiManager().getMyItemsAutoUpdate();
-        BukkitTask task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+        ScheduledTask task = plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, t -> {
             if (player.isOnline() && isMyAuctionsGUI(player.getOpenInventory().getTopInventory())) {
                 open(player, playerPage.getOrDefault(player.getUniqueId(), 1));
             } else {
@@ -77,7 +77,7 @@ public class MyAuctionsGUI implements Listener {
     }
 
     private void stopAutoUpdate(UUID uuid) {
-        BukkitTask t = autoUpdateTasks.remove(uuid);
+        ScheduledTask t = autoUpdateTasks.remove(uuid);
         if (t != null) t.cancel();
     }
 
@@ -132,4 +132,4 @@ public class MyAuctionsGUI implements Listener {
         }
         open(player, page);
     }
-}
+                    }
