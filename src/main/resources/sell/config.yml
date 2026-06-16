@@ -1,0 +1,45 @@
+gui-title: '&8sell menu'
+actionbar-message: '&eworth: &6%price%$'
+search-prompt: '&atype the item name in chat to search:'
+search-cancelled: '&cSearch cancelled.'
+reload-success: '&aSell module reloaded successfully!'
+no-permission: '&cYou do not have permission to use this command!'
+player-only: '&cThis command is only for players!'
+level-up: '&a&l(!) &fYour &#a020f0%category% &fmultiplier has increased to &#a020f0%multiplier%x&f!'
+
+sell-sound:
+  enabled: true
+  sound: ENTITY_EXPERIENCE_ORB_PICKUP
+  volume: 0.5
+  pitch: 1.0
+
+menu-click-sound:
+  enabled: true
+  sound: UI_BUTTON_CLICK
+  volume: 0.3
+  pitch: 1.2
+
+sellwand:
+  no-permission: '&cYou do not have permission to use this command.'
+  usage: '&cUsage: /sellwand give <player> <type> <value>'
+  usage-types: '&cTypes: uses, time'
+  usage-example-uses: '&cExample: /sellwand give Notch uses 500'
+  usage-example-time: '&cExample: /sellwand give Notch time 3d'
+  player-not-found: '&cPlayer not found.'
+  invalid-uses: '&cInvalid uses value.'
+  invalid-type: '&cInvalid type. Use ''uses'' or ''time''.'
+  invalid-time: '&cInvalid time value. Example: 3d, 1h, 30m'
+  given: '&aGave %player% a sell wand (%type%: %value%)'
+  expired-removed: '&cThis sell wand has expired or has no uses left and has been removed.'
+  broken: '&cYour sell wand has broken!'
+  no-sellable-items: '&cNo sellable items found in this container.'
+
+mysql:
+  enabled: false
+  host: localhost
+  port: 3306
+  database: ariscore
+  username: root
+  password: ''
+  use-ssl: false
+  table-prefix: ariscore_
