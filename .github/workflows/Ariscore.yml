@@ -27,11 +27,23 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -B
 
+      - name: Download Skidfuscator
+        run: |
+          wget -q https://github.com/skidfuscator/skidfuscator-java-obfuscator/releases/latest/download/skidfuscator.jar
+
+      - name: Download Folia 1.21
+        run: |
+          wget -q https://api.papermc.io/v2/projects/folia/versions/1.21/builds/27/downloads/folia-1.21-27.jar -O server.jar
+
+      - name: Obfuscate JAR
+        run: |
+          java -jar skidfuscator.jar obfuscate target/ariscore-*.jar \
+            --libs server.jar \
+            --output target/ariscore-obf.jar \
+            --exclude me/vennlmao/ariscore/libs/**
+
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: Ariscore
-          path: '**/target/ariscore-*.jar'
-
-
-          
+          path: target/ariscore-obf.jar
