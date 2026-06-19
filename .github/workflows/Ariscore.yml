@@ -28,9 +28,9 @@ jobs:
         run: mvn clean package -B
 
       - name: Download Skidfuscator
-  run: |
-    curl -fL -o skidfuscator.jar \
-      https://github.com/skidfuscatordev/skidfuscator-java-obfuscator/releases/latest/download/skidfuscator.jar
+        run: |
+          curl -fL -o skidfuscator.jar https://github.com/skidfuscatordev/skidfuscator-java-obfuscator/releases/latest/download/skidfuscator.jar
+
       - name: Download Libraries
         run: |
           mkdir -p libs
@@ -38,25 +38,17 @@ jobs:
             | python3 -c "import sys,json; versions=json.load(sys.stdin)['versions']; print([x for x in versions if x.startswith('1.21')][-1])")
           FOLIA_BUILD=$(curl -fsSL "https://api.papermc.io/v2/projects/folia/versions/${FOLIA_VERSION}" \
             | python3 -c "import sys,json; print(json.load(sys.stdin)['builds'][-1])")
-          echo "Folia ${FOLIA_VERSION} build ${FOLIA_BUILD}"
-          curl -fSL -o libs/folia.jar \
-            "https://api.papermc.io/v2/projects/folia/versions/${FOLIA_VERSION}/builds/${FOLIA_BUILD}/downloads/folia-${FOLIA_VERSION}-${FOLIA_BUILD}.jar"
-          curl -fSL -o libs/PlaceholderAPI.jar \
-            "https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.12.2/PlaceholderAPI-2.12.2.jar"
-          curl -fSL -o libs/metrics-healthchecks.jar \
-            "https://repo1.maven.org/maven2/io/dropwizard/metrics/metrics-healthchecks/3.2.5/metrics-healthchecks-3.2.5.jar"
-          curl -fSL -o libs/prometheus-simpleclient.jar \
-            "https://repo1.maven.org/maven2/io/prometheus/simpleclient/0.9.0/simpleclient-0.9.0.jar"
-          curl -fSL -o libs/hibernate-core.jar \
-            "https://repo1.maven.org/maven2/org/hibernate/hibernate-core/5.4.24.Final/hibernate-core-5.4.24.Final.jar"
-          curl -fSL -o libs/graalvm-nativeimage.jar \
-            "https://repo1.maven.org/maven2/org/graalvm/sdk/nativeimage/24.0.0/nativeimage-24.0.0.jar"
+          curl -fSL -o libs/folia.jar "https://api.papermc.io/v2/projects/folia/versions/${FOLIA_VERSION}/builds/${FOLIA_BUILD}/downloads/folia-${FOLIA_VERSION}-${FOLIA_BUILD}.jar"
+          curl -fSL -o libs/PlaceholderAPI.jar "https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.12.2/PlaceholderAPI-2.12.2.jar"
+          curl -fSL -o libs/metrics-healthchecks.jar "https://repo1.maven.org/maven2/io/dropwizard/metrics/metrics-healthchecks/3.2.5/metrics-healthchecks-3.2.5.jar"
+          curl -fSL -o libs/prometheus-simpleclient.jar "https://repo1.maven.org/maven2/io/prometheus/simpleclient/0.9.0/simpleclient-0.9.0.jar"
+          curl -fSL -o libs/hibernate-core.jar "https://repo1.maven.org/maven2/org/hibernate/hibernate-core/5.4.24.Final/hibernate-core-5.4.24.Final.jar"
+          curl -fSL -o libs/graalvm-nativeimage.jar "https://repo1.maven.org/maven2/org/graalvm/sdk/nativeimage/24.0.0/nativeimage-24.0.0.jar"
 
       - name: Pre-download Skidfuscator Mappings
         run: |
           mkdir -p mappings-cloud/bukkit
-          curl -fSL -o mappings-cloud/bukkit/download.mappings \
-            "https://github.com/skidfuscatordev/mappings/raw/refs/heads/main/spigot/1.21/paper-1.21.zip"
+          curl -fSL -o mappings-cloud/bukkit/download.mappings "https://github.com/skidfuscatordev/mappings/raw/refs/heads/main/spigot/1.21/paper-1.21.zip"
           cd mappings-cloud && unzip -o bukkit/download.mappings && cd ..
 
       - name: Obfuscate JAR
@@ -76,13 +68,6 @@ jobs:
             "exempt": [
               "me.vennlmao.ariscore.libs.hikari.**",
               "me.vennlmao.ariscore.libs.fastboard.**",
-              "me.vennlmao.ariscore.shards.**",
-              "me.vennlmao.ariscore.auction.**",
-              "me.vennlmao.ariscore.home.**",
-              "me.vennlmao.ariscore.shop.**",
-              "me.vennlmao.ariscore.tab.**",
-              "me.vennlmao.ariscore.team.**",
-              "me.vennlmao.ariscore.order.**",
               "org.sqlite.**",
               "org.xerial.**"
             ]
