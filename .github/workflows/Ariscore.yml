@@ -65,7 +65,16 @@ jobs:
           cat > skidfuscator.json << 'EOF'
           {
             "renamer": true,
-            "string-encryption": true
+            "string-encryption": true,
+            "number-obfuscation": true,
+            "string-splitting": true,
+            "hide-access": true,  
+            
+            "control-flow": true,
+            "anti-debug": true,
+            "anti-decompile": true,
+            "class-encryption": true,
+            "resource-encryption": true
           }
           EOF
           java -Xmx3G -jar skidfuscator.jar obfuscate target/ariscore-1.1.jar \
@@ -79,3 +88,4 @@ jobs:
           name: Ariscore
           path: target/ariscore-obf.jar
           if-no-files-found: error
+          
