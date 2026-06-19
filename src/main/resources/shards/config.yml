@@ -1,0 +1,57 @@
+mysql:
+  enabled: false
+  host: "host"
+  port: 3306
+  database: "database"
+  username: "username"
+  password: "password"
+  table-prefix: "ariscore_"
+  use-ssl: false
+
+sqlite:
+  enabled: true
+
+auto-shards:
+  enabled: true
+  interval: 300
+  amount: 10
+  permission: "ariscore.shards.auto"
+  blocked_worlds: []
+  blocked_regions: []
+
+afk-shards:
+  enabled: true
+  interval: 60
+  amount: 5
+  permission: "ariscore.shards.afk"
+  blocked_worlds: []
+  blocked_regions: []
+
+sounds:
+  receive:
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 1.0
+    pitch: 1.2
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+
+messages:
+  give: "&aĐã cho &f{player} &a{amount} &fmảnh vụn."
+  give_ab: "&a+{amount} mảnh vụn"
+  take: "&cĐã trừ &f{player} &c{amount} &fmảnh vụn."
+  take_ab: "&c-{amount} mảnh vụn"
+  reset: "&cĐã reset mảnh vụn của &f{player}&c."
+  reset_ab: "&cMảnh vụn đã reset"
+  auto_receive_ab: "&a+{amount} mảnh vụn"
+  afk_receive_ab: "&a+{amount} mảnh vụn"
+  afk_countdown_ab: "&eMảnh vụn tiếp theo: &f{time}s"
+  not_enough: "&cBạn không đủ mảnh vụn."
+  not_enough_ab: "&cKhông đủ mảnh vụn"
+  player_not_found: "&cKhông tìm thấy người chơi."
+  no_permission: "&cBạn không có quyền."
+  give_all: "&aĐã cho tất cả &f{amount} &amảnh vụn."
+  take_all: "&cĐã trừ tất cả &f{amount} &cmảnh vụn."
+  reset_all: "&cĐã reset mảnh vụn tất cả."
+  usage: "&cSử dụng: /shards <give|take|reset> <player|all> [amount]"
