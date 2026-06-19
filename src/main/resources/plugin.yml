@@ -103,6 +103,11 @@ commands:
     description: Sell module admin commands
     usage: /selladmin reload
     permission: ariscore.sell.admin
+  order:
+    description: Open the order system
+    usage: /order [my|new|reload]
+    permission: ariscore.order.use
+    permission-message: "&cYou do not have permission!"
 
 permissions:
   ariscore.sell.use:
@@ -146,12 +151,6 @@ permissions:
   ariscore.tab.bypass:
     description: Bypass tab/scoreboard/nametag rendering
     default: false
-  order:
-    description: Open the order system
-    usage: /order [my|new|reload]
-    permission: ariscore.order.use
-    permission-message: "&cYou do not have permission!"
-
   ariscore.order.use:
     description: Access to /order command
     default: op
