@@ -35,8 +35,10 @@ jobs:
       - name: Download Libraries
         run: |
           mkdir -p libs
+          curl -L -o libs/folia.jar \
+            https://api.papermc.io/v2/projects/folia/versions/1.21/builds/27/downloads/folia-1.21-27.jar
           curl -L -o libs/PlaceholderAPI.jar \
-            https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.11.6/PlaceholderAPI-2.11.6.jar
+            https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.6.jar
 
       - name: Obfuscate JAR
         run: |
