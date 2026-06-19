@@ -36,17 +36,11 @@ jobs:
         run: |
           java -Xmx3G -jar skidfuscator.jar obfuscate target/ariscore-1.1.jar \
             --output target/ariscore-obf.jar \
-            --exclude me/vennlmao/ariscore/libs/**
-        continue-on-error: true
-
-      - name: Check target folder after obfuscation
-        run: ls -la target/
+            --exempt me/vennlmao/ariscore/libs/**
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: Ariscore
-          path: |
-            target/ariscore-obf.jar
-            target/ariscore-1.1.jar
+          path: target/ariscore-obf.jar
           if-no-files-found: error
