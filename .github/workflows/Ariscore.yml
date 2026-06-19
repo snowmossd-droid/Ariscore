@@ -62,8 +62,15 @@ jobs:
 
       - name: Obfuscate JAR
         run: |
+          cat > skidfuscator.json << 'EOF'
+          {
+            "renamer": true,
+            "string-encryption": true
+          }
+          EOF
           java -Xmx3G -jar skidfuscator.jar obfuscate target/ariscore-1.1.jar \
             --output target/ariscore-obf.jar \
+            --config skidfuscator.json \
             -li=libs
 
       - name: Upload JAR
