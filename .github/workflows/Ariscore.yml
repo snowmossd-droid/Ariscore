@@ -29,16 +29,12 @@ jobs:
 
       - name: Download Skidfuscator
         run: |
-          wget -q https://github.com/skidfuscator/skidfuscator-java-obfuscator/releases/latest/download/skidfuscator.jar
-
-      - name: Download Folia 1.21
-        run: |
-          wget -q https://api.papermc.io/v2/projects/folia/versions/1.21/builds/27/downloads/folia-1.21-27.jar -O server.jar
+          curl -L -o skidfuscator.jar \
+            https://github.com/skidfuscatordev/skidfuscator-java-obfuscator/releases/download/2.0.11/skidfuscator.jar
 
       - name: Obfuscate JAR
         run: |
-          java -jar skidfuscator.jar obfuscate target/ariscore-*.jar \
-            --libs server.jar \
+          java -jar skidfuscator.jar obfuscate target/ariscore-1.1.jar \
             --output target/ariscore-obf.jar \
             --exclude me/vennlmao/ariscore/libs/**
 
