@@ -45,6 +45,13 @@ jobs:
           curl -fSL -o libs/PlaceholderAPI.jar \
             "https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.12.2/PlaceholderAPI-2.12.2.jar"
 
+      - name: Pre-download Skidfuscator Mappings
+        run: |
+          mkdir -p mappings-cloud/bukkit
+          curl -fSL -o mappings-cloud/bukkit/download.mappings \
+            "https://github.com/skidfuscatordev/mappings/raw/refs/heads/main/spigot/1.21/paper-1.21.zip"
+          cd mappings-cloud && unzip -o bukkit/download.mappings && cd ..
+
       - name: Obfuscate JAR
         run: |
           java -Xmx3G -jar skidfuscator.jar obfuscate target/ariscore-1.1.jar \
