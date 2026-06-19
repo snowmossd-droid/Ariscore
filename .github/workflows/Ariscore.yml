@@ -35,20 +35,13 @@ jobs:
       - name: Download Libraries
         run: |
           mkdir -p libs
-
           FOLIA_VERSION=$(curl -fsSL "https://api.papermc.io/v2/projects/folia" \
-            | python3 -c "
-import sys, json
-versions = json.load(sys.stdin)['versions']
-v = [x for x in versions if x.startswith('1.21')]
-print(v[-1])
-")
+            | python3 -c "import sys,json; versions=json.load(sys.stdin)['versions']; print([x for x in versions if x.startswith('1.21')][-1])")
           FOLIA_BUILD=$(curl -fsSL "https://api.papermc.io/v2/projects/folia/versions/${FOLIA_VERSION}" \
             | python3 -c "import sys,json; print(json.load(sys.stdin)['builds'][-1])")
           echo "Folia ${FOLIA_VERSION} build ${FOLIA_BUILD}"
           curl -fSL -o libs/folia.jar \
             "https://api.papermc.io/v2/projects/folia/versions/${FOLIA_VERSION}/builds/${FOLIA_BUILD}/downloads/folia-${FOLIA_VERSION}-${FOLIA_BUILD}.jar"
-
           curl -fSL -o libs/PlaceholderAPI.jar \
             "https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.12.2/PlaceholderAPI-2.12.2.jar"
 
