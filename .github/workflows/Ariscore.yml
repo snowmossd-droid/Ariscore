@@ -76,9 +76,16 @@ jobs:
             "resource-encryption": true,
             "exempt": [
               "me.vennlmao.ariscore.libs.hikari.**",
+              "me.vennlmao.ariscore.libs.fastboard.**",
+              "me.vennlmao.ariscore.shards.**",
+              "me.vennlmao.ariscore.auction.**",
+              "me.vennlmao.ariscore.home.**",
+              "me.vennlmao.ariscore.shop.**",
+              "me.vennlmao.ariscore.tab.**",
+              "me.vennlmao.ariscore.team.**",
+              "me.vennlmao.ariscore.order.**",
               "org.sqlite.**",
-              "org.xerial.**",
-              "fr.mrmicky.fastboard.**"
+              "org.xerial.**"
             ]
           }
           SKIDEOF
