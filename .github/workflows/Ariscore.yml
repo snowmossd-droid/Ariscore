@@ -29,16 +29,22 @@ jobs:
 
       - name: Download Skidfuscator
         run: |
-          curl -L -o skidfuscator.jar \
+          curl -fL -o skidfuscator.jar \
             https://github.com/skidfuscatordev/skidfuscator-java-obfuscator/releases/download/2.0.11/skidfuscator.jar
 
       - name: Download Libraries
         run: |
           mkdir -p libs
-          curl -L -o libs/folia.jar \
-            https://api.papermc.io/v2/projects/folia/versions/1.21/builds/27/downloads/folia-1.21-27.jar
-          curl -L -o libs/PlaceholderAPI.jar \
-            https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.6.jar
+
+          FOLIA_VERSION="1.21"
+          FOLIA_BUILD=$(curl -fsSL "https://api.papermc.io/v2/projects/folia/versions/${FOLIA_VERSION}" \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['builds'][-1])")
+          echo "Using Folia build: $FOLIA_BUILD"
+          curl -fSL -o libs/folia.jar \
+            "https://api.papermc.io/v2/projects/folia/versions/${FOLIA_VERSION}/builds/${FOLIA_BUILD}/downloads/folia-${FOLIA_VERSION}-${FOLIA_BUILD}.jar"
+
+          curl -fSL -o libs/PlaceholderAPI.jar \
+            "https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.11.6/PlaceholderAPI-2.11.6.jar"
 
       - name: Obfuscate JAR
         run: |
