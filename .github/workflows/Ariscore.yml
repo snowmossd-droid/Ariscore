@@ -44,6 +44,14 @@ jobs:
             "https://api.papermc.io/v2/projects/folia/versions/${FOLIA_VERSION}/builds/${FOLIA_BUILD}/downloads/folia-${FOLIA_VERSION}-${FOLIA_BUILD}.jar"
           curl -fSL -o libs/PlaceholderAPI.jar \
             "https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.12.2/PlaceholderAPI-2.12.2.jar"
+          curl -fSL -o libs/metrics-healthchecks.jar \
+            "https://repo1.maven.org/maven2/io/dropwizard/metrics/metrics-healthchecks/3.2.5/metrics-healthchecks-3.2.5.jar"
+          curl -fSL -o libs/prometheus-simpleclient.jar \
+            "https://repo1.maven.org/maven2/io/prometheus/simpleclient/0.9.0/simpleclient-0.9.0.jar"
+          curl -fSL -o libs/hibernate-core.jar \
+            "https://repo1.maven.org/maven2/org/hibernate/hibernate-core/5.4.24.Final/hibernate-core-5.4.24.Final.jar"
+          curl -fSL -o libs/graalvm-nativeimage.jar \
+            "https://repo1.maven.org/maven2/org/graalvm/sdk/nativeimage/24.0.0/nativeimage-24.0.0.jar"
 
       - name: Pre-download Skidfuscator Mappings
         run: |
