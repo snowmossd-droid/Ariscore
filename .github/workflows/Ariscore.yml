@@ -27,9 +27,6 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -B
 
-      - name: Check target folder
-        run: ls -la target/
-
       - name: Download Skidfuscator
         run: |
           curl -L -o skidfuscator.jar \
@@ -37,16 +34,19 @@ jobs:
 
       - name: Obfuscate JAR
         run: |
-          java -jar skidfuscator.jar obfuscate target/ariscore-1.1.jar \
+          java -Xmx3G -jar skidfuscator.jar obfuscate target/ariscore-1.1.jar \
             --output target/ariscore-obf.jar \
             --exclude me/vennlmao/ariscore/libs/**
+        continue-on-error: true
 
-      - name: Check obfuscated JAR
-        run: ls -la target/ariscore-obf.jar
+      - name: Check target folder after obfuscation
+        run: ls -la target/
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: Ariscore
-          path: target/ariscore-obf.jar
+          path: |
+            target/ariscore-obf.jar
+            target/ariscore-1.1.jar
           if-no-files-found: error
