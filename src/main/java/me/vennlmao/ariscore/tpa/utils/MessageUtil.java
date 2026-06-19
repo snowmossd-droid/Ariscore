@@ -20,6 +20,7 @@ public class MessageUtil {
     private static Component parseRaw(String raw) {
         String s = raw;
         s = s.replaceAll("&#([0-9A-Fa-f]{6})", "<color:#$1>");
+        s = s.replaceAll("(?<!<color:)#([0-9A-Fa-f]{6})(?![0-9A-Fa-f])", "<color:#$1>");
         s = s.replace("&a", "<green>")
                 .replace("&b", "<aqua>")
                 .replace("&c", "<red>")
@@ -72,5 +73,4 @@ public class MessageUtil {
     public static List<String> getList(String key) {
         return plugin.getConfig().getStringList("messages." + key);
     }
-                     }
-    
+}
