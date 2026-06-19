@@ -32,11 +32,17 @@ jobs:
           curl -L -o skidfuscator.jar \
             https://github.com/skidfuscatordev/skidfuscator-java-obfuscator/releases/download/2.0.11/skidfuscator.jar
 
+      - name: Download Libraries
+        run: |
+          mkdir -p libs
+          curl -L -o libs/PlaceholderAPI.jar \
+            https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.11.6/PlaceholderAPI-2.11.6.jar
+
       - name: Obfuscate JAR
         run: |
           java -Xmx3G -jar skidfuscator.jar obfuscate target/ariscore-1.1.jar \
             --output target/ariscore-obf.jar \
-            --exempt me/vennlmao/ariscore/libs/**
+            -li=libs
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
