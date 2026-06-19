@@ -1,0 +1,81 @@
+title: "&8ᴏʀᴅᴇʀs -> New Order"
+rows: 3
+selected-item-slot: 13
+
+filler:
+  enabled: true
+  material: GRAY_STAINED_GLASS_PANE
+  name: " "
+
+buttons:
+  back:
+    slot: 10
+    action: back
+    material: RED_STAINED_GLASS_PANE
+    name: "&#fc0404ʙᴀᴄᴋ"
+    lore:
+      - "&fClick to go back"
+
+  amount-down:
+    slot: 19
+    action: amount-down
+    decrement: 1
+    min: 1
+    material: RED_TERRACOTTA
+    name: "&#fc0404-1 ᴀᴍᴏᴜɴᴛ"
+    lore:
+      - "&fClick to decrease amount"
+
+  amount-set:
+    slot: 20
+    action: set-amount
+    material: CHEST
+    name: "&#00fc88ᴀᴍᴏᴜɴᴛ: %amount%"
+    lore:
+      - "&fClick to type a custom amount"
+
+  amount-up:
+    slot: 21
+    action: amount-up
+    increment: 1
+    material: LIME_TERRACOTTA
+    name: "&#04fc04+1 ᴀᴍᴏᴜɴᴛ"
+    lore:
+      - "&fClick to increase amount"
+
+  price-down:
+    slot: 23
+    action: price-down
+    decrement: 10.0
+    min: 1.0
+    material: RED_TERRACOTTA
+    name: "&#fc0404-10 ᴘʀɪᴄᴇ"
+    lore:
+      - "&fClick to decrease price"
+
+  price-set:
+    slot: 24
+    action: set-price
+    material: EMERALD
+    name: "&#00fc88ᴘʀɪᴄᴇ: %price%"
+    lore:
+      - "&fClick to type a custom price"
+      - "&7Min: %min-price% / Max: %max-price%"
+
+  price-up:
+    slot: 25
+    action: price-up
+    increment: 10.0
+    material: LIME_TERRACOTTA
+    name: "&#04fc04+10 ᴘʀɪᴄᴇ"
+    lore:
+      - "&fClick to increase price"
+
+  confirm:
+    slot: 16
+    action: confirm
+    material: LIME_STAINED_GLASS_PANE
+    name: "&#04fc04ᴄᴏɴғɪʀᴍ"
+    lore:
+      - "&fClick to confirm order"
+      - "&7Total: &#00fc88%total%"
