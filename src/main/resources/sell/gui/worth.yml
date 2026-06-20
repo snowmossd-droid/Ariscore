@@ -1,0 +1,65 @@
+worth:
+  title: '&8item prices'
+  rows: 6
+
+  navigation:
+    previous-page-slot: 48
+    previous-page:
+      material: ARROW
+      displayname: '&#FC0000Previous Page'
+      lore:
+        - '&fClick to return to the previous page'
+
+    next-page-slot: 50
+    next-page:
+      material: ARROW
+      displayname: '&#7CFC00Next Page'
+      lore:
+        - '&fClick to go to the next page'
+
+    sort-button:
+      slot: 49
+      material: HOPPER
+      displayname: '&#04fc84Sorting Settings'
+      switch: '&7Click to change'
+      lore-inactive:
+        - ''
+        - '&f● Price: Highest'
+        - '&f● Price: Lowest'
+        - '&f● Name: A-Z'
+        - '&f● Name: Z-A'
+        - ''
+      lore-active:
+        - ''
+        - '&#04fc84● Price: Highest'
+        - '&#04fc84● Price: Lowest'
+        - '&#04fc84● Name: A-Z'
+        - '&#04fc84● Name: Z-A'
+        - ''
+
+    close-button:
+      slot: 45
+      material: RED_STAINED_GLASS_PANE
+      displayname: '&#FC0000Close'
+      lore:
+        - '&fClick to close the menu'
+
+    search-button:
+      slot: 46
+      material: OAK_SIGN
+      displayname: '&#00f986Search Item'
+      lore:
+        - '&fClick to search for an item'
+        - ''
+        - '&7Current filter: &f{filter}'
+        - '&eClick to clear filter'
+
+  item:
+    displayname: '&f{item-name}'
+    lore:
+      - '&fPrice: &#00f986{item-price}$'
+
+  filler:
+    enabled: true
+    material: GRAY_STAINED_GLASS_PANE
+    displayname: '&7 '
