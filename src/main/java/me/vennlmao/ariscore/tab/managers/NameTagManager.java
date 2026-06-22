@@ -23,12 +23,14 @@ public class NameTagManager implements Listener {
     private final ArisCore plugin;
     private final PapiManager papi;
     private final TabConfigManager config;
-    private final Map<UUID, ScheduledTask> tasks  = new ConcurrentHashMap<>();
-    private final Map<UUID, String> lastPrefix = new ConcurrentHashMap<>();
-    private final Map<UUID, String> lastSuffix = new ConcurrentHashMap<>();
+    private final Map<UUID, ScheduledTask> tasks      = new ConcurrentHashMap<>();
+    private final Map<UUID, String>        lastPrefix = new ConcurrentHashMap<>();
+    private final Map<UUID, String>        lastSuffix = new ConcurrentHashMap<>();
 
     public NameTagManager(ArisCore plugin, PapiManager papi, TabConfigManager config) {
-        this.plugin = plugin; this.papi = papi; this.config = config;
+        this.plugin = plugin;
+        this.papi   = papi;
+        this.config = config;
     }
 
     public void start() {
@@ -48,9 +50,9 @@ public class NameTagManager implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        if (config.isNametagEnabled()) {
-            e.getPlayer().getScheduler().runDelayed((Plugin) plugin, t -> schedule(e.getPlayer()), () -> {}, 5L);
-        }
+        if (!config.isNametagEnabled()) return;
+        Player player = e.getPlayer();
+        player.getScheduler().runDelayed((Plugin) plugin, t -> schedule(player), () -> {}, 5L);
     }
 
     @EventHandler
@@ -66,9 +68,13 @@ public class NameTagManager implements Listener {
     private void schedule(Player player) {
         ScheduledTask old = tasks.remove(player.getUniqueId());
         if (old != null) try { old.cancel(); } catch (Throwable ignored) {}
+
         long ticks = Math.max(1L, config.getNametagUpdateTicks());
         ScheduledTask task = player.getScheduler().runAtFixedRate(
-                (Plugin) plugin, t -> tick(player), () -> {}, 1L, ticks);
+                (Plugin) plugin,
+                t -> tick(player),
+                () -> {},
+                1L, ticks);
         if (task != null) tasks.put(player.getUniqueId(), task);
     }
 
@@ -78,7 +84,7 @@ public class NameTagManager implements Listener {
         String prefix = truncate(papi.parse(player, config.getNametagPrefix()), 16);
         String suffix = truncate(papi.parse(player, config.getNametagSuffix()), 16);
 
-        UUID id = player.getUniqueId();
+        UUID id = player.getUniqueId();;
         if (prefix.equals(lastPrefix.get(id)) && suffix.equals(lastSuffix.get(id))) return;
         lastPrefix.put(id, prefix);
         lastSuffix.put(id, suffix);
@@ -88,19 +94,38 @@ public class NameTagManager implements Listener {
 
     private void applyTeam(Player player, String prefix, String suffix) {
         try {
+            if (!player.isOnline()) return;
+
             Scoreboard sb = player.getScoreboard();
-            if (sb == null || sb.equals(Bukkit.getScoreboardManager().getMainScoreboard())) {
-                sb = Bukkit.getScoreboardManager().getNewScoreboard();
-                player.setScoreboard(sb);
+
+            if (sb == null) {
+                plugin.getLogger().warning("[Tab/Nametag] Scoreboard null for " + player.getName() + ", skipping.");
+                return;
             }
-            String teamName = (TEAM_PREFIX + player.getName()).substring(0, Math.min(16, TEAM_PREFIX.length() + player.getName().length()));
+
+            if (Bukkit.getScoreboardManager() != null
+                    && sb.equals(Bukkit.getScoreboardManager().getMainScoreboard())) {
+                Scoreboard newSb = Bukkit.getScoreboardManager().getNewScoreboard();
+                player.setScoreboard(newSb);
+                sb = newSb;
+            }
+
+            String rawName   = player.getName();
+            int maxLen       = 16 - TEAM_PREFIX.length();
+            String shortName = rawName.length() > maxLen ? rawName.substring(0, maxLen) : rawName;
+            String teamName  = TEAM_PREFIX + shortName;
+
             Team team = sb.getTeam(teamName);
             if (team == null) team = sb.registerNewTeam(teamName);
-            team.setPrefix(prefix);
-            team.setSuffix(suffix);
-            if (!team.hasEntry(player.getName())) team.addEntry(player.getName());
+
+            team.setPrefix(prefix != null ? prefix : "");
+            team.setSuffix(suffix != null ? suffix : "");
+
+            if (!team.hasEntry(rawName)) team.addEntry(rawName);
+
         } catch (Throwable e) {
-            plugin.getLogger().warning("[Tab/Nametag] Failed to apply team for " + player.getName() + ": " + e.getMessage());
+            plugin.getLogger().warning("[Tab/Nametag] Failed to apply team for "
+                    + player.getName() + ": " + e.getMessage());
         }
     }
 
@@ -108,7 +133,10 @@ public class NameTagManager implements Listener {
         try {
             Scoreboard sb = player.getScoreboard();
             if (sb == null) return;
-            String teamName = (TEAM_PREFIX + player.getName()).substring(0, Math.min(16, TEAM_PREFIX.length() + player.getName().length()));
+            String rawName   = player.getName();
+            int maxLen       = 16 - TEAM_PREFIX.length();
+            String shortName = rawName.length() > maxLen ? rawName.substring(0, maxLen) : rawName;
+            String teamName  = TEAM_PREFIX + shortName;
             Team team = sb.getTeam(teamName);
             if (team != null) team.unregister();
         } catch (Throwable ignored) {}
@@ -118,4 +146,4 @@ public class NameTagManager implements Listener {
         if (s == null) return "";
         return s.length() > max ? s.substring(0, max) : s;
     }
-}
+            }
