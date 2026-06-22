@@ -143,6 +143,20 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.dylib</exclude>
+                    <exclude>**/*.dll</exclude>
+                    <exclude>**/*.so</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.dylib</include>
+                    <include>**/*.dll</include>
+                    <include>**/*.so</include>
+                </includes>
             </resource>
         </resources>
     </build>
