@@ -1,7 +1,9 @@
 package me.vennlmao.ariscore.tab.managers;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -10,9 +12,15 @@ import java.util.regex.Pattern;
 
 public class PapiManager {
 
-    private static final Pattern HEX_GRADIENT = Pattern.compile("<#([A-Fa-f0-9]{6})>(.+?)</#([A-Fa-f0-9]{6})>", Pattern.DOTALL);
-    private static final Pattern HEX_AMP      = Pattern.compile("&#([A-Fa-f0-9]{6})");
-    private static final Pattern HEX_ANGLE    = Pattern.compile("<#([A-Fa-f0-9]{6})>");
+    private static final Pattern HEX_AMP         = Pattern.compile("&#([A-Fa-f0-9]{6})");
+    private static final Pattern HEX_ANGLE        = Pattern.compile("<#([A-Fa-f0-9]{6})>");
+    private static final Pattern HEX_ANGLE_CLOSE  = Pattern.compile("</#([A-Fa-f0-9]{6})>");
+    private static final Pattern HEX_GRADIENT     = Pattern.compile("<#([A-Fa-f0-9]{6})>(.+?)</#([A-Fa-f0-9]{6})>", Pattern.DOTALL);
+
+    private static final MiniMessage MM = MiniMessage.miniMessage();
+    private static final LegacyComponentSerializer LEGACY_AMP =
+            LegacyComponentSerializer.builder().character('&').hexColors().build();
+
     private final boolean hasPapi;
 
     public PapiManager() {
@@ -34,32 +42,46 @@ public class PapiManager {
     public static String colorize(String text) {
         if (text == null) return "";
         text = applyGradients(text);
+        text = convertAmpHex(text);
+        text = convertAngleHex(text);
+        text = HEX_ANGLE_CLOSE.matcher(text).replaceAll("");
+        text = text.replace("&", "§").replace("§§", "&");
+        return text;
+    }
+
+    private static String convertAmpHex(String text) {
         Matcher m = HEX_AMP.matcher(text);
         StringBuffer sb = new StringBuffer();
         while (m.find()) {
-            try { m.appendReplacement(sb, ChatColor.of("#" + m.group(1)).toString()); }
-            catch (Exception e) { m.appendReplacement(sb, m.group(0)); }
+            m.appendReplacement(sb, Matcher.quoteReplacement(hexToLegacy(m.group(1))));
         }
         m.appendTail(sb);
-        text = sb.toString();
-        Matcher m2 = HEX_ANGLE.matcher(text);
-        StringBuffer sb2 = new StringBuffer();
-        while (m2.find()) {
-            try { m2.appendReplacement(sb2, ChatColor.of("#" + m2.group(1)).toString()); }
-            catch (Exception e) { m2.appendReplacement(sb2, m2.group(0)); }
+        return sb.toString();
+    }
+
+    private static String convertAngleHex(String text) {
+        Matcher m = HEX_ANGLE.matcher(text);
+        StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            m.appendReplacement(sb, Matcher.quoteReplacement(hexToLegacy(m.group(1))));
         }
-        m2.appendTail(sb2);
-        return ChatColor.translateAlternateColorCodes('&', sb2.toString());
+        m.appendTail(sb);
+        return sb.toString();
+    }
+
+    private static String hexToLegacy(String hex) {
+        StringBuilder sb = new StringBuilder("§x");
+        for (char c : hex.toCharArray()) {
+            sb.append('§').append(c);
+        }
+        return sb.toString();
     }
 
     private static String applyGradients(String text) {
         Matcher m = HEX_GRADIENT.matcher(text);
         StringBuffer sb = new StringBuffer();
         while (m.find()) {
-            String start   = m.group(1);
-            String content = m.group(2);
-            String end     = m.group(3);
-            m.appendReplacement(sb, Matcher.quoteReplacement(gradient(content, start, end)));
+            m.appendReplacement(sb, Matcher.quoteReplacement(gradient(m.group(2), m.group(1), m.group(3))));
         }
         m.appendTail(sb);
         return sb.toString();
@@ -76,8 +98,7 @@ public class PapiManager {
             int r = Math.round(s[0] + (e[0] - s[0]) * ratio);
             int g = Math.round(s[1] + (e[1] - s[1]) * ratio);
             int b = Math.round(s[2] + (e[2] - s[2]) * ratio);
-            try { sb.append(ChatColor.of(String.format("#%02X%02X%02X", r, g, b))); }
-            catch (Exception ignored) {}
+            sb.append(hexToLegacy(String.format("%02X%02X%02X", r, g, b)));
             sb.append(text.charAt(i));
         }
         return sb.toString();
@@ -90,4 +111,8 @@ public class PapiManager {
             Integer.parseInt(hex.substring(4, 6), 16)
         };
     }
-}
+
+    public static Component toComponent(String colorized) {
+        return LegacyComponentSerializer.legacySection().deserialize(colorized);
+    }
+    }
