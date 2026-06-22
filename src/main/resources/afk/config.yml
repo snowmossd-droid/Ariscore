@@ -1,0 +1,86 @@
+mysql:
+  enabled: false
+  host: "host"
+  port: 3306
+  database: "database"
+  username: "username"
+  password: "password"
+  table-prefix: "ariscore_"
+  table-name: "afkzones"
+  use-ssl: false
+
+sqlite:
+  enabled: true
+
+default-name: "afk"
+default-material: "STONE"
+
+warmup: 5
+cancel_distance: 0.1
+
+sounds:
+  teleport_success:
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1.0
+    pitch: 1.0
+  countdown:
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 1.0
+    pitch: 1.2
+  cancel:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  damaged:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 0.8
+  setafk:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.5
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  click:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+
+messages:
+  setafk: "&aKhu AFK &f%name% &ađã được đặt."
+  setafk_ab: "&aKhu AFK đã đặt!"
+  teleport_success: "&aDịch chuyển tới khu AFK &f%name%&a."
+  teleport_success_ab: "&aDịch chuyển thành công!"
+  teleporting_chat: "&eDịch chuyển tới &f%name% &etrong &f{seconds}s&e... Đừng di chuyển!"
+  teleporting_ab: "&eDịch chuyển tới &f%name% &etrong &f{seconds}s&e..."
+  teleport_cancelled_moved: "&cDịch chuyển đã bị hủy vì bạn di chuyển!"
+  teleport_cancelled_moved_ab: "&cHủy! Bạn đã di chuyển."
+  teleport_cancelled_damaged: "&cDịch chuyển đã bị hủy vì bạn bị tấn công!"
+  teleport_cancelled_damaged_ab: "&cHủy! Bạn bị dính dame."
+  afk_not_exist: "&cKhu AFK &f%name% &ckhông tồn tại."
+  afk_not_exist_ab: "&cKhu AFK không tồn tại."
+  no_afks: "&cChưa có khu AFK nào được đặt."
+  no_afks_ab: "&cChưa có khu AFK."
+  no_permission: "&cBạn không có quyền sử dụng lệnh này."
+  world_not_found: "&cKhông tìm thấy thế giới."
+  world_not_found_ab: "&cKhông tìm thấy thế giới."
+
+gui:
+  title: "&8ᴀꜰᴋ ᴢᴏɴᴇꜱ"
+  size: 27
+  afk-info:
+    afk:
+      material: SOUL_SAND
+      displayName: "&bᴀꜰᴋ &f%name%"
+      lore:
+        - "&8%current%/%max%"
+        - "&7Click to go to this"
+        - "&7AFK zone."
+    random-afk:
+      material: LIGHT_BLUE_GLAZED_TERRACOTTA
+      slot: 22
+      displayName: "&aᴀꜰᴋ ʀᴀɴᴅᴏᴍ"
+      lore:
+        - "&fClick to teleport to a random AFK zone"
