@@ -103,6 +103,15 @@ commands:
     description: Sell module admin commands
     usage: /selladmin reload
     permission: ariscore.sell.admin
+  tab:
+    description: Tab module admin command
+    usage: /tab reload
+    permission: ariscore.tab.admin
+  order:
+    description: Open the order system
+    usage: /order [my|new|reload]
+    permission: ariscore.order.use
+    permission-message: "&cYou do not have permission!"
   setspawn:
     description: Set a named spawn point
     usage: /setspawn [name]
@@ -155,30 +164,18 @@ permissions:
   ariscore.auction.fastbuy:
     description: Allow fast buy toggle
     default: op
-  tab:
-    description: Tab module admin command
-    usage: /tab reload
-    permission: ariscore.tab.admin
-
   ariscore.tab.admin:
     description: Access to /tab reload
     default: op
   ariscore.tab.bypass:
     description: Bypass tab/scoreboard/nametag rendering
     default: false
-  order:
-    description: Open the order system
-    usage: /order [my|new|reload]
-    permission: ariscore.order.use
-    permission-message: "&cYou do not have permission!"
-
   ariscore.order.use:
     description: Access to /order command
     default: op
   ariscore.order.admin:
     description: Admin access to /order reload
     default: op
-
   arishomes.homes.1:
     description: Allow 1 home
     default: true
