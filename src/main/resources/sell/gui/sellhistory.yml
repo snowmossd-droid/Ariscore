@@ -1,0 +1,73 @@
+sellhistory:
+  title: '&8sell history'
+  rows: 6
+
+  previous-page-slot: 46
+  previous-page:
+    material: ARROW
+    displayname: '&#00f986Back'
+    lore:
+      - '&fClick to return to the previous page'
+
+  next-page-slot: 53
+  next-page:
+    material: ARROW
+    displayname: '&#00f986Next'
+    lore:
+      - '&fClick to go to the next page'
+
+  stats-book:
+    slot: 49
+    material: PLAYER_HEAD
+    displayname: '&#04fc84Statistics'
+    lore:
+      - '&7Total sold: &#04fc84{total-sold}'
+      - '&7Total earnings: &#04fc84{total-made}$'
+
+  sort-button:
+    slot: 50
+    material: HOPPER
+    displayname: '&#04fc84Sorting Settings'
+    switch: '&7Click to change'
+    lore-inactive:
+      - ''
+      - '&f● Price: Highest'
+      - '&f● Price: Lowest'
+      - '&f● Name: A-Z'
+      - '&f● Name: Z-A'
+      - ''
+    lore-active:
+      - ''
+      - '&#04fc84● Price: Highest'
+      - '&#04fc84● Price: Lowest'
+      - '&#04fc84● Name: A-Z'
+      - '&#04fc84● Name: Z-A'
+      - ''
+
+  back-button:
+    slot: 45
+    material: RED_STAINED_GLASS_PANE
+    displayname: '&#FC0000Go Back'
+    lore:
+      - '&fClick to return to the menu'
+
+  search-button:
+    slot: 48
+    material: OAK_SIGN
+    displayname: '&#00f986Search Item'
+    lore:
+      - '&fClick to search for an item'
+      - ''
+      - '&7Current filter: &f{filter}'
+      - '&eClick to clear filter'
+
+  item:
+    displayname: '&r%item%'
+    lore:
+      - '&fPrice: &#7CFC00$%item-value%'
+      - '&fQuantity: &#7CFC00%item-quantity%'
+
+  filler:
+    enabled: true
+    material: GRAY_STAINED_GLASS_PANE
+    displayname: '&7 '

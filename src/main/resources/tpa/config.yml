@@ -1,0 +1,218 @@
+warmup: 5
+cancel_distance: 0.1
+request_timeout: 60
+
+blocked_worlds:
+  - world_nether
+  - world_the_end
+
+sounds:
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  cancel:
+    sound: BLOCK_NOTE_BLOCK_BASS
+    volume: 1.0
+    pitch: 0.8
+  damaged:
+    sound: ENTITY_PLAYER_HURT
+    volume: 1.0
+    pitch: 1.0
+  countdown:
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 1.0
+    pitch: 1.2
+  teleport_success:
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1.0
+    pitch: 1.0
+  request_sent:
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 1.0
+    pitch: 1.0
+  request_accepted:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.0
+  toggle_on:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.5
+  toggle_off:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 0.5
+  gui_click:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+
+messages:
+  request_sent_tpa:
+    - "&7Bạn đã gửi yêu cầu dịch chuyển đến &#00A4FC{player}&7. &cYêu cầu này có thể là bẫy, hãy cẩn thận."
+  request_sent_tpa_ab: "&7Đã gửi yêu cầu dịch chuyển"
+  request_received_tpa:
+    - "&cYêu cầu dịch chuyển này có thể là bẫy"
+  request_accepted_tpa_receiver_ab: "&7Bạn đã chấp nhận yêu cầu tpa"
+
+  request_sent_tpahere:
+    - "&7Bạn đã gửi yêu cầu tpahere đến &#00A4FC{player}"
+  request_sent_tpahere_ab: "&7Đã gửi yêu cầu tpahere đến &#00A4FC{player}"
+  request_received_tpahere:
+    - "&cYêu cầu dịch chuyển này có thể là bẫy"
+  request_accepted_tpahere_receiver_ab: "&7Bạn đã chấp nhận yêu cầu tpahere"
+
+  tpauto_enabled:
+    - "&#55FF55Đã bật tự động chấp nhận yêu cầu dịch chuyển."
+  tpauto_enabled_ab: "&#55FF55TpAuto &aBẬT"
+  tpauto_disabled:
+    - "&#FF5555Đã tắt tự động chấp nhận yêu cầu dịch chuyển."
+  tpauto_disabled_ab: "&#FF5555TpAuto &cTẮT"
+
+  tpatoggle_enabled:
+    - "&#55FF55Bạn hiện đang chấp nhận yêu cầu tpa."
+  tpatoggle_enabled_ab: "&#55FF55TPA &aBẬT"
+  tpatoggle_disabled:
+    - "&#FF5555Bạn đã tắt nhận yêu cầu tpa."
+  tpatoggle_disabled_ab: "&#FF5555TPA &cTẮT"
+
+  tpaheretoggle_enabled:
+    - "&#55FF55Bạn hiện đang chấp nhận yêu cầu tpahere."
+  tpaheretoggle_enabled_ab: "&#55FF55TPAHere &aBẬT"
+  tpaheretoggle_disabled:
+    - "&#FF5555Bạn đã tắt nhận yêu cầu tpahere."
+  tpaheretoggle_disabled_ab: "&#FF5555TPAHere &cTẮT"
+
+  target_tpa_disabled:
+    - "&#FF5555{player} hiện không chấp nhận yêu cầu tpa."
+  target_tpa_disabled_ab: "&#FF5555{player} đã tắt tpa"
+  target_tpahere_disabled:
+    - "&#FF5555{player} hiện không chấp nhận yêu cầu tpahere."
+  target_tpahere_disabled_ab: "&#FF5555{player} đã tắt tpahere"
+
+  teleporting_chat:
+    - "&7Teleporting in &e{seconds}s&7... Do not move!"
+  teleporting_ab: "&7Teleporting in &e{seconds}s&7..."
+  teleport_success:
+    - "&aTeleported successfully!"
+  teleport_success_ab: "&aTeleported!"
+  teleport_cancelled_moved:
+    - "&cTeleport cancelled! &7You moved."
+  teleport_cancelled_moved_ab: "&cCancelled! &7You moved."
+  teleport_cancelled_damaged:
+    - "&cTeleport cancelled! &7You took damage."
+  teleport_cancelled_damaged_ab: "&cCancelled! &7You took damage."
+
+  target_offline:
+    - "&#FF5555Người chơi mục tiêu đã offline."
+  target_offline_ab: "&#FF5555Mục tiêu đã offline"
+  request_cancelled:
+    - "&#FF5555Yêu cầu dịch chuyển đã bị huỷ."
+  request_cancelled_ab: "&#FF5555Yêu cầu đã huỷ"
+  no_pending_requests:
+    - "&#FF5555Bạn không có yêu cầu dịch chuyển nào đang chờ."
+  no_pending_requests_ab: "&#FF5555Không có yêu cầu nào"
+  requester_offline:
+    - "&#FF5555Người gửi yêu cầu đã offline."
+  requester_offline_ab: "&#FF5555Người gửi đã offline"
+  request_denied_sender:
+    - "&#FF5555Yêu cầu dịch chuyển của bạn bị từ chối bởi {player}."
+  request_denied_sender_ab: "&#FF5555Bị từ chối bởi {player}"
+  request_denied_receiver:
+    - "&#FF5555Đã từ chối yêu cầu dịch chuyển."
+  request_denied_receiver_ab: "&#FF5555Đã từ chối yêu cầu"
+  incoming_request_cancelled:
+    - "&#FF5555Yêu cầu dịch chuyển từ {player} đã bị huỷ."
+  incoming_request_cancelled_ab: "&#FF5555Yêu cầu từ {player} đã huỷ"
+  outgoing_request_cancelled:
+    - "&#55FF55Yêu cầu dịch chuyển của bạn đã được huỷ."
+  outgoing_request_cancelled_ab: "&#55FF55Yêu cầu đã huỷ"
+
+  world_blocked:
+    - "&#FF5555Bạn không thể dịch chuyển trong thế giới này."
+  world_blocked_ab: "&#FF5555Không thể dịch chuyển tại đây"
+  player_not_found: "&cKhông tìm thấy người chơi."
+
+gui:
+  sender:
+    title: "&8ᴄᴏɴғɪʀᴍ ʀᴇǫᴜᴇsᴛ"
+    size: 27
+    icons:
+      cancel:
+        slot: 10
+        material: RED_STAINED_GLASS_PANE
+        display-name: "&4ᴄᴀɴᴄᴇʟ"
+        lore:
+          - "&7Click to cancel this request"
+      location:
+        slot: 12
+        material: GRASS_BLOCK
+        display-name: "&aʟᴏᴄᴀᴛɪᴏɴ"
+        lore:
+          - "&f{world}"
+      player:
+        slot: 13
+        material: PLAYER_HEAD
+        display-name: "&aᴘʟᴀʏᴇʀ"
+        lore:
+          - "&f{player}"
+      ping:
+        slot: 14
+        material: FEATHER
+        display-name: "&aᴘɪɴɢ"
+        lore:
+          - "&f{ping}ms"
+      confirm:
+        slot: 16
+        material: LIME_STAINED_GLASS_PANE
+        display-name: "&aᴄᴏɴғɪʀᴍ"
+        lore:
+          - "&7Click to send a teleport request"
+          - "&7to &f{player}"
+
+  accept:
+    title: "&8ᴀᴄᴄᴇᴘᴛ ʀᴇǫᴜᴇsᴛ"
+    size: 27
+    icons:
+      cancel:
+        slot: 10
+        material: RED_STAINED_GLASS_PANE
+        display-name: "&4ᴄᴀɴᴄᴇʟ"
+        lore:
+          - "&7Click to cancel this request"
+      location:
+        slot: 12
+        material: GRASS_BLOCK
+        display-name: "&aʟᴏᴄᴀᴛɪᴏɴ"
+        lore:
+          - "&f{world}"
+      player:
+        slot: 13
+        material: PLAYER_HEAD
+        display-name: "&aᴘʟᴀʏᴇʀ"
+        lore:
+          - "&f{player}"
+      ping:
+        slot: 14
+        material: FEATHER
+        display-name: "&aᴘɪɴɢ"
+        lore:
+          - "&f{ping}ms"
+      confirm:
+        slot: 16
+        material: LIME_STAINED_GLASS_PANE
+        display-name: "&aᴄᴏɴғɪʀᴍ"
+        lore:
+          - "&7Click to accept this request"
+          - "&7from &f{player}"
+
+clickable_messages:
+  accept_tpa:
+    text:
+      - "&#37BFF8{player} &7đã gửi cho bạn yêu cầu tpa."
+      - "&#00A3FB[NHẤN ĐỂ CHẤP NHẬN] &7hoặc gõ &#00A3FB/tpaccept {player}"
+  accept_tpahere:
+    text:
+      - "&#37BFF8{player} &7đã gửi cho bạn yêu cầu tpahere."
+      - "&#00A3FB[NHẤN ĐỂ CHẤP NHẬN] &7hoặc gõ &#00A3FB/tpaccept {player}"

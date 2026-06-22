@@ -1,0 +1,76 @@
+title: ɢᴇᴀʀ
+size: 27
+
+items:
+  obsidian:
+    slot: 9
+    material: OBSIDIAN
+    name: '&fObsidian'
+    stack: 64
+    price: 100
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  end_crystal:
+    slot: 10
+    material: END_CRYSTAL
+    name: '&fEnd Crystal'
+    stack: 64
+    price: 350
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  respawn_anchor:
+    slot: 11
+    material: RESPAWN_ANCHOR
+    name: '&fRespawn Anchor'
+    stack: 64
+    price: 1000
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  glowstone:
+    slot: 12
+    material: GLOWSTONE
+    name: '&fGlowstone'
+    stack: 64
+    price: 100
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  totem_of_undying:
+    slot: 13
+    material: TOTEM_OF_UNDYING
+    name: '&fTotem of Undying'
+    stack: 1
+    price: 1250
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  ender_pearl:
+    slot: 14
+    material: ENDER_PEARL
+    name: '&fEnder Pearl'
+    stack: 16
+    price: 75
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  golden_apple:
+    slot: 15
+    material: GOLDEN_APPLE
+    name: '&fGolden Apple'
+    stack: 64
+    price: 250
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  experience_bottle:
+    slot: 16
+    material: EXPERIENCE_BOTTLE
+    name: '&fExperience Bottle'
+    stack: 64
+    price: 100
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  tipped_arrow:
+    slot: 17
+    material: TIPPED_ARROW
+    name: '&fTipped Arrow'
+    stack: 64
+    price: 500
+    lore:
+    - '&fGiá mua: #54FC54${price}'
