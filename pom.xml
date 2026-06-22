@@ -143,20 +143,22 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <excludes>
-                    <exclude>**/*.dylib</exclude>
-                    <exclude>**/*.dll</exclude>
-                    <exclude>**/*.so</exclude>
-                </excludes>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/*.yaml</include>
+                    <include>**/*.json</include>
+                    <include>**/*.txt</include>
+                </includes>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
-                <includes>
-                    <include>**/*.dylib</include>
-                    <include>**/*.dll</include>
-                    <include>**/*.so</include>
-                </includes>
+                <excludes>
+                    <exclude>**/*.yml</exclude>
+                    <exclude>**/*.yaml</exclude>
+                    <exclude>**/*.json</exclude>
+                    <exclude>**/*.txt</exclude>
+                </excludes>
             </resource>
         </resources>
     </build>
