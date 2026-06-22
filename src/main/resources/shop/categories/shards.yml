@@ -1,0 +1,181 @@
+title: sʜᴀʀᴅs
+size: 27
+
+items:
+  common_key:
+    slot: 2
+    material: TRIPWIRE_HOOK
+    name: §x§3§C§A§7§2§0ᴄᴏᴍᴍᴏɴ ᴋᴇʏ
+    stack: 1
+    price: 200
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - donutcratecore common give {player} {amount}
+  prime_key:
+    slot: 3
+    material: TRIPWIRE_HOOK
+    name: §x§2§3§8§6§D§3ᴘʀɪᴍᴇ ᴋᴇʏ
+    stack: 1
+    price: 1500
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - donutcratecore prime give {player} {amount}
+  gold_key:
+    slot: 4
+    material: TRIPWIRE_HOOK
+    name: §x§E§3§B§9§0§0ɢᴏʟᴅ ᴋᴇʏ
+    stack: 1
+    price: 1500
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - donutcratecore gold give {player} {amount}
+  amethyst_key:
+    slot: 5
+    material: TRIPWIRE_HOOK
+    name: §x§6§E§3§A§A§Dᴀᴍᴇᴛʜʏsᴛ ᴋᴇʏ
+    stack: 1
+    price: 4000
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - donutcratecore amethyst give {player} {amount}
+  crimson_key:
+    slot: 6
+    material: TRIPWIRE_HOOK
+    name: §x§C§4§2§1§1§9ᴄʀɪᴍsᴏɴ ᴋᴇʏ
+    stack: 1
+    price: 2000
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - donutcratecore crimson give {player} {amount}
+  pig_spawner:
+    slot: 9
+    material: SPAWNER
+    name: '&dSpawner'
+    stack: 1
+    price: 250
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&ePig'
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - vspawner give {player} Pig {amount}
+  cow_spawner:
+    slot: 10
+    material: SPAWNER
+    name: '&dSpawner'
+    stack: 1
+    price: 350
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&eCow'
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - vspawner give {player} Cow {amount}
+  zombie_spawner:
+    slot: 11
+    material: SPAWNER
+    name: '&dSpawner'
+    stack: 1
+    price: 400
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&eZombie'
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - vspawner give {player} Zombie {amount}
+  spider_spawner:
+    slot: 12
+    material: SPAWNER
+    name: '&dSpawner'
+    stack: 1
+    price: 750
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&eSpider'
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - vspawner give {player} Spider {amount}
+  skeleton_spawner:
+    slot: 13
+    material: SPAWNER
+    name: '&dSpawner'
+    stack: 1
+    price: 500
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&eSkeleton'
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - vspawner give {player} Skeleton {amount}
+  creeper_spawner:
+    slot: 14
+    material: SPAWNER
+    name: '&dSpawner'
+    stack: 1
+    price: 625
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&eCreeper'
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - vspawner give {player} Creeper {amount}
+  zombified_piglin_spawner:
+    slot: 15
+    material: SPAWNER
+    name: '&dSpawner'
+    stack: 1
+    price: 750
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&eZombified Piglin'
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - vspawner give {player} Zombified_Piglin {amount}
+  blaze_spawner:
+    slot: 16
+    material: SPAWNER
+    name: '&dSpawner'
+    stack: 1
+    price: 1000
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&eBlaze'
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - vspawner give {player} Blaze {amount}
+  iron_golem_spawner:
+    slot: 17
+    material: SPAWNER
+    name: '&dSpawner'
+    stack: 1
+    price: 1500
+    isShard: true
+    shard_placeholder: '%aris_shards%'
+    lore:
+    - '&eIron Golem'
+    - '&fGiá mua: #A303F9{price} &lMảnh Vụn'
+    commands:
+    - vspawner give {player} Iron_Golem {amount}
