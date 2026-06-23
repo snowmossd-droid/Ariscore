@@ -27,7 +27,7 @@ public class TabModule {
     }
 
     public void enable() {
-        sharedScoreboard   = Bukkit.getScoreboardManager().getNewScoreboard();
+        sharedScoreboard   = Bukkit.getScoreboardManager().getMainScoreboard();
         configManager      = new TabConfigManager(plugin);
         configManager.load();
 
@@ -74,4 +74,4 @@ public class TabModule {
     public ScoreboardManager getScoreboardManager()  { return scoreboardManager; }
     public NameTagManager    getNameTagManager()     { return nameTagManager; }
     public Scoreboard        getSharedScoreboard()   { return sharedScoreboard; }
-}
+            }
