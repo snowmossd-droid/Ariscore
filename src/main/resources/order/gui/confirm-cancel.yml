@@ -1,0 +1,26 @@
+title: "&8ᴏʀᴅᴇʀs -> Cancel Order"
+rows: 3
+order-item-slot: 13
+
+filler:
+  enabled: true
+  material: GRAY_STAINED_GLASS_PANE
+  name: " "
+
+buttons:
+  confirm:
+    slot: 15
+    action: confirm
+    material: LIME_STAINED_GLASS_PANE
+    name: "&#04fc04ᴄᴏɴғɪʀᴍ"
+    lore:
+      - "&fClick to cancel this order"
+      - "&7You will be refunded"
+
+  deny:
+    slot: 11
+    action: deny
+    material: RED_STAINED_GLASS_PANE
+    name: "&#fc0404ᴅᴇɴʏ"
+    lore:
+      - "&fClick to go back"
