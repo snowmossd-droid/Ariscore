@@ -8,7 +8,6 @@ import me.vennlmao.ariscore.tab.managers.PapiManager;
 import me.vennlmao.ariscore.tab.managers.ScoreboardManager;
 import me.vennlmao.ariscore.tab.managers.TabConfigManager;
 import me.vennlmao.ariscore.tab.managers.TabListManager;
-import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Scoreboard;
 
 public class TabModule {
@@ -27,7 +26,7 @@ public class TabModule {
     }
 
     public void enable() {
-        sharedScoreboard   = Bukkit.getScoreboardManager().getNewScoreboard();
+        sharedScoreboard   = null;
         configManager      = new TabConfigManager(plugin);
         configManager.load();
 
@@ -74,4 +73,4 @@ public class TabModule {
     public ScoreboardManager getScoreboardManager()  { return scoreboardManager; }
     public NameTagManager    getNameTagManager()     { return nameTagManager; }
     public Scoreboard        getSharedScoreboard()   { return sharedScoreboard; }
-}
+                                                }
