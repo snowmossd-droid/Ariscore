@@ -85,7 +85,6 @@ public class ChatSignManager implements Listener {
                 sign.getSide(Side.FRONT).setLine(i, ColorUtil.colorize(lines.get(i)));
             }
             sign.setWaxed(false);
-            sign.setAllowedEditor(player);
             sign.update(true, false);
 
             pendingSigns.put(player.getUniqueId(), callback);
@@ -171,4 +170,4 @@ public class ChatSignManager implements Listener {
             Bukkit.getRegionScheduler().run((Plugin) plugin, loc, t -> previousState.update(true, false));
         }
     }
-}
+    }
