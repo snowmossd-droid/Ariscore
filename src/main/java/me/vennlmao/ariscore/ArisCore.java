@@ -30,7 +30,6 @@ public class ArisCore extends JavaPlugin {
     private SpawnModule spawnModule;
     private AfkModule afkModule;
     private WarpModule warpModule;
-    private WarpModule warpModule;
 
     @Override
     public void onEnable() {
@@ -98,7 +97,6 @@ public class ArisCore extends JavaPlugin {
         if (spawnModule != null) spawnModule.disable();
         if (afkModule != null) afkModule.disable();
         if (warpModule != null) warpModule.disable();
-        if (warpModule != null) warpModule.disable();
     }
 
     public static ArisCore getInstance() { return instance; }
@@ -113,6 +111,5 @@ public class ArisCore extends JavaPlugin {
     public OrderModule getOrderModule() { return orderModule; }
     public SpawnModule getSpawnModule() { return spawnModule; }
     public AfkModule getAfkModule() { return afkModule; }
-    public WarpModule getWarpModule() { return warpModule; }
     public WarpModule getWarpModule() { return warpModule; }
 }
