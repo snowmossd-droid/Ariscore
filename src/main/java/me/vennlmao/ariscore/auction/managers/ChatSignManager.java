@@ -118,7 +118,6 @@ public class ChatSignManager implements Listener {
                 sign.getSide(Side.FRONT).setLine(i, ColorUtil.colorize(lines.get(i)));
             }
             sign.setWaxed(false);
-            sign.setAllowedEditor(player);
             sign.update(true, false);
 
             pendingSigns.put(uuid, new PendingSign(callback, loc, previousState));
@@ -204,4 +203,4 @@ public class ChatSignManager implements Listener {
             Bukkit.getRegionScheduler().run((Plugin) plugin, pending.location, t -> pending.previousState.update(true, false));
         }
     }
-    }
+}
