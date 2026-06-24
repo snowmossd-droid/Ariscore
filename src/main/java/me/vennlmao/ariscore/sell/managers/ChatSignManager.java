@@ -18,22 +18,34 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class ChatSignManager implements Listener {
 
     private final SellModule module;
-    private final Map<UUID, Consumer<String>> chatCallbacks = new HashMap<>();
-    private final Map<UUID, Long> callbackTimestamps = new HashMap<>();
-    private final Map<UUID, Consumer<String>> pendingSigns = new HashMap<>();
-    private final Map<UUID, Location> pendingSignLocations = new HashMap<>();
-    private final Map<UUID, BlockState> pendingSignPrevState = new HashMap<>();
+    private final Map<UUID, Consumer<String>> chatCallbacks = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> callbackTimestamps = new ConcurrentHashMap<>();
+    private final Map<UUID, PendingSign> pendingSigns = new ConcurrentHashMap<>();
+
     private static final long TIMEOUT_MS = 30_000;
-    private static final int SIGN_HEIGHT_OFFSET = 5;
+    private static final int HEAD_OFFSET = 2;
+    private static final int MAX_VERTICAL_SEARCH = 4;
+
+    private static final class PendingSign {
+        final Consumer<String> callback;
+        final Location location;
+        final BlockState previousState;
+
+        PendingSign(Consumer<String> callback, Location location, BlockState previousState) {
+            this.callback = callback;
+            this.location = location;
+            this.previousState = previousState;
+        }
+    }
 
     public ChatSignManager(SellModule module) {
         this.module = module;
@@ -77,14 +89,35 @@ public class ChatSignManager implements Listener {
         }
     }
 
+    private Location findSignLocation(Player player) {
+        Location base = player.getLocation().clone();
+        base.setPitch(0);
+
+        for (int dy = HEAD_OFFSET; dy <= HEAD_OFFSET + MAX_VERTICAL_SEARCH; dy++) {
+            Location check = base.clone().add(0, dy, 0);
+            if (check.getBlock().getType().isAir()) {
+                return check;
+            }
+        }
+        return null;
+    }
+
     private void openSign(Player player, Consumer<String> callback) {
+        UUID uuid = player.getUniqueId();
+
+        if (pendingSigns.containsKey(uuid)) {
+            closePendingSign(player);
+        }
+
         player.closeInventory();
 
-        Location loc = player.getLocation().clone();
-        loc.setY(loc.getWorld().getMaxHeight() - SIGN_HEIGHT_OFFSET);
-        loc.setPitch(0);
-
         player.getScheduler().run((Plugin) module.getPlugin(), t -> {
+            Location loc = findSignLocation(player);
+            if (loc == null) {
+                player.sendMessage(ColorUtil.colorize("&cNo space nearby to open search, please move and try again!"));
+                return;
+            }
+
             Block block = loc.getBlock();
             BlockState previousState = block.getState();
 
@@ -102,11 +135,10 @@ public class ChatSignManager implements Listener {
                 sign.getSide(Side.FRONT).setLine(i, ColorUtil.colorize(lines.get(i)));
             }
             sign.setWaxed(false);
+            sign.setAllowedEditor(player);
             sign.update(true, false);
 
-            pendingSigns.put(player.getUniqueId(), callback);
-            pendingSignLocations.put(player.getUniqueId(), loc);
-            pendingSignPrevState.put(player.getUniqueId(), previousState);
+            pendingSigns.put(uuid, new PendingSign(callback, loc, previousState));
 
             player.openSign((Sign) block.getState(), Side.FRONT);
         }, null);
@@ -114,12 +146,10 @@ public class ChatSignManager implements Listener {
 
     private void closePendingSign(Player player) {
         UUID uuid = player.getUniqueId();
-        Location loc = pendingSignLocations.remove(uuid);
-        BlockState previousState = pendingSignPrevState.remove(uuid);
-        pendingSigns.remove(uuid);
-        if (loc == null || previousState == null) return;
+        PendingSign pending = pendingSigns.remove(uuid);
+        if (pending == null) return;
 
-        player.getScheduler().run((Plugin) module.getPlugin(), t -> previousState.update(true, false), null);
+        player.getScheduler().run((Plugin) module.getPlugin(), t -> pending.previousState.update(true, false), null);
     }
 
     public void requestChat(Player player, Consumer<String> callback) {
@@ -137,15 +167,21 @@ public class ChatSignManager implements Listener {
         chatCallbacks.remove(uuid);
         callbackTimestamps.remove(uuid);
         pendingSigns.remove(uuid);
-        pendingSignLocations.remove(uuid);
-        pendingSignPrevState.remove(uuid);
+    }
+
+    public void restoreAllPendingSigns() {
+        for (Map.Entry<UUID, PendingSign> entry : pendingSigns.entrySet()) {
+            PendingSign pending = entry.getValue();
+            Bukkit.getRegionScheduler().run((Plugin) module.getPlugin(), pending.location, t -> pending.previousState.update(true, false));
+        }
+        pendingSigns.clear();
     }
 
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
         Player player = event.getPlayer();
-        Consumer<String> callback = pendingSigns.get(player.getUniqueId());
-        if (callback == null) return;
+        PendingSign pending = pendingSigns.get(player.getUniqueId());
+        if (pending == null) return;
 
         String raw = event.getLine(2) == null ? "" : event.getLine(2).trim();
 
@@ -156,7 +192,7 @@ public class ChatSignManager implements Listener {
             return;
         }
 
-        player.getScheduler().run((Plugin) module.getPlugin(), t -> callback.accept(raw), null);
+        player.getScheduler().run((Plugin) module.getPlugin(), t -> pending.callback.accept(raw), null);
     }
 
     @EventHandler
@@ -180,11 +216,9 @@ public class ChatSignManager implements Listener {
         UUID uuid = event.getPlayer().getUniqueId();
         chatCallbacks.remove(uuid);
         callbackTimestamps.remove(uuid);
-        Location loc = pendingSignLocations.remove(uuid);
-        BlockState previousState = pendingSignPrevState.remove(uuid);
-        pendingSigns.remove(uuid);
-        if (loc != null && previousState != null) {
-            Bukkit.getRegionScheduler().run((Plugin) module.getPlugin(), loc, t -> previousState.update(true, false));
+        PendingSign pending = pendingSigns.remove(uuid);
+        if (pending != null) {
+            Bukkit.getRegionScheduler().run((Plugin) module.getPlugin(), pending.location, t -> pending.previousState.update(true, false));
         }
     }
-        }
+    }
