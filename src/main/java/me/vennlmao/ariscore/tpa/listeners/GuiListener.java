@@ -5,6 +5,9 @@ import me.vennlmao.ariscore.tpa.managers.TpaRequest;
 import me.vennlmao.ariscore.tpa.utils.GuiUtil;
 import me.vennlmao.ariscore.tpa.utils.MessageUtil;
 import me.vennlmao.ariscore.tpa.utils.SoundUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,9 +16,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.List;
+
 public class GuiListener implements Listener {
 
     private final TpaModule plugin;
+    private static final MiniMessage MM = MiniMessage.miniMessage();
 
     public GuiListener(TpaModule plugin) {
         this.plugin = plugin;
@@ -55,10 +61,8 @@ public class GuiListener implements Listener {
             player.closeInventory();
 
             if (isSenderGui) {
-                // /tpa <player> → GUI sender → Confirm = gửi request TPA
                 handleSendTpa(player);
             } else {
-                // click accept_tpahere → GUI accept → Confirm = teleport
                 handleAcceptTpahere(player);
             }
 
@@ -66,13 +70,11 @@ public class GuiListener implements Listener {
             player.closeInventory();
 
             if (isSenderGui) {
-                // Hủy trước khi gửi
                 plugin.getRequestManager().removeRequestBySender(player);
                 MessageUtil.sendChatList(player, "outgoing_request_cancelled");
                 MessageUtil.sendActionbar(player, "outgoing_request_cancelled_ab");
                 SoundUtil.play(player, "cancel");
             } else {
-                // Từ chối TPAHERE
                 handleDenyTpahere(player);
             }
         }
@@ -107,11 +109,27 @@ public class GuiListener implements Listener {
             return;
         }
 
+        sendClickableTpaRequest(target, sender);
         MessageUtil.sendChatList(target, "request_received_tpa",
                 s -> s.replace("{player}", sender.getName()));
         MessageUtil.sendActionbar(target, "request_received_tpa_ab",
                 s -> s.replace("{player}", sender.getName()));
         SoundUtil.play(target, "request_sent");
+    }
+
+    private void sendClickableTpaRequest(Player receiver, Player requester) {
+        List<String> lines = plugin.getConfig().getStringList("clickable_messages.accept_tpa.text");
+        for (String line : lines) {
+            String replaced = line.replace("{player}", requester.getName());
+            String converted = replaced
+                    .replaceAll("&#([0-9A-Fa-f]{6})", "<color:#$1>")
+                    .replace("&7", "<gray>").replace("&a", "<green>")
+                    .replace("&f", "<white>").replace("&e", "<yellow>")
+                    .replace("&c", "<red>").replace("&b", "<aqua>");
+            Component component = MM.deserialize("<!italic>" + converted)
+                    .clickEvent(ClickEvent.runCommand("/tpaccept " + requester.getName()));
+            receiver.sendMessage(component);
+        }
     }
 
     private void handleAcceptTpahere(Player receiver) {
