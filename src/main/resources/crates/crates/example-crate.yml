@@ -1,0 +1,65 @@
+icon:
+  material: CHEST
+  name: '&6Example Crate'
+  lore:
+    - '&7Place this block then right-click to open.'
+
+rewards-gui:
+  name: '&8[ &6Example Crate &8]'
+  rows: 3
+  background:
+    material: BLACK_STAINED_GLASS_PANE
+    name: ' '
+
+confirm-gui:
+  name: '&8[ &6Confirm &8]'
+  rows: 3
+  background:
+    material: BLACK_STAINED_GLASS_PANE
+    name: ' '
+  reward-slot: 13
+  cancel-button:
+    slot: 11
+    material: RED_STAINED_GLASS_PANE
+    name: '&cCancel'
+    lore:
+      - '&7Click to cancel.'
+  confirm-button:
+    slot: 15
+    material: LIME_STAINED_GLASS_PANE
+    name: '&aConfirm'
+    lore:
+      - '&7Click to claim this reward.'
+
+rewards:
+  diamond:
+    slot: 10
+    icon:
+      material: DIAMOND
+      name: '&bDiamond x3'
+      lore:
+        - '&7Click to select this reward.'
+    items:
+      - material: DIAMOND
+        amount: 3
+
+  emerald_kit:
+    slot: 12
+    icon:
+      material: EMERALD
+      name: '&aEmerald Kit'
+      lore:
+        - '&75x Emerald + command reward.'
+    items:
+      - material: EMERALD
+        amount: 5
+
+  netherite_helmet:
+    slot: 14
+    icon:
+      material: NETHERITE_HELMET
+      name: '&5Netherite Helmet'
+      lore:
+        - '&7A powerful helmet.'
+      enchantments:
+        protection: 4

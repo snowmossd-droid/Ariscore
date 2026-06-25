@@ -59,4 +59,4 @@ public class ArisCoreExpansion extends PlaceholderExpansion {
                 return null;
         }
     }
-                    }
+}
