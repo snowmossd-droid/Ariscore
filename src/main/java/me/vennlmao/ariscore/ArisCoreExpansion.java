@@ -41,6 +41,14 @@ public class ArisCoreExpansion extends PlaceholderExpansion {
                 return plugin.getTeamModule().getTeamManager().hasTeam(player.getUniqueId()) ? "true" : "false";
             }
 
+            case "keyall_time": {
+                if (plugin.getCratesModule() == null) return "N/A";
+                long seconds = plugin.getCratesModule().getKeyAllManager().getSecondsUntilNextRun();
+                long minutes = seconds / 60;
+                long secs = seconds % 60;
+                return minutes + "m " + secs + "s";
+            }
+
             default:
                 if (params.startsWith("crates_key_")) {
                     if (plugin.getCratesModule() == null) return "0";
@@ -51,4 +59,4 @@ public class ArisCoreExpansion extends PlaceholderExpansion {
                 return null;
         }
     }
-}
+                    }
