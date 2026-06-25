@@ -7,6 +7,7 @@ import me.vennlmao.ariscore.crates.models.GamerModel;
 import me.vennlmao.ariscore.crates.models.GuiButton;
 import me.vennlmao.ariscore.crates.models.RewardInfo;
 import me.vennlmao.ariscore.crates.utils.FoliaUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -124,4 +125,4 @@ public class ConfirmRewardView implements InventoryHolder {
             }
         }
     }
-}
+    }
