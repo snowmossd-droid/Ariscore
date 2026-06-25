@@ -1,0 +1,137 @@
+warmup: 5
+cancel_distance: 0.1
+cooldown: 300
+
+sounds:
+  open_gui:
+    sound: BLOCK_CHEST_OPEN
+    volume: 1.0
+    pitch: 1.0
+  click:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+  teleport_success:
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1.0
+    pitch: 1.0
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  countdown:
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 1.0
+    pitch: 1.2
+  cancel:
+    sound: BLOCK_NOTE_BLOCK_BASS
+    volume: 1.0
+    pitch: 0.8
+  damaged:
+    sound: ENTITY_PLAYER_HURT
+    volume: 1.0
+    pitch: 1.0
+
+messages:
+  cooldown:
+    - "&#FF5555Bạn cần chờ &e{seconds}s &ctrước khi dùng /rtp lại."
+  cooldown_ab: "&#FF5555Còn &e{seconds}s &ctới khi hết cooldown"
+  warmup:
+    - "&7Đang tìm vị trí ngẫu nhiên... &eTeleport sau &6{seconds}s&7."
+  warmup_ab: "&7Teleport sau &e{seconds}s&7..."
+  teleport_success:
+    - "&#55FF55Đã dịch chuyển ngẫu nhiên đến &e{world}&7!"
+  teleport_success_ab: "&#55FF55Đã dịch chuyển!"
+  teleport_cancelled_moved:
+    - "&cDịch chuyển bị huỷ! &7Bạn đã di chuyển."
+  teleport_cancelled_moved_ab: "&cBị huỷ! &7Bạn đã di chuyển."
+  teleport_cancelled_damaged:
+    - "&cDịch chuyển bị huỷ! &7Bạn bị tấn công."
+  teleport_cancelled_damaged_ab: "&cBị huỷ! &7Bạn bị tấn công."
+  world_disabled:
+    - "&#FF5555World này chưa được bật trong RTP."
+  no_safe_location:
+    - "&#FF5555Không tìm được vị trí an toàn, thử lại sau."
+  no_safe_location_ab: "&#FF5555Không tìm được vị trí!"
+
+gui:
+  main:
+    title: "&8ʀᴀɴᴅᴏᴍ ᴛᴇʟᴇᴘᴏʀᴛɪɴɢ"
+    size: 27
+  world_select:
+    title: "&8ᴄʜᴏᴏsᴇ ᴛʜᴇ ᴡᴏʀʟᴅ"
+    size: 27
+
+worlds:
+  overworld:
+    display-name: "&#55FF55ᴏᴠᴇʀᴡᴏʀʟᴅ"
+    material: GRASS_BLOCK
+    slot: 11
+    lore:
+      - "&7Chọn world overworld"
+      - "&7để teleport ngẫu nhiên."
+    has_sub_worlds: true
+    sub_worlds:
+      world_1:
+        display-name: "&#55FF55ᴡᴏʀʟᴅ &71"
+        material: GRASS_BLOCK
+        slot: 11
+        world: world
+        min_x: -5000
+        max_x: 5000
+        min_z: -5000
+        max_z: 5000
+        min_y: 60
+        max_y: 250
+      world_2:
+        display-name: "&#55FF55ᴡᴏʀʟᴅ &72"
+        material: BIRCH_LOG
+        slot: 13
+        world: world_2
+        min_x: -5000
+        max_x: 5000
+        min_z: -5000
+        max_z: 5000
+        min_y: 60
+        max_y: 250
+      world_3:
+        display-name: "&#55FF55ᴡᴏʀʟᴅ &73"
+        material: OAK_LOG
+        slot: 15
+        world: world_3
+        min_x: -5000
+        max_x: 5000
+        min_z: -5000
+        max_z: 5000
+        min_y: 60
+        max_y: 250
+  nether:
+    display-name: "&#FF5555ɴᴇᴛʜᴇʀ"
+    material: NETHERRACK
+    slot: 13
+    lore:
+      - "&7Teleport ngẫu nhiên đến"
+      - "&7thế giới Nether."
+    has_sub_worlds: false
+    world: world_nether
+    min_x: -3000
+    max_x: 3000
+    min_z: -3000
+    max_z: 3000
+    min_y: 30
+    max_y: 120
+  end:
+    display-name: "&#FFFF55ᴇɴᴅ"
+    material: END_STONE
+    slot: 15
+    lore:
+      - "&7Teleport ngẫu nhiên đến"
+      - "&7thế giới The End."
+    has_sub_worlds: false
+    world: world_the_end
+    min_x: -1000
+    max_x: 1000
+    min_z: -1000
+    max_z: 1000
+    min_y: 40
+    max_y: 100
