@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -24,6 +25,7 @@ public class CrateEditView implements InventoryHolder {
     private final CrateModel crateModel;
     private final Inventory inventory;
     private final Map<Integer, RewardInfo> rewardSlots = new HashMap<>();
+    private boolean dirty = false;
 
     private CrateEditView(CratesModule module, CrateModel crateModel) {
         this.module = module;
@@ -57,29 +59,45 @@ public class CrateEditView implements InventoryHolder {
         @EventHandler
         public void onClick(InventoryClickEvent event) {
             if (!(event.getInventory().getHolder() instanceof CrateEditView view)) return;
-            event.setCancelled(true);
+
+            int rawSlot = event.getRawSlot();
+            boolean clickedTopInventory = rawSlot >= 0 && rawSlot < view.inventory.getSize();
+            if (!clickedTopInventory) return;
 
             if (!(event.getWhoClicked() instanceof Player player)) return;
-            int slot = event.getRawSlot();
-            if (slot < 0 || slot >= view.inventory.getSize()) return;
 
-            ItemStack hand = player.getInventory().getItemInMainHand();
-            if (hand.getType() == Material.AIR) {
-                module.getMessageUtil().send(player, "edit-no-item");
-                module.getMessageUtil().playSound(player, "error");
-                return;
-            }
-
-            RewardInfo existing = view.rewardSlots.get(slot);
-            String rewardId = existing != null
-                    ? module.getCrateConfigManager().findRewardId(view.crateModel.getName(), slot)
-                    : "reward_" + slot;
-
-            module.getCrateConfigManager().addItemToReward(view.crateModel.getName(), rewardId, hand.clone());
-            module.getMessageUtil().send(player, "edit-item-added");
+            event.setCancelled(false);
             module.getMessageUtil().playSound(player, "click");
+
+            FoliaUtil.runForEntity(module.getPlugin(), player, () ->
+                    view.markSlotDirty(player, rawSlot));
+        }
+
+        @EventHandler
+        public void onClose(InventoryCloseEvent event) {
+            if (!(event.getInventory().getHolder() instanceof CrateEditView view)) return;
+            if (!view.dirty) return;
 
             module.reload();
         }
     }
-}
+
+    private void markSlotDirty(Player player, int slot) {
+        dirty = true;
+
+        ItemStack current = inventory.getItem(slot);
+        RewardInfo existing = rewardSlots.get(slot);
+        String rewardId = existing != null
+                ? module.getCrateConfigManager().findRewardId(crateModel.getName(), slot)
+                : "reward_" + slot;
+
+        if (current == null || current.getType() == Material.AIR) {
+            module.getCrateConfigManager().clearReward(crateModel.getName(), rewardId);
+            rewardSlots.remove(slot);
+            module.getMessageUtil().send(player, "edit-item-removed");
+        } else {
+            module.getCrateConfigManager().setRewardItem(crateModel.getName(), rewardId, slot, current.clone());
+            module.getMessageUtil().send(player, "edit-item-added");
+        }
+    }
+                }
