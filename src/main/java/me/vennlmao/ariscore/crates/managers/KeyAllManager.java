@@ -21,6 +21,8 @@ public class KeyAllManager {
     private final CratesModule module;
     private ScheduledExecutorService scheduler;
     private ScheduledFuture<?> task;
+    private volatile long nextRunMillis;
+    private volatile long intervalMillis;
 
     public KeyAllManager(CratesModule module) {
         this.module = module;
@@ -30,9 +32,15 @@ public class KeyAllManager {
         KeyAllConfig cfg = buildConfig();
         if (cfg == null) return;
 
+        intervalMillis = cfg.getIntervalSeconds() * 1000L;
+        nextRunMillis = System.currentTimeMillis() + intervalMillis;
+
         scheduler = new ScheduledThreadPoolExecutor(1);
         task = scheduler.scheduleAtFixedRate(
-                () -> runKeyAll(cfg),
+                () -> {
+                    nextRunMillis = System.currentTimeMillis() + intervalMillis;
+                    runKeyAll(cfg);
+                },
                 cfg.getIntervalSeconds(),
                 cfg.getIntervalSeconds(),
                 TimeUnit.SECONDS
@@ -42,6 +50,12 @@ public class KeyAllManager {
     public void stop() {
         if (task != null) task.cancel(false);
         if (scheduler != null) scheduler.shutdownNow();
+    }
+
+    public long getSecondsUntilNextRun() {
+        if (nextRunMillis == 0) return 0;
+        long remaining = (nextRunMillis - System.currentTimeMillis()) / 1000L;
+        return Math.max(remaining, 0);
     }
 
     private void runKeyAll(KeyAllConfig cfg) {
@@ -95,4 +109,4 @@ public class KeyAllManager {
 
         return new KeyAllConfig(interval, keyRewards, title, subtitle);
     }
-}
+    }
