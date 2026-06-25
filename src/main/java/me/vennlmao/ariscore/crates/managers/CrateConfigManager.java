@@ -212,6 +212,46 @@ public class CrateConfigManager {
         }
     }
 
+    public void setRewardItem(String crateName, String rewardId, int slot, ItemStack item) {
+        File file = getCrateFile(crateName);
+        if (!file.exists()) return;
+
+        FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+        String path = "rewards." + rewardId;
+
+        cfg.set(path + ".slot", slot);
+        cfg.set(path + ".icon.material", item.getType().name());
+        cfg.set(path + ".icon.name", item.hasItemMeta() && item.getItemMeta().hasDisplayName()
+                ? item.getItemMeta().getDisplayName() : item.getType().name());
+
+        List<Object> itemList = new ArrayList<>();
+        java.util.Map<String, Object> itemMap = new java.util.LinkedHashMap<>();
+        itemMap.put("material", item.getType().name());
+        itemMap.put("amount", item.getAmount());
+        itemList.add(itemMap);
+        cfg.set(path + ".items", itemList);
+
+        try {
+            cfg.save(file);
+        } catch (Exception e) {
+            module.getPlugin().getLogger().warning("[Crates] Failed to save crate '" + crateName + "': " + e.getMessage());
+        }
+    }
+
+    public void clearReward(String crateName, String rewardId) {
+        File file = getCrateFile(crateName);
+        if (!file.exists()) return;
+
+        FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+        cfg.set("rewards." + rewardId, null);
+
+        try {
+            cfg.save(file);
+        } catch (Exception e) {
+            module.getPlugin().getLogger().warning("[Crates] Failed to save crate '" + crateName + "': " + e.getMessage());
+        }
+    }
+
     private int nextFreeSlot(FileConfiguration cfg) {
         ConfigurationSection rewardsSection = cfg.getConfigurationSection("rewards");
         java.util.Set<Integer> used = new java.util.HashSet<>();
@@ -226,4 +266,4 @@ public class CrateConfigManager {
         }
         return 0;
     }
-}
+                                              }
