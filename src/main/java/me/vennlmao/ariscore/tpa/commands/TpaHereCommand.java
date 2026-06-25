@@ -75,7 +75,6 @@ public class TpaHereCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        // Gửi chat message có click cho người nhận — click sẽ mở GUI accept
         sendClickableRequest(target, player);
         MessageUtil.sendChatList(target, "request_received_tpahere",
                 s -> s.replace("{player}", player.getName()));
@@ -114,4 +113,4 @@ public class TpaHereCommand implements CommandExecutor, TabCompleter {
         }
         return List.of();
     }
-}
+                                   }
