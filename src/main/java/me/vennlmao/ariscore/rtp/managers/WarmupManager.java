@@ -18,6 +18,7 @@ public class WarmupManager {
     private final Map<UUID, Location> warmupLocations = new HashMap<>();
     private final Map<UUID, Integer> warmupCountdowns = new HashMap<>();
     private final Map<UUID, Location> targetLocations = new HashMap<>();
+    private final Map<UUID, String> targetWorlds = new HashMap<>();
 
     public WarmupManager(RtpModule plugin) {
         this.plugin = plugin;
@@ -30,26 +31,39 @@ public class WarmupManager {
         warmupLocations.put(id, player.getLocation().clone());
         warmupCountdowns.put(id, seconds);
         targetLocations.put(id, destination);
+        targetWorlds.put(id, worldName);
 
         sendCountdown(player, seconds);
 
         ScheduledTask task = player.getScheduler().runAtFixedRate(plugin.getPlugin(), scheduledTask -> {
             if (!player.isOnline()) {
-                cancelWarmup(id);
+                cleanupMaps(id);
+                scheduledTask.cancel();
                 return;
             }
 
             int remaining = warmupCountdowns.getOrDefault(id, 0) - 1;
 
             if (remaining <= 0) {
-                cancelWarmup(id);
                 Location dest = targetLocations.remove(id);
+                String world = targetWorlds.remove(id);
+                warmupLocations.remove(id);
+                warmupCountdowns.remove(id);
+                warmupTasks.remove(id);
+                scheduledTask.cancel();
+
                 if (dest == null) return;
-                player.teleportAsync(dest);
-                MessageUtil.sendChatList(player, "teleport_success",
-                        s -> s.replace("{world}", worldName));
-                MessageUtil.sendActionbar(player, "teleport_success_ab");
-                SoundUtil.play(player, "teleport_success");
+
+                player.teleportAsync(dest).thenAccept(success -> {
+                    if (!success) return;
+                    player.getScheduler().run(plugin.getPlugin(), t -> {
+                        plugin.getCooldownManager().setCooldown(player.getUniqueId());
+                        MessageUtil.sendChatList(player, "teleport_success",
+                                s -> s.replace("{world}", world != null ? world : ""));
+                        MessageUtil.sendActionbar(player, "teleport_success_ab");
+                        SoundUtil.play(player, "teleport_success");
+                    }, null);
+                });
                 return;
             }
 
@@ -69,12 +83,21 @@ public class WarmupManager {
         SoundUtil.play(player, "countdown");
     }
 
+    private void cleanupMaps(UUID id) {
+        warmupLocations.remove(id);
+        warmupCountdowns.remove(id);
+        targetLocations.remove(id);
+        targetWorlds.remove(id);
+        warmupTasks.remove(id);
+    }
+
     public void cancelWarmup(UUID id) {
         ScheduledTask task = warmupTasks.remove(id);
         if (task != null) task.cancel();
         warmupLocations.remove(id);
         warmupCountdowns.remove(id);
         targetLocations.remove(id);
+        targetWorlds.remove(id);
     }
 
     public boolean isInWarmup(Player player) {
@@ -91,5 +114,6 @@ public class WarmupManager {
         warmupLocations.clear();
         warmupCountdowns.clear();
         targetLocations.clear();
+        targetWorlds.clear();
     }
 }
