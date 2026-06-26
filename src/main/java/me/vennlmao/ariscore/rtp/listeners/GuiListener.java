@@ -120,6 +120,10 @@ public class GuiListener implements Listener {
             return;
         }
 
+        MessageUtil.sendChatList(player, "searching_location");
+        MessageUtil.sendActionbar(player, "searching_location_ab");
+        SoundUtil.play(player, "searching");
+
         LocationFinder.findSafe(world, sec).thenAccept(location -> {
             if (location == null) {
                 player.getScheduler().run(plugin.getPlugin(), t -> {
@@ -131,9 +135,8 @@ public class GuiListener implements Listener {
             }
 
             player.getScheduler().run(plugin.getPlugin(), t -> {
-                plugin.getCooldownManager().setCooldown(player.getUniqueId());
                 plugin.getWarmupManager().startWarmup(player, location, worldName);
             }, null);
         });
     }
-    }
+            }
