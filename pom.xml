@@ -137,15 +137,15 @@
                     <relocations>
                         <relocation>
                             <pattern>com.zaxxer.hikari</pattern>
-                            <shadedPattern>me.vennlmao.ariscore.libs.hikari</shadedPattern>
+                            <shadedPattern>libs.hikari</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>fr.mrmicky.fastboard</pattern>
-                            <shadedPattern>me.vennlmao.ariscore.libs.fastboard</shadedPattern>
+                            <shadedPattern>libs.fastboard</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>dev.respark.licensegate</pattern>
-                            <shadedPattern>me.vennlmao.ariscore.libs.licensegate</shadedPattern>
+                            <shadedPattern>libs.licensegate</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
