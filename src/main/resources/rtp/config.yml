@@ -68,8 +68,10 @@ worlds:
     material: GRASS_BLOCK
     slot: 11
     lore:
-      - "&7Chọn world overworld"
-      - "&7để teleport ngẫu nhiên."
+      - "&fClick to randomly teleport"
+      - ""
+      - "&7Players: &b{players}"
+      - "&7Ping: &b{ping}ms"
     has_sub_worlds: true
     sub_worlds:
       world_1:
@@ -83,6 +85,11 @@ worlds:
         max_z: 5000
         min_y: 60
         max_y: 250
+        lore:
+          - "&fClick to randomly teleport"
+          - ""
+          - "&7Players: &b{players}"
+          - "&7Ping: &b{ping}ms"
       world_2:
         display-name: "&#55FF55ᴡᴏʀʟᴅ &72"
         material: BIRCH_LOG
@@ -94,6 +101,11 @@ worlds:
         max_z: 5000
         min_y: 60
         max_y: 250
+        lore:
+          - "&fClick to randomly teleport"
+          - ""
+          - "&7Players: &b{players}"
+          - "&7Ping: &b{ping}ms"
       world_3:
         display-name: "&#55FF55ᴡᴏʀʟᴅ &73"
         material: OAK_LOG
@@ -105,13 +117,20 @@ worlds:
         max_z: 5000
         min_y: 60
         max_y: 250
+        lore:
+          - "&fClick to randomly teleport"
+          - ""
+          - "&7Players: &b{players}"
+          - "&7Ping: &b{ping}ms"
   nether:
     display-name: "&#FF5555ɴᴇᴛʜᴇʀ"
     material: NETHERRACK
     slot: 13
     lore:
-      - "&7Teleport ngẫu nhiên đến"
-      - "&7thế giới Nether."
+      - "&fClick to randomly teleport"
+      - ""
+      - "&7Players: &b{players}"
+      - "&7Ping: &b{ping}ms"
     has_sub_worlds: false
     world: world_nether
     min_x: -3000
@@ -125,8 +144,10 @@ worlds:
     material: END_STONE
     slot: 15
     lore:
-      - "&7Teleport ngẫu nhiên đến"
-      - "&7thế giới The End."
+      - "&fClick to randomly teleport"
+      - ""
+      - "&7Players: &b{players}"
+      - "&7Ping: &b{ping}ms"
     has_sub_worlds: false
     world: world_the_end
     min_x: -1000
@@ -135,3 +156,4 @@ worlds:
     max_z: 1000
     min_y: 40
     max_y: 100
+    
