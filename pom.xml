@@ -47,8 +47,9 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>respark-repo</id>
-            <url>https://repo.respark.dev/releases</url>
+            <id>respark-releases</id>
+            <name>Respark - Maven Repository</name>
+            <url>https://maven.respark.dev/releases</url>
         </repository>
     </repositories>
 
@@ -111,6 +112,7 @@
             <groupId>dev.respark.licensegate</groupId>
             <artifactId>license-gate</artifactId>
             <version>1.0.4</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -141,6 +143,10 @@
                             <pattern>fr.mrmicky.fastboard</pattern>
                             <shadedPattern>me.vennlmao.ariscore.libs.fastboard</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>dev.respark.licensegate</pattern>
+                            <shadedPattern>me.vennlmao.ariscore.libs.licensegate</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
             </plugin>
@@ -153,4 +159,3 @@
         </resources>
     </build>
 </project>
-                     
