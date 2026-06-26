@@ -13,7 +13,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <vault.version>1.7</vault.version>
-        <placeholderapi.version>2.11.6</placeholderapi.version>
+        <placeholderapi.version>2.12.2</placeholderapi.version>
         <worldguard.version>7.0.12</worldguard.version>
         <hikari.version>5.1.0</hikari.version>
         <sqlite.version>3.45.3.0</sqlite.version>
@@ -159,3 +159,4 @@
         </resources>
     </build>
 </project>
+                                
