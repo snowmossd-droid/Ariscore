@@ -34,10 +34,10 @@ public class RtpCommand implements CommandExecutor {
         }
 
         player.getScheduler().run(plugin.getPlugin(), t -> {
-            player.openInventory(GuiUtil.buildMainGui(plugin));
+            player.openInventory(GuiUtil.buildMainGui(plugin, player));
             SoundUtil.play(player, "open_gui");
         }, null);
 
         return true;
     }
-}
+                             }
