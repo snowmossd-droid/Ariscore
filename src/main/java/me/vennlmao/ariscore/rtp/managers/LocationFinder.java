@@ -14,12 +14,12 @@ public class LocationFinder {
     private static final int MAX_ATTEMPTS = 20;
 
     public static CompletableFuture<Location> findSafe(World world, ConfigurationSection sec) {
-        int minX = sec.getInt("min_x", -5000);
-        int maxX = sec.getInt("max_x", 5000);
-        int minZ = sec.getInt("min_z", -5000);
-        int maxZ = sec.getInt("max_z", 5000);
-        int minY = sec.getInt("min_y", 60);
-        int maxY = sec.getInt("max_y", 250);
+        int minX = sec.getInt("min_x");
+        int maxX = sec.getInt("max_x");
+        int minZ = sec.getInt("min_z");
+        int maxZ = sec.getInt("max_z");
+        int minY = sec.getInt("min_y");
+        int maxY = sec.getInt("max_y");
 
         return tryAttempt(world, minX, maxX, minZ, maxZ, minY, maxY, 0);
     }
@@ -32,13 +32,12 @@ public class LocationFinder {
             return CompletableFuture.completedFuture(null);
         }
 
-        int x = minX + RANDOM.nextInt(maxX - minX + 1);
-        int z = minZ + RANDOM.nextInt(maxZ - minZ + 1);
+        int rangeX = Math.abs(maxX - minX);
+        int rangeZ = Math.abs(maxZ - minZ);
+        int x = minX + (rangeX > 0 ? RANDOM.nextInt(rangeX + 1) : 0);
+        int z = minZ + (rangeZ > 0 ? RANDOM.nextInt(rangeZ + 1) : 0);
 
-        int chunkX = x >> 4;
-        int chunkZ = z >> 4;
-
-        return world.getChunkAtAsync(chunkX, chunkZ).thenCompose(chunk -> {
+        return world.getChunkAtAsync(x >> 4, z >> 4).thenCompose(chunk -> {
             int highestY = world.getHighestBlockYAt(x, z);
 
             if (highestY < minY || highestY > maxY) {
@@ -65,4 +64,4 @@ public class LocationFinder {
                 && mat != Material.WITHER_ROSE
                 && mat != Material.SWEET_BERRY_BUSH;
     }
-                }
+    }
