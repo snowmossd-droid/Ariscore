@@ -72,7 +72,7 @@ public class GuiListener implements Listener {
             boolean hasSub = sec.getBoolean("has_sub_worlds", false);
             if (hasSub) {
                 player.getScheduler().run(plugin.getPlugin(), t -> {
-                    player.openInventory(GuiUtil.buildSubWorldGui(plugin, key));
+                    player.openInventory(GuiUtil.buildSubWorldGui(plugin, key, player));
                     SoundUtil.play(player, "click");
                 }, null);
             } else {
@@ -136,4 +136,4 @@ public class GuiListener implements Listener {
             }, null);
         });
     }
-}
+    }
