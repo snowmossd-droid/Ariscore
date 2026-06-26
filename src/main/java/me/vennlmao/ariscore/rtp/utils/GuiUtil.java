@@ -4,7 +4,9 @@ import me.vennlmao.ariscore.rtp.RtpModule;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,7 +16,7 @@ import java.util.List;
 
 public class GuiUtil {
 
-    public static Inventory buildMainGui(RtpModule plugin) {
+    public static Inventory buildMainGui(RtpModule plugin, Player player) {
         String title = plugin.getConfig().getString("gui.main.title", "");
         int size = plugin.getConfig().getInt("gui.main.size", 27);
         Inventory inv = Bukkit.createInventory(null, size, MessageUtil.parse(title));
@@ -27,13 +29,15 @@ public class GuiUtil {
             if (sec == null) continue;
             int slot = sec.getInt("slot", 0);
             if (slot < 0 || slot >= size) continue;
-            inv.setItem(slot, buildItem(sec));
+
+            String worldName = sec.getString("world", "");
+            inv.setItem(slot, buildItem(sec, player, worldName));
         }
 
         return inv;
     }
 
-    public static Inventory buildSubWorldGui(RtpModule plugin, String worldKey) {
+    public static Inventory buildSubWorldGui(RtpModule plugin, String worldKey, Player player) {
         String title = plugin.getConfig().getString("gui.world_select.title", "");
         int size = plugin.getConfig().getInt("gui.world_select.size", 27);
         Inventory inv = Bukkit.createInventory(null, size, MessageUtil.parse(title));
@@ -47,13 +51,15 @@ public class GuiUtil {
             if (sec == null) continue;
             int slot = sec.getInt("slot", 0);
             if (slot < 0 || slot >= size) continue;
-            inv.setItem(slot, buildItem(sec));
+
+            String worldName = sec.getString("world", "");
+            inv.setItem(slot, buildItem(sec, player, worldName));
         }
 
         return inv;
     }
 
-    private static ItemStack buildItem(ConfigurationSection sec) {
+    private static ItemStack buildItem(ConfigurationSection sec, Player player, String worldName) {
         String matName = sec.getString("material", "STONE");
         Material mat = Material.matchMaterial(matName);
         if (mat == null) mat = Material.STONE;
@@ -65,9 +71,21 @@ public class GuiUtil {
         String displayName = sec.getString("display-name", "");
         meta.displayName(MessageUtil.parse(displayName));
 
+        int playerCount = 0;
+        if (!worldName.isEmpty()) {
+            World world = Bukkit.getWorld(worldName);
+            if (world != null) playerCount = world.getPlayers().size();
+        }
+
+        int ping = player.getPing();
+        final int finalPlayerCount = playerCount;
+
         List<Component> lore = new ArrayList<>();
         for (String line : sec.getStringList("lore")) {
-            lore.add(MessageUtil.parse(line));
+            String replaced = line
+                    .replace("{players}", String.valueOf(finalPlayerCount))
+                    .replace("{ping}", String.valueOf(ping));
+            lore.add(MessageUtil.parse(replaced));
         }
         meta.lore(lore);
 
@@ -81,4 +99,4 @@ public class GuiUtil {
                 .replaceAll("&#[0-9A-Fa-f]{6}", "")
                 .trim();
     }
-}
+            }
