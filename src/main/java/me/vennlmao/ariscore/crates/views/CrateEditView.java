@@ -25,7 +25,6 @@ public class CrateEditView implements InventoryHolder {
     private final CrateModel crateModel;
     private final Inventory inventory;
     private final Map<Integer, RewardInfo> rewardSlots = new HashMap<>();
-    private boolean dirty = false;
 
     private CrateEditView(CratesModule module, CrateModel crateModel) {
         this.module = module;
@@ -66,38 +65,49 @@ public class CrateEditView implements InventoryHolder {
 
             if (!(event.getWhoClicked() instanceof Player player)) return;
 
-            event.setCancelled(false);
             module.getMessageUtil().playSound(player, "click");
-
-            FoliaUtil.runForEntity(module.getPlugin(), player, () ->
-                    view.markSlotDirty(player, rawSlot));
         }
 
         @EventHandler
         public void onClose(InventoryCloseEvent event) {
             if (!(event.getInventory().getHolder() instanceof CrateEditView view)) return;
-            if (!view.dirty) return;
+            if (!(event.getPlayer() instanceof Player player)) return;
 
-            module.reload();
+            view.saveAllSlots(player);
         }
     }
 
-    private void markSlotDirty(Player player, int slot) {
-        dirty = true;
+    private void saveAllSlots(Player player) {
+        boolean anyChange = false;
 
-        ItemStack current = inventory.getItem(slot);
-        RewardInfo existing = rewardSlots.get(slot);
-        String rewardId = existing != null
-                ? module.getCrateConfigManager().findRewardId(crateModel.getName(), slot)
-                : "reward_" + slot;
+        for (int slot = 0; slot < inventory.getSize(); slot++) {
+            ItemStack current = inventory.getItem(slot);
+            RewardInfo existing = rewardSlots.get(slot);
 
-        if (current == null || current.getType() == Material.AIR) {
-            module.getCrateConfigManager().clearReward(crateModel.getName(), rewardId);
-            rewardSlots.remove(slot);
-            module.getMessageUtil().send(player, "edit-item-removed");
-        } else {
-            module.getCrateConfigManager().setRewardItem(crateModel.getName(), rewardId, slot, current.clone());
+            boolean slotEmpty = current == null || current.getType() == Material.AIR;
+
+            if (existing == null && slotEmpty) {
+                continue;
+            }
+
+            String rewardId = existing != null
+                    ? module.getCrateConfigManager().findRewardId(crateModel.getName(), slot)
+                    : "reward_" + slot;
+
+            if (slotEmpty) {
+                module.getCrateConfigManager().clearReward(crateModel.getName(), rewardId);
+                rewardSlots.remove(slot);
+                anyChange = true;
+            } else if (existing == null || !current.isSimilar(existing.getIcon()) || current.getAmount() != existing.getIcon().getAmount()) {
+                module.getCrateConfigManager().setRewardItem(crateModel.getName(), rewardId, slot, current.clone());
+                anyChange = true;
+            }
+        }
+
+        if (anyChange) {
             module.getMessageUtil().send(player, "edit-item-added");
+            module.getCrateConfigManager().reloadSingleCrate(crateModel.getName());
         }
     }
-}
+    }
+             
