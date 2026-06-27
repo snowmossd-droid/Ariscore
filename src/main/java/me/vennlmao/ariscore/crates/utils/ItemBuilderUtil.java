@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class ItemBuilderUtil {
 
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
+    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacySection();
     private static final MiniMessage MM = MiniMessage.miniMessage();
 
     public static ItemStack fromSection(ConfigurationSection section) {
@@ -98,4 +98,5 @@ public class ItemBuilderUtil {
         }
         return item;
     }
-}
+    }
+            
