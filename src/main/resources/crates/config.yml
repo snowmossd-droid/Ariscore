@@ -1,0 +1,61 @@
+mysql:
+  enabled: false
+  host: "host"
+  port: 3306
+  database: "database"
+  username: "username"
+  password: "password"
+  table-prefix: "ariscore_"
+  table-name: ""
+  use-ssl: false
+
+sqlite:
+  enabled: true
+
+automatic-key-all:
+  time: 300
+  keys:
+    example-crate: 1
+  message:
+    title: '&aKey All'
+    subtitle: '&a1 Example key'
+
+messages:
+  no-permission: '&cYou do not have permission.'
+  player-not-found: '&cPlayer not found.'
+  crate-not-found: '&cCrate not found.'
+  player-data-not-loaded: '&cPlayer data not loaded yet, try again.'
+  invalid-amount: '&cInvalid amount.'
+  usage-givekey: '&eUsage: /crates givekey <player> <crate> [amount]'
+  usage-get: '&eUsage: /crates get <crate>'
+  usage-edit: '&eUsage: /crates edit <crate>'
+  usage-help:
+    - '&e/crates reload'
+    - '&e/crates givekey <player> <crate> [amount]'
+    - '&e/crates get <crate>'
+    - '&e/crates edit <crate>'
+  reloaded: '&aCrates reloaded.'
+  key-given: '&aGave &f{amount}x {crate} &akeys to &f{player}&a.'
+  crate-received: '&aReceived crate item &f{crate}&a in your inventory.'
+  no-keys: '&cYou do not have any keys for this crate!'
+  players-only: '&cOnly players can use this command.'
+  edit-no-item: '&cHold an item in your hand first.'
+  edit-item-added: '&aItem added to the reward.'
+
+sounds:
+  click:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  keyall:
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 1.0
+    pitch: 1.0
+  purchase_success:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.0

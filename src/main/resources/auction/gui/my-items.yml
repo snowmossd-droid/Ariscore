@@ -1,0 +1,49 @@
+title: '&#00fc88Your Auctions &8(Page %page%/%total%)'
+size: 54
+auto-update-ticks: 20
+
+auction-slots:
+  - '0-44'
+
+filler:
+  enabled: true
+  material: GRAY_STAINED_GLASS_PANE
+  name: ' '
+  slots:
+    - 45
+    - 46
+    - 47
+    - 48
+    - 49
+    - 50
+    - 51
+    - 52
+    - 53
+
+previous-page:
+  slot: 45
+  material: ARROW
+  name: '&#00fc88← Previous'
+  lore: []
+
+next-page:
+  slot: 53
+  material: ARROW
+  name: '&#00fc88Next →'
+  lore: []
+
+info:
+  slot: 49
+  material: PAPER
+  name: '&#00fc88Your Listings'
+  lore:
+    - '&7Active: &#00fc88%sell_count%&7/&#00fc88%sell_limit%'
+    - ''
+    - '&eLeft-click &7an item to retrieve it'
+
+transactions:
+  slot: 51
+  material: WRITABLE_BOOK
+  name: '&#00fc88Transaction History'
+  lore:
+    - '&7Click to view your transactions'
