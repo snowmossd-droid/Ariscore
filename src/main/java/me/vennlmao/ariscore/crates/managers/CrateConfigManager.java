@@ -48,6 +48,27 @@ public class CrateConfigManager {
         loadLocations();
     }
 
+    public void reloadSingleCrate(String crateName) {
+        File file = getCrateFile(crateName);
+        if (!file.exists()) return;
+
+        try {
+            FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+            CrateModel updated = buildCrate(cfg, crateName);
+
+            CrateModel previous = module.getCrateRegistry().find(crateName);
+            if (previous != null) {
+                for (Location loc : previous.getLocations()) {
+                    updated.addLocation(loc);
+                }
+            }
+
+            module.getCrateRegistry().cache(updated);
+        } catch (Exception e) {
+            module.getPlugin().getLogger().warning("[Crates] Failed to reload crate '" + crateName + "': " + e.getMessage());
+        }
+    }
+
     private CrateModel buildCrate(FileConfiguration cfg, String name) {
         RewardsGuiConfig rewardsGui = buildRewardsGui(cfg.getConfigurationSection("rewards-gui"));
 
@@ -260,4 +281,5 @@ public class CrateConfigManager {
             module.getPlugin().getLogger().warning("[Crates] Failed to save crate '" + crateName + "': " + e.getMessage());
         }
     }
-}
+    }
+                    
