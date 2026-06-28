@@ -157,7 +157,7 @@ public class AmethystItemManager {
 
     public void refreshLore(ItemStack item) {
         String toolType = getToolType(item);
-        if (toolType == null || toolType.equals("firework") || toolType.equals("fun")) return;
+        if (toolType == null || toolType.equals("firework")) return;
 
         ConfigurationSection section = module.getConfig().getConfigurationSection("tools." + toolType);
         if (section == null) return;
@@ -200,4 +200,5 @@ public class AmethystItemManager {
         return LEGACY.deserialize(ColorUtil.translate(text))
                 .decoration(TextDecoration.ITALIC, false);
     }
-}
+    }
+                 
