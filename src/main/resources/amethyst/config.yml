@@ -1,0 +1,152 @@
+messages:
+  no-permission: '&cYou do not have permission.'
+  player-not-found: '&cPlayer not found.'
+  invalid-tool: '&cInvalid tool. Use: pickaxe, axe, shovel, bucket, booster, firework, multitool, treechopper, magichoe, fun'
+  invalid-time-format: '&cInvalid time format. Example: 3d12h30m10s'
+  usage-give: '&eUsage: /amethyst give <player> <tool>'
+  usage-self: '&eUsage: /amethyst self <time, e.g. 3d12h30m>'
+  must-hold-item: '&cYou must hold an Amethyst tool to use this.'
+  not-amethyst-item: '&cThis item cannot have a self-destruct timer.'
+  give-success: '&aGave &f{tool} &ato &f{player}&a.'
+  self-set-success: '&aSelf-destruct timer set to &f{time}&a on this item.'
+
+tools:
+  pickaxe:
+    display-name: '&#b466dfᴀᴍᴇᴛʜʏꜱᴛ ᴅʀɪʟʟ'
+    material: NETHERITE_PICKAXE
+    lore:
+      - '&7Breaks up to 9 blocks at once.'
+      - '&7Mining speed and durability of'
+      - '&7a maxed out Netherite Pickaxe.'
+    enchantments:
+      efficiency: 5
+      unbreaking: 3
+      mending: 1
+    radius: 1
+    particle:
+      type: WITCH
+      count: 20
+  axe:
+    display-name: '&#b466dfᴀᴍᴇᴛʜʏꜱᴛ ᴀxᴇ'
+    material: NETHERITE_AXE
+    lore:
+      - '&7Chops an entire tree at once,'
+      - '&7including leaves.'
+    enchantments:
+      sharpness: 5
+      efficiency: 5
+      unbreaking: 3
+      mending: 1
+    particle:
+      type: WITCH
+      count: 20
+  shovel:
+    display-name: '&#b466dfᴀᴍᴇᴛʜʏꜱᴛ ꜱʜᴏᴠᴇʟ'
+    material: NETHERITE_SHOVEL
+    lore:
+      - '&7Breaks up to 9 blocks at once.'
+    enchantments:
+      efficiency: 5
+      unbreaking: 3
+      mending: 1
+    radius: 1
+    particle:
+      type: WITCH
+      count: 20
+  bucket:
+    display-name: '&#b466dfᴀᴍᴇᴛʜʏꜱᴛ ʙᴜᴄᴋᴇᴛ'
+    material: BUCKET
+    lore:
+      - '&7Drains up to 27 water blocks'
+      - '&7at once, like a sponge.'
+    radius: 1
+  booster:
+    display-name: '&#b466dfᴀᴍᴇᴛʜʏꜱᴛ ꜱʜᴀʀᴅ ʙᴏᴏꜱᴛᴇʀ'
+    material: AMETHYST_SHARD
+    lore:
+      - '&7Use to boost your AFK shard'
+      - '&7gain by 4x for 24 hours.'
+    boost-multiplier: 4
+    boost-duration-hours: 24
+  multitool:
+    display-name: '&#b466dfᴀᴍᴇᴛʜʏꜱᴛ ᴍᴜʟᴛɪᴛᴏᴏʟ'
+    material: NETHERITE_HOE
+    lore:
+      - '&7Adapts to whatever you mine:'
+      - '&7logs, ore, dirt, or crops.'
+    enchantments:
+      efficiency: 5
+      unbreaking: 3
+      mending: 1
+    radius: 1
+    particle:
+      type: WITCH
+      count: 20
+  treechopper:
+    display-name: '&#b466dfᴀᴍᴇᴛʜʏꜱᴛ ᴛʀᴇᴇ ᴄʜᴏᴘᴘᴇʀ'
+    material: NETHERITE_AXE
+    lore:
+      - '&7Chops an entire tree at once,'
+      - '&7keeping the logs intact.'
+    enchantments:
+      silk_touch: 1
+      efficiency: 5
+      unbreaking: 3
+      mending: 1
+    particle:
+      type: WITCH
+      count: 20
+  magichoe:
+    display-name: '&#b466dfᴀᴍᴇᴛʜʏꜱᴛ ᴍᴀɢɪᴄ ʜᴏᴇ'
+    material: NETHERITE_HOE
+    lore:
+      - '&7Harvests a 3x3 of crops'
+      - '&7and replants them instantly.'
+    enchantments:
+      efficiency: 5
+      unbreaking: 3
+      mending: 1
+    radius: 1
+    particle:
+      type: HAPPY_VILLAGER
+      count: 20
+
+firework:
+  display-name: '&#b466dfᴀᴍᴇᴛʜʏꜱᴛ ꜰɪʀᴇᴡᴏʀᴋ'
+  material: FIREWORK_ROCKET
+  lore:
+    - '&7An endless supply of fireworks.'
+    - '&7Never runs out.'
+  effect:
+    type: BALL_LARGE
+    colors:
+      - PURPLE
+      - WHITE
+    flicker: true
+    trail: true
+  power: 1
+
+fun:
+  display-name: '&#b466dfᴀᴍᴇᴛʜʏꜱᴛ ꜰᴜɴ'
+  material: FIREWORK_ROCKET
+  lore:
+    - '&7Launches a random burst of'
+    - '&7colorful fireworks around you.'
+  burst-count: 5
+  burst-radius: 3
+  power: 1
+
+self-destruct:
+  enabled: true
+  countdown-lore-line: '&7Self-destructs in: &c{time}'
+  update-interval-seconds: 1
+  applies-to:
+    - pickaxe
+    - axe
+    - shovel
+    - bucket
+    - booster
+    - multitool
+    - treechopper
+    - magichoe
+  max-time-days: 30
