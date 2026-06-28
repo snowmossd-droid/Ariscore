@@ -21,8 +21,8 @@ public class AmethystCommand implements CommandExecutor, TabCompleter {
 
     private final AmethystModule module;
     private static final List<String> TOOL_TYPES = Arrays.asList(
-            "pickaxe", "axe", "shovel", "bucket", "booster", "firework",
-            "multitool", "treechopper", "magichoe", "fun");
+            "pickaxe", "shovel", "bucket", "booster", "firework",
+            "multitool", "treechopper", "magichoe");
 
     public AmethystCommand(AmethystModule module) {
         this.module = module;
@@ -73,7 +73,6 @@ public class AmethystCommand implements CommandExecutor, TabCompleter {
 
         ItemStack item = switch (toolId) {
             case "firework" -> module.getItemManager().createFireworkItem("firework", "firework");
-            case "fun" -> module.getItemManager().createFireworkItem("fun", "fun");
             default -> module.getItemManager().createTool(toolId);
         };
 
@@ -163,4 +162,5 @@ public class AmethystCommand implements CommandExecutor, TabCompleter {
 
         return new ArrayList<>();
     }
-}
+            }
+            
