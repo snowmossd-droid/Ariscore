@@ -2,16 +2,14 @@ package me.vennlmao.ariscore.amethyst.listeners;
 
 import me.vennlmao.ariscore.amethyst.AmethystModule;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,7 +17,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayDeque;
@@ -27,12 +24,10 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 public class AmethystToolListener implements Listener {
 
-    private static final Random RANDOM = new Random();
     private static final Set<Material> CROPS = Set.of(
             Material.WHEAT, Material.CARROTS, Material.POTATOES, Material.BEETROOTS,
             Material.NETHER_WART);
@@ -58,7 +53,7 @@ public class AmethystToolListener implements Listener {
 
         switch (toolType) {
             case "pickaxe", "shovel" -> breakRadius(event, player, item, toolType);
-            case "axe", "treechopper" -> breakTree(event, player, item, toolType);
+            case "treechopper" -> breakTree(event, player, item, toolType);
             case "magichoe" -> harvestCrops(event, player, item, "magichoe");
             case "multitool" -> handleMultitool(event, player, item);
             default -> {}
@@ -72,21 +67,14 @@ public class AmethystToolListener implements Listener {
             breakTree(event, player, item, "multitool");
         } else if (CROPS.contains(type)) {
             harvestCrops(event, player, item, "multitool");
-        } else if (isDirtLike(type)) {
-            breakRadius(event, player, item, "multitool");
         } else {
             breakRadius(event, player, item, "multitool");
         }
     }
 
-    private boolean isDirtLike(Material material) {
-        return material == Material.DIRT || material == Material.GRASS_BLOCK
-                || material == Material.SAND || material == Material.GRAVEL
-                || material == Material.SOUL_SAND || material == Material.SOUL_SOIL
-                || material == Material.CLAY || material == Material.MUD;
-    }
-
     private void breakRadius(BlockBreakEvent event, Player player, ItemStack item, String toolType) {
+        event.setCancelled(true);
+
         ConfigurationSection section = module.getConfig().getConfigurationSection("tools." + toolType);
         int radius = section != null ? section.getInt("radius", 1) : 1;
 
@@ -94,6 +82,7 @@ public class AmethystToolListener implements Listener {
         BlockFace face = getTargetFace(player);
 
         List<Block> toBreak = new ArrayList<>();
+        toBreak.add(center);
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
                 Block relative = offsetBlock(center, face, x, y);
@@ -107,7 +96,8 @@ public class AmethystToolListener implements Listener {
             block.breakNaturally(item);
         }
 
-        spawnParticles(player, center.getLocation(), "tools." + toolType + ".particle");
+        spawnParticles(player, center.getLocation(), "tools." + toolType);
+        playToolSound(player, center.getLocation(), "tools." + toolType);
     }
 
     private BlockFace getTargetFace(Player player) {
@@ -127,6 +117,8 @@ public class AmethystToolListener implements Listener {
     private void breakTree(BlockBreakEvent event, Player player, ItemStack item, String toolType) {
         Block origin = event.getBlock();
         if (!isLog(origin.getType())) return;
+
+        event.setCancelled(true);
 
         Set<Block> visited = new HashSet<>();
         Deque<Block> queue = new ArrayDeque<>();
@@ -155,10 +147,11 @@ public class AmethystToolListener implements Listener {
         }
 
         for (Block block : toBreak) {
-            if (!block.equals(origin)) block.breakNaturally(item);
+            block.breakNaturally(item);
         }
 
-        spawnParticles(player, origin.getLocation(), "tools." + toolType + ".particle");
+        spawnParticles(player, origin.getLocation(), "tools." + toolType);
+        playToolSound(player, origin.getLocation(), "tools." + toolType);
     }
 
     private void harvestCrops(BlockBreakEvent event, Player player, ItemStack item, String toolType) {
@@ -193,7 +186,8 @@ public class AmethystToolListener implements Listener {
             block.setBlockData(replanted);
         }
 
-        spawnParticles(player, origin.getLocation(), "tools." + toolType + ".particle");
+        spawnParticles(player, origin.getLocation(), "tools." + toolType);
+        playToolSound(player, origin.getLocation(), "tools." + toolType);
     }
 
     private boolean isLog(Material material) {
@@ -226,10 +220,7 @@ public class AmethystToolListener implements Listener {
             drainWater(player, item);
         } else if (toolType.equals("firework")) {
             event.setCancelled(true);
-            launchFirework(player);
-        } else if (toolType.equals("fun")) {
-            event.setCancelled(true);
-            launchFunBurst(player);
+            boostElytra(player);
         } else if (toolType.equals("booster")) {
             event.setCancelled(true);
             module.getItemManager().activateShardBoost(player);
@@ -256,63 +247,21 @@ public class AmethystToolListener implements Listener {
         }
     }
 
-    private void launchFirework(Player player) {
+    private void boostElytra(Player player) {
+        if (!player.isGliding()) return;
+
         ConfigurationSection section = module.getConfig().getConfigurationSection("firework");
-        if (section == null) return;
+        double strength = section != null ? section.getDouble("boost-strength", 2.0) : 2.0;
 
-        spawnFirework(player.getLocation(), section);
-    }
+        Vector direction = player.getLocation().getDirection().normalize().multiply(strength);
+        player.setVelocity(player.getVelocity().add(direction));
 
-    private void launchFunBurst(Player player) {
-        ConfigurationSection section = module.getConfig().getConfigurationSection("fun");
-        if (section == null) return;
-
-        int burstCount = section.getInt("burst-count", 5);
-        double burstRadius = section.getDouble("burst-radius", 3);
-
-        for (int i = 0; i < burstCount; i++) {
-            double offsetX = (RANDOM.nextDouble() * 2 - 1) * burstRadius;
-            double offsetZ = (RANDOM.nextDouble() * 2 - 1) * burstRadius;
-            Location location = player.getLocation().clone().add(new Vector(offsetX, 0, offsetZ));
-            spawnFirework(location, section);
-        }
-    }
-
-    private void spawnFirework(Location location, ConfigurationSection section) {
-        Firework firework = location.getWorld().spawn(location, Firework.class);
-        FireworkMeta meta = firework.getFireworkMeta();
-
-        FireworkEffect.Builder builder = FireworkEffect.builder();
-        List<String> allTypes = List.of("BALL", "BALL_LARGE", "STAR", "CREEPER", "BURST");
-        String typeName = section.getString("effect.type", allTypes.get(RANDOM.nextInt(allTypes.size())));
-        try {
-            builder.with(FireworkEffect.Type.valueOf(typeName));
-        } catch (IllegalArgumentException ignored) {
-            builder.with(FireworkEffect.Type.BALL_LARGE);
-        }
-
-        List<String> colorNames = section.getStringList("effect.colors");
-        List<Color> colors = new ArrayList<>();
-        for (String colorName : colorNames) {
-            try {
-                colors.add((Color) Color.class.getField(colorName.toUpperCase()).get(null));
-            } catch (Exception ignored) {}
-        }
-        if (colors.isEmpty()) {
-            colors.add(Color.fromRGB(RANDOM.nextInt(256), RANDOM.nextInt(256), RANDOM.nextInt(256)));
-        }
-        builder.withColor(colors);
-
-        builder.flicker(section.getBoolean("effect.flicker", true));
-        builder.trail(section.getBoolean("effect.trail", true));
-
-        meta.addEffect(builder.build());
-        meta.setPower(section.getInt("power", 1));
-        firework.setFireworkMeta(meta);
+        player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation(), 10);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1.0f, 1.0f);
     }
 
     private void spawnParticles(Player player, Location location, String configPath) {
-        ConfigurationSection section = module.getConfig().getConfigurationSection(configPath);
+        ConfigurationSection section = module.getConfig().getConfigurationSection(configPath + ".particle");
         if (section == null) return;
 
         String particleName = section.getString("type", "WITCH");
@@ -323,4 +272,19 @@ public class AmethystToolListener implements Listener {
             player.getWorld().spawnParticle(particle, location.clone().add(0.5, 0.5, 0.5), count);
         } catch (IllegalArgumentException ignored) {}
     }
-}
+
+    private void playToolSound(Player player, Location location, String configPath) {
+        ConfigurationSection section = module.getConfig().getConfigurationSection(configPath + ".sound");
+        if (section == null) return;
+
+        String soundName = section.getString("type", "BLOCK_AMETHYST_BLOCK_BREAK");
+        float volume = (float) section.getDouble("volume", 1.0);
+        float pitch = (float) section.getDouble("pitch", 1.0);
+
+        try {
+            Sound sound = Sound.valueOf(soundName);
+            player.getWorld().playSound(location, sound, volume, pitch);
+        } catch (IllegalArgumentException ignored) {}
+    }
+                }
+                              
