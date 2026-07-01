@@ -1,4 +1,4 @@
-name: Build Ariscore
+name: Build Ariscore (Test - No Obfuscation)
 
 on:
   push:
@@ -27,22 +27,18 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -B
 
-      - name: Download ArisObfuscator
-        run: |
-          curl -L \
-            -o aris-obfuscator.jar \
-            https://github.com/snowmossd-droid/aris-obfuscator/releases/latest/download/aris-obfuscator.jar
+      - name: Dependency tree (check for log4j / unwanted transitive libs)
+        run: mvn dependency:tree -B > dependency-tree.txt
 
-      - name: Obfuscate
-        run: java -jar aris-obfuscator.jar target/ariscore-1.2.jar target/ariscore-obf.jar
-      - name: Upload JAR
+      - name: Upload dependency tree
         uses: actions/upload-artifact@v4
         with:
-          name: Ariscore
-          path: target/ariscore-obf.jar
+          name: dependency-tree
+          path: dependency-tree.txt
+
+      - name: Upload JAR (unobfuscated)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ariscore-test
+          path: target/ariscore-1.2.jar
           if-no-files-found: error
-
-
-          
-
-          
