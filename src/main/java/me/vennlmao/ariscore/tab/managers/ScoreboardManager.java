@@ -125,7 +125,10 @@ public class ScoreboardManager implements Listener {
         long now = System.currentTimeMillis();
         if (now < state.profileExpiry) return state.cachedProfile;
         ScoreboardProfile found = null;
+        String worldName = player.getWorld().getName();
         for (ScoreboardProfile p : config.getScoreboardProfiles()) {
+            if (p.getWorld() != null && !p.getWorld().trim().isEmpty()
+                    && !p.getWorld().trim().equalsIgnoreCase(worldName)) continue;
             if (conditions.evaluate(player, p.getDisplayCondition())) { found = p; break; }
         }
         state.cachedProfile = found;
@@ -147,4 +150,4 @@ public class ScoreboardManager implements Listener {
         String lastTitle = "\0UNSENT";
         String lastLines = "\0UNSENT";
     }
-}
+    }
