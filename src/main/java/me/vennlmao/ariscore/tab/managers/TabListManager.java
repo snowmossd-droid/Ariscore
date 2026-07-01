@@ -1,9 +1,8 @@
 package me.vennlmao.ariscore.tab.managers;
 
-import fr.mrmicky.fastboard.adventure.FastBoard;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.vennlmao.ariscore.ArisCore;
-import me.vennlmao.ariscore.tab.models.ScoreboardProfile;
+import me.vennlmao.ariscore.tab.models.TabProfile;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
@@ -15,28 +14,26 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ScoreboardManager implements Listener {
+public class TabListManager implements Listener {
 
     private final ArisCore plugin;
     private final PapiManager papi;
     private final ConditionEvaluator conditions;
     private final TabConfigManager config;
-    private final Map<UUID, FastBoard>     boards = new ConcurrentHashMap<>();
     private final Map<UUID, ScheduledTask> tasks  = new ConcurrentHashMap<>();
     private final Map<UUID, PlayerState>   states = new ConcurrentHashMap<>();
 
-    public ScoreboardManager(ArisCore plugin, PapiManager papi, ConditionEvaluator conditions, TabConfigManager config) {
+    public TabListManager(ArisCore plugin, PapiManager papi, ConditionEvaluator conditions, TabConfigManager config) {
         this.plugin = plugin; this.papi = papi; this.conditions = conditions; this.config = config;
     }
 
     public void start() {
-        if (!config.isScoreboardEnabled()) return;
+        if (!config.isTabEnabled()) return;
         for (Player p : Bukkit.getOnlinePlayers()) schedule(p);
     }
 
@@ -44,22 +41,22 @@ public class ScoreboardManager implements Listener {
         tasks.values().forEach(t -> { try { t.cancel(); } catch (Throwable ignored) {} });
         tasks.clear();
         states.clear();
-        boards.values().forEach(b -> { try { b.delete(); } catch (Throwable ignored) {} });
-        boards.clear();
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            try { p.sendPlayerListHeader(Component.empty()); p.sendPlayerListFooter(Component.empty()); p.playerListName(null); }
+            catch (Throwable ignored) {}
+        }
     }
 
     public void reload() { stop(); start(); }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e) { if (config.isScoreboardEnabled()) schedule(e.getPlayer()); }
+    public void onJoin(PlayerJoinEvent e) { if (config.isTabEnabled()) schedule(e.getPlayer()); }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         UUID id = e.getPlayer().getUniqueId();
         ScheduledTask t = tasks.remove(id);
         if (t != null) try { t.cancel(); } catch (Throwable ignored) {}
-        FastBoard b = boards.remove(id);
-        if (b != null) try { b.delete(); } catch (Throwable ignored) {}
         states.remove(id);
     }
 
@@ -72,61 +69,55 @@ public class ScoreboardManager implements Listener {
     private void schedule(Player player) {
         ScheduledTask old = tasks.remove(player.getUniqueId());
         if (old != null) try { old.cancel(); } catch (Throwable ignored) {}
-        long ticks = Math.max(1L, config.getScoreboardUpdateTicks());
-        ScheduledTask task = player.getScheduler().runAtFixedRate(
-                (Plugin) plugin, t -> tick(player), () -> {}, 1L, ticks);
+        long ticks = Math.max(1L, config.getTabUpdateTicks());
+        ScheduledTask task = player.getScheduler().runAtFixedRate((Plugin) plugin, t -> tick(player), () -> {}, 1L, ticks);
         if (task != null) tasks.put(player.getUniqueId(), task);
     }
 
     private void tick(Player player) {
-        if (!player.isOnline()) return;
-
-        if (player.hasPermission("ariscore.tab.bypass")) {
-            FastBoard b = boards.remove(player.getUniqueId());
-            if (b != null) try { b.delete(); } catch (Throwable ignored) {}
-            return;
-        }
-
+        if (!player.isOnline() || player.hasPermission("ariscore.tab.bypass")) return;
         PlayerState state = states.computeIfAbsent(player.getUniqueId(), k -> new PlayerState());
-        ScoreboardProfile profile = resolveProfile(player, state);
+        TabProfile profile = resolveProfile(player, state);
 
         if (profile == null) {
-            FastBoard b = boards.remove(player.getUniqueId());
-            if (b != null) try { b.delete(); } catch (Throwable ignored) {}
+            if (!state.lastHeader.isEmpty() || !state.lastFooter.isEmpty()) {
+                try { player.sendPlayerListHeader(Component.empty()); player.sendPlayerListFooter(Component.empty()); } catch (Throwable ignored) {}
+                state.lastHeader = ""; state.lastFooter = "";
+            }
             return;
         }
 
-        FastBoard board = boards.computeIfAbsent(player.getUniqueId(), k -> new FastBoard(player));
+        String header = papi.parse(player, joinLines(profile.getHeader()));
+        if (!header.equals(state.lastHeader)) {
+            state.lastHeader = header;
+            try { player.sendPlayerListHeader(header.isEmpty() ? Component.empty() : LegacyComponentSerializer.legacySection().deserialize(header)); }
+            catch (Throwable ignored) {}
+        }
 
-        try {
-            String title = papi.parse(player, profile.getTitle());
-            if (!title.equals(state.lastTitle)) {
-                state.lastTitle = title;
-                board.updateTitle(LegacyComponentSerializer.legacySection().deserialize(title));
-            }
+        String footer = papi.parse(player, joinLines(profile.getFooter()));
+        if (!footer.equals(state.lastFooter)) {
+            state.lastFooter = footer;
+            try { player.sendPlayerListFooter(footer.isEmpty() ? Component.empty() : LegacyComponentSerializer.legacySection().deserialize(footer)); }
+            catch (Throwable ignored) {}
+        }
 
-            String rawLines = joinLines(profile.getLines());
-            String parsedLines = papi.parse(player, rawLines);
-            if (!parsedLines.equals(state.lastLines)) {
-                state.lastLines = parsedLines;
-                String[] split = parsedLines.isEmpty() ? new String[0] : parsedLines.split("\n", -1);
-                List<Component> components = new ArrayList<>(split.length);
-                for (String line : split) {
-                    components.add(LegacyComponentSerializer.legacySection().deserialize(line));
-                }
-                board.updateLines(components);
+        String fmt = profile.getTablistNameFormat();
+        if (fmt != null && !fmt.isEmpty()) {
+            String name = papi.parse(player, fmt);
+            if (!name.equals(state.lastListName)) {
+                state.lastListName = name;
+                try { player.playerListName(LegacyComponentSerializer.legacySection().deserialize(name)); }
+                catch (Throwable t) { try { player.setPlayerListName(name); } catch (Throwable ignored) {} }
             }
-        } catch (Throwable e) {
-            plugin.getLogger().warning("[Tab/Scoreboard] render error for " + player.getName() + ": " + e.getMessage());
         }
     }
 
-    private ScoreboardProfile resolveProfile(Player player, PlayerState state) {
+    private TabProfile resolveProfile(Player player, PlayerState state) {
         long now = System.currentTimeMillis();
         if (now < state.profileExpiry) return state.cachedProfile;
-        ScoreboardProfile found = null;
+        TabProfile found = null;
         String worldName = player.getWorld().getName();
-        for (ScoreboardProfile p : config.getScoreboardProfiles()) {
+        for (TabProfile p : config.getTabProfiles()) {
             if (p.getWorld() != null && !p.getWorld().trim().isEmpty()
                     && !p.getWorld().trim().equalsIgnoreCase(worldName)) continue;
             if (conditions.evaluate(player, p.getDisplayCondition())) { found = p; break; }
@@ -145,9 +136,10 @@ public class ScoreboardManager implements Listener {
     }
 
     private static class PlayerState {
-        ScoreboardProfile cachedProfile;
+        TabProfile cachedProfile;
         long profileExpiry;
-        String lastTitle = "\0UNSENT";
-        String lastLines = "\0UNSENT";
+        String lastHeader   = "\0UNSENT";
+        String lastFooter   = "\0UNSENT";
+        String lastListName = "\0UNSENT";
     }
-}
+    }
