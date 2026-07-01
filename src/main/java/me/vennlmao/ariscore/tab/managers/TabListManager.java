@@ -142,4 +142,4 @@ public class TabListManager implements Listener {
         String lastFooter   = "\0UNSENT";
         String lastListName = "\0UNSENT";
     }
-    }
+                          }
