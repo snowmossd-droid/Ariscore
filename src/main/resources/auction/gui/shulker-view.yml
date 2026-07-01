@@ -1,9 +1,0 @@
-title: '&#00fc88Shulker Preview'
-size: 36
-
-back-button:
-  slot: 27
-  material: RED_STAINED_GLASS_PANE
-  name: '&#fc0404Back'
-  lore:
-    - '&7Click to go back'
