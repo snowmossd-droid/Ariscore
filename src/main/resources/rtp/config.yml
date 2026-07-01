@@ -1,0 +1,165 @@
+warmup: 5
+cancel_distance: 0.1
+cooldown: 10
+
+sounds:
+  open_gui:
+    sound: BLOCK_CHEST_OPEN
+    volume: 1.0
+    pitch: 1.0
+  click:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+  searching:
+    sound: BLOCK_PORTAL_TRIGGER
+    volume: 0.5
+    pitch: 1.5
+  teleport_success:
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1.0
+    pitch: 1.0
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  countdown:
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 1.0
+    pitch: 1.2
+  cancel:
+    sound: BLOCK_NOTE_BLOCK_BASS
+    volume: 1.0
+    pitch: 0.8
+  damaged:
+    sound: ENTITY_PLAYER_HURT
+    volume: 1.0
+    pitch: 1.0
+
+messages:
+  cooldown:
+    - "&cYou need to wait &#00A3FB{seconds}s &cbefore using /rtp again."
+  cooldown_ab: "&cYou need to wait &#00A3FB{seconds}s &cbefore using /rtp again."
+  searching_location:
+    - "&7Searching for a safe location..."
+  searching_location_ab: "&7Searching for a safe location..."
+  no_safe_location:
+    - "&cCould not find a safe location!"
+  no_safe_location_ab: "&cCould not find a safe location!"
+  warmup:
+    - "&7Teleporting in &#00A3FB{seconds}s..."
+  warmup_ab: "&7Teleporting in &#00A3FB{seconds}s..."
+  teleport_success:
+    - "&aTeleported successfully!"
+  teleport_success_ab: "&aTeleported successfully!"
+  teleport_cancelled_moved:
+    - "&cTeleport cancelled because you moved!"
+  teleport_cancelled_moved_ab: "&cTeleport cancelled because you moved!"
+  teleport_cancelled_damaged:
+    - "&cTeleport cancelled because you were attacked!"
+  teleport_cancelled_damaged_ab: "&cTeleport cancelled because you were attacked!"
+  world_disabled:
+    - "&cThis world is not enabled in RTP."
+
+gui:
+  main:
+    title: "&8ʀᴀɴᴅᴏᴍ ᴛᴇʟᴇᴘᴏʀᴛɪɴɢ"
+    size: 27
+  world_select:
+    title: "&8ᴄʜᴏᴏsᴇ ᴛʜᴇ ᴡᴏʀʟᴅ"
+    size: 27
+
+worlds:
+  overworld:
+    display-name: "&#55FF55ᴏᴠᴇʀᴡᴏʀʟᴅ"
+    material: GRASS_BLOCK
+    slot: 11
+    lore:
+      - "&fClick to randomly teleport"
+      - ""
+      - "&7Players: &b{players}"
+      - "&7Ping: &b{ping}ms"
+    has_sub_worlds: true
+    sub_worlds:
+      world_1:
+        display-name: "&#55FF55ᴡᴏʀʟᴅ &71"
+        material: GRASS_BLOCK
+        slot: 11
+        world: world
+        min_x: -5000
+        max_x: 5000
+        min_z: -5000
+        max_z: 5000
+        min_y: 60
+        max_y: 250
+        lore:
+          - "&fClick to randomly teleport"
+          - ""
+          - "&7Players: &b{players}"
+          - "&7Ping: &b{ping}ms"
+      world_2:
+        display-name: "&#55FF55ᴡᴏʀʟᴅ &72"
+        material: BIRCH_LOG
+        slot: 13
+        world: world_2
+        min_x: -5000
+        max_x: 5000
+        min_z: -5000
+        max_z: 5000
+        min_y: 60
+        max_y: 250
+        lore:
+          - "&fClick to randomly teleport"
+          - ""
+          - "&7Players: &b{players}"
+          - "&7Ping: &b{ping}ms"
+      world_3:
+        display-name: "&#55FF55ᴡᴏʀʟᴅ &73"
+        material: OAK_LOG
+        slot: 15
+        world: world_3
+        min_x: -5000
+        max_x: 5000
+        min_z: -5000
+        max_z: 5000
+        min_y: 60
+        max_y: 250
+        lore:
+          - "&fClick to randomly teleport"
+          - ""
+          - "&7Players: &b{players}"
+          - "&7Ping: &b{ping}ms"
+  nether:
+    display-name: "&#FF5555ɴᴇᴛʜᴇʀ"
+    material: NETHERRACK
+    slot: 13
+    lore:
+      - "&fClick to randomly teleport"
+      - ""
+      - "&7Players: &b{players}"
+      - "&7Ping: &b{ping}ms"
+    has_sub_worlds: false
+    world: world_nether
+    min_x: -3000
+    max_x: 3000
+    min_z: -3000
+    max_z: 3000
+    min_y: 30
+    max_y: 120
+  end:
+    display-name: "&#FFFF55ᴇɴᴅ"
+    material: END_STONE
+    slot: 15
+    lore:
+      - "&fClick to randomly teleport"
+      - ""
+      - "&7Players: &b{players}"
+      - "&7Ping: &b{ping}ms"
+    has_sub_worlds: false
+    world: world_the_end
+    min_x: -1000
+    max_x: 1000
+    min_z: -1000
+    max_z: 1000
+    min_y: 40
+    max_y: 100

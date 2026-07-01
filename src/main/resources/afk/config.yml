@@ -1,0 +1,90 @@
+mysql:
+  enabled: false
+  host: "host"
+  port: 3306
+  database: "database"
+  username: "username"
+  password: "password"
+  table-prefix: "ariscore_"
+  table-name: "afkzones"
+  use-ssl: false
+
+sqlite:
+  enabled: true
+
+default-name: "afk"
+default-material: "STONE"
+
+warmup: 5
+cancel_distance: 0.1
+
+sounds:
+  teleport_success:
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1.0
+    pitch: 1.0
+  countdown:
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 1.0
+    pitch: 1.2
+  cancel:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  damaged:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 0.8
+  setafk:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.5
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  click:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+
+messages:
+  setafk: "&aAFK zone &f%name% &ahas been set."
+  setafk_ab: "&aAFK zone set!"
+  teleport_success: "&aTeleported successfully!"
+  teleport_success_ab: "&aTeleported successfully!"
+  teleporting_chat: "&7Teleporting in &#00A3FB{seconds}s..."
+  teleporting_ab: "&7Teleporting in &#00A3FB{seconds}s..."
+  teleport_cancelled_moved: "&cTeleport cancelled because you moved!"
+  teleport_cancelled_moved_ab: "&cTeleport cancelled because you moved!"
+  teleport_cancelled_damaged: "&cTeleport cancelled because you were attacked!"
+  teleport_cancelled_damaged_ab: "&cTeleport cancelled because you were attacked!"
+  afk_not_exist: "&cThat AFK zone doesn't exist."
+  afk_not_exist_ab: "&cThat AFK zone doesn't exist."
+  no_afks: "&cNo AFK zones have been set yet."
+  no_afks_ab: "&cNo AFK zones have been set yet."
+  delafk: "&aAFK zone &f%name% &ahas been deleted."
+  delafk_ab: "&aAFK zone deleted!"
+  delafk_not_exist: "&cAFK zone &f%name% &cdoesn't exist."
+  delafk_not_exist_ab: "&cThat AFK zone doesn't exist."
+  no_permission: "&cYou don't have permission to use this command."
+  world_not_found: "&cWorld not found."
+  world_not_found_ab: "&cWorld not found."
+
+gui:
+  title: "&8ᴀꜰᴋ ᴢᴏɴᴇꜱ"
+  size: 27
+  afk-info:
+    afk:
+      material: SOUL_SAND
+      displayName: "&bᴀꜰᴋ &f%name%"
+      lore:
+        - "&8%current%/%max%"
+        - "&7Click to go to this"
+        - "&7AFK zone."
+    random-afk:
+      material: LIGHT_BLUE_GLAZED_TERRACOTTA
+      slot: 22
+      displayName: "&aᴀꜰᴋ ʀᴀɴᴅᴏᴍ"
+      lore:
+        - "&fClick to teleport to a random AFK zone"

@@ -1,0 +1,284 @@
+warmup: 5
+cancel_distance: 0.1
+
+mysql:
+  enabled: false
+  host: "host"
+  port: 3306
+  database: "database"
+  username: "username"
+  password: "password"
+  table-prefix: "ariscore_"
+  use-ssl: false
+
+sqlite:
+  enabled: true
+
+team:
+  max-members: 45
+  max-name-length: 16
+  min-name-length: 3
+
+sounds:
+  click:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+  page_turn:
+    sound: ITEM_BOOK_PAGE_TURN
+    volume: 1.0
+    pitch: 1.0
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  success:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.0
+  invite:
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 1.0
+    pitch: 1.2
+  teleport:
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1.0
+    pitch: 1.0
+  countdown:
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 1.0
+    pitch: 1.2
+
+messages:
+  no_team: "&cYou don't have a team."
+  no_team_ab: "&cYou don't have a team."
+  already_in_team: "&cYou already have a team."
+  already_in_team_ab: "&cYou already have a team."
+  not_owner: "&cYou are not the owner."
+  not_owner_ab: "&cYou are not the owner."
+  not_owner_or_coowner: "&cYou don't have permission."
+  not_owner_or_coowner_ab: "&cYou don't have permission."
+  player_not_found: "&cPlayer not found."
+  team_not_found: "&cTeam not found."
+  team_full: "&cThe team is full."
+  team_full_ab: "&cThe team is full."
+  name_too_short: "&cTeam name is too short."
+  name_too_long: "&cTeam name is too long."
+  name_taken: "&cThat team name is already taken."
+  create: "&aTeam created."
+  create_ab: "&aTeam created."
+  disband: "&cThe team has been disbanded."
+  disband_ab: "&cTeam disbanded."
+  disband_notify: "&cThe team was disbanded by the owner."
+  join: "&7You joined the team &#00A3FB{team}."
+  join_ab: "&7You joined the team &#00A3FB{team}."
+  join_notify: "&7{player} joined the team."
+  leave: "&7You left the team."
+  leave_ab: "&7You left the team."
+  leave_notify: "&#00A3FB{player} &7left the team."
+  kick: "&7Kicked &#00A3FB{player} &7from the team."
+  kick_ab: "&7Kicked &#00A3FB{player} &7from the team."
+  kick_notify: "&7You were kicked from the team."
+  invite_sent: "&7Invited &#00A3FB{player} &7to the team."
+  invite_sent_ab: "&7Invited &#00A3FB{player} &7to the team."
+  invite_received: "&#00A3FB{player} &7invited you to the team &#00A3FB{team}&f."
+  invite_received_ab: "&#00A3FB{player} &7invited you to the team &#00A3FB{team}&f."
+  invite_expired: "&cThe invitation has expired."
+  no_invite: "&cThe invitation has expired."
+  already_member: "&#00A3FB{player} &7is already a member."
+  sethome: "&7Team home set."
+  sethome_ab: "&7Team home set"
+  delhome: "&7Team home delete."
+  delhome_ab: "&7Team home delete."
+  home_not_set: "&cThe team doesn't have a home set."
+  home_not_set_ab: "&cThe team doesn't have a home set."
+  teleport_home: "&aTeleporting to team home."
+  teleport_home_ab: "&aTeleporting..."
+  chat_format: "&#00A3FB[Team] {player}&7: {message}"
+  chat_toggle_on: "&aTeam chat enabled."
+  chat_toggle_on_ab: "&aTeam chat enabled"
+  chat_toggle_off: "&cTeam chat disabled."
+  chat_toggle_off_ab: "&cTeam chat disabled."
+  promote_coowner: "&7Promoted &#00A3FB{player} &7to Co-Owner."
+  demote_member: "&7Demoted &#00A3FB{player} &7to Member."
+  teleporting_chat: "&7Teleporting in &#00A3FB{seconds}s..."
+  teleporting_ab: "&7Teleporting in &#00A3FB{seconds}s..."
+  teleport_cancelled_moved: "&cTeleport cancelled because you moved!"
+  teleport_cancelled_moved_ab: "&cTeleport cancelled because you moved!"
+  teleport_cancelled_damaged: "&cTeleport cancelled because you were attacked!"
+  teleport_cancelled_damaged_ab: "&cTeleport cancelled because you were attacked!"
+  world_blocked: "&cYou cannot set a home in this world."
+  world_blocked_ab: "&cYou cannot set a home in this world."
+  owner_cannot_edit_self: "&cYou are the team owner, you cannot edit your own permissions!"
+  owner_cannot_edit_self_ab: "&cYou are the team owner, you cannot edit your own permissions!"
+  member_cannot_edit: "&cYou must be the team owner to edit permissions!"
+  member_cannot_edit_ab: "&cYou must be the team owner to edit permissions!"
+  no_permission: "&cYou don't have permission."
+
+blocked_worlds:
+  - world_nether
+  - world_the_end
+
+gui:
+  main:
+    title: "&8ᴛᴇᴀᴍ (Page {page})"
+    size: 54
+
+teammate-display:
+  online-prefix: '&a❏'
+  offline-prefix: '&c❏'
+  name-color: '&#34eb9b'
+  leader-indicator: ' &6★'
+  leader-lore: '&6Team Leader'
+  member-lore: '&fClick to edit'
+
+items:
+  back:
+    slot: 48
+    material: ARROW
+    display-name: '&#34eb9bʙᴀᴄᴋ'
+    lore:
+      - '&fClick to go to previous page'
+  team-info:
+    slot: 49
+    material: IRON_HELMET
+    display-name: '&#34eb9bᴛᴇᴀᴍ {team-name}'
+    lore:
+      - '&7Members: &f{count}/{max}'
+  next:
+    slot: 50
+    material: ARROW
+    display-name: '&#34eb9bɴᴇxᴛ'
+    lore:
+      - '&fClick to go to next page'
+  team-home:
+    slot: 52
+    material: WHITE_BANNER
+    display-name: '&#34eb9bᴛᴇᴀᴍ ʜᴏᴍᴇ'
+    lore:
+      - '&fTeleport to team home'
+  pvp:
+    slot: 53
+    material: DIAMOND_SWORD
+    display-name: '&#34eb9bᴘᴠᴘ'
+    lore:
+      - '&fCurrently: {pvp-status}'
+    status:
+      enabled: '&#34eb9b&lON'
+      disabled: '&#FF0000&lOFF'
+  empty-member:
+    material: GRAY_STAINED_GLASS_PANE
+    display-name: '&#34eb9bɪɴᴠɪᴛᴇ'
+    lore:
+      - '&fClick to invite a new player'
+  player-head:
+    online-indicator: '&a● Online'
+    offline-indicator: '&c● Offline'
+    click-lore: '&fClick to manage'
+
+permission-gui:
+  title: 'ᴇᴅɪᴛ ᴘᴇʀᴍɪssɪᴏɴs'
+  size: 27
+  permissions:
+    edit-home:
+      slot: 10
+      material: WHITE_BANNER
+      display-name: '&#34eb9bᴇᴅɪᴛ ʜᴏᴍᴇ'
+      lore:
+        - '&fLet {player-name} set/remove team home'
+        - '&fCurrently: {status}'
+    kick-player:
+      slot: 11
+      material: OAK_DOOR
+      display-name: '&#34eb9bᴋɪᴄᴋ'
+      lore:
+        - '&fClick to kick {player-name}'
+    manage-teammates:
+      slot: 12
+      material: IRON_HELMET
+      display-name: '&#34eb9bᴋɪᴄᴋ ᴍᴇᴍʙᴇʀs'
+      lore:
+        - '&fLet {player-name} kick members'
+        - '&fCurrently: {status}'
+    pvp-toggle:
+      slot: 13
+      material: IRON_SWORD
+      display-name: '&#34eb9bᴘᴠᴘ'
+      lore:
+        - '&fLet {player-name} toggle team pvp'
+        - '&fCurrently: {status}'
+    visit-home:
+      slot: 14
+      material: ENDER_PEARL
+      display-name: '&#34eb9bᴠɪsɪᴛ ʜᴏᴍᴇ'
+      lore:
+        - '&fLet {player-name} go to team home'
+        - '&fCurrently: {status}'
+    team-chat:
+      slot: 15
+      material: FEATHER
+      display-name: '&#34eb9bᴛᴇᴀᴍ ᴄʜᴀᴛ'
+      lore:
+        - '&fLet {player-name} use team chat'
+        - '&fCurrently: {status}'
+    invite-players:
+      slot: 16
+      material: WRITABLE_BOOK
+      display-name: '&#34eb9bɪɴᴠɪᴛᴇ'
+      lore:
+        - '&fLet {player-name} invite players'
+        - '&fCurrently: {status}'
+  back-button:
+    slot: 18
+    material: RED_STAINED_GLASS_PANE
+    display-name: '&cʙᴀᴄᴋ'
+    lore:
+      - '&fClick to return'
+
+kick-confirmation-gui:
+  title: 'ᴄᴏɴғɪʀᴍ ᴋɪᴄᴋ'
+  size: 27
+  cancel:
+    slot: 11
+    material: RED_STAINED_GLASS_PANE
+    display-name: '&#e00202ᴄᴀɴᴄᴇʟ'
+    lore:
+      - '&fClick to cancel'
+  confirm:
+    slot: 15
+    material: LIME_STAINED_GLASS_PANE
+    display-name: '&#02de4fᴄᴏɴғɪʀᴍ'
+    lore:
+      - '&fClick to kick'
+
+leave-confirmation-gui:
+  title: 'ᴄᴏɴғɪʀᴍ ʟᴇᴀᴠɪɴɢ ᴛᴇᴀᴍ'
+  size: 27
+  cancel:
+    slot: 11
+    material: RED_STAINED_GLASS_PANE
+    display-name: '&#e00202ᴄᴀɴᴄᴇʟ'
+    lore:
+      - '&fClick to cancel'
+  confirm:
+    slot: 15
+    material: LIME_STAINED_GLASS_PANE
+    display-name: '&#02de4fᴄᴏɴғɪʀᴍ'
+    lore:
+      - '&fClick to leave'
+
+disband-confirmation-gui:
+  title: 'ᴄᴏɴғɪʀᴍ ᴅɪsʙᴀɴᴅɪɴɢ ᴛᴇᴀᴍ'
+  size: 27
+  cancel:
+    slot: 11
+    material: RED_STAINED_GLASS_PANE
+    display-name: '&#e00202ᴄᴀɴᴄᴇʟ'
+    lore:
+      - '&fClick to cancel'
+  confirm:
+    slot: 15
+    material: LIME_STAINED_GLASS_PANE
+    display-name: '&#02de4fᴄᴏɴғɪʀᴍ'
+    lore:
+      - '&fClick to delete'

@@ -1,0 +1,62 @@
+title: '&#00fc88Transactions &8(Page %page%)'
+size: 54
+auto-update-ticks: 20
+
+transaction-slots:
+  - '0-44'
+
+filler:
+  enabled: true
+  material: GRAY_STAINED_GLASS_PANE
+  name: ' '
+  slots:
+    - 45
+    - 46
+    - 47
+    - 48
+    - 49
+    - 50
+    - 51
+    - 52
+    - 53
+
+previous-page:
+  slot: 45
+  material: ARROW
+  name: '&#00fc88← Previous'
+  lore: []
+
+next-page:
+  slot: 53
+  material: ARROW
+  name: '&#00fc88Next →'
+  lore: []
+
+stats:
+  slot: 48
+  material: BOOK
+  name: '&#00fc88Statistics'
+  lore:
+    - '&7Total spent: &#00fc88%total_spent%'
+    - '&7Total made: &#00fc88%total_made%'
+
+refresh:
+  slot: 49
+  material: CLOCK
+  name: '&#00fc88Refresh'
+  lore:
+    - '&7Click to refresh'
+
+search:
+  slot: 50
+  material: OAK_SIGN
+  name: '&#00fc88Search'
+  lore:
+    - '&7Click to search transactions'
+
+transaction-item:
+  lore:
+    - '&7%action% &#00fc88%other_player%'
+    - '&7Amount: &#00fc88%amount%x %item_name%'
+    - '&7Price: &#00fc88%price%'
+    - '&7Time: &#00fc88%time_ago% ago'

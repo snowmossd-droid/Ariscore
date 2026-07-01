@@ -1,0 +1,29 @@
+title: '&#00fc88Confirm Purchase'
+size: 27
+
+item-slot: 13
+
+item-lore:
+  - '&7Seller: &#00fc88%seller%'
+  - '&7Price: &#00fc88%price%'
+  - '&7Expires: &#00fc88%expires%'
+
+confirm:
+  material: LIME_STAINED_GLASS_PANE
+  name: '&#04fc04Confirm'
+  lore:
+    - '&7Click to confirm purchase'
+  slots:
+    - 10
+    - 11
+    - 12
+
+cancel:
+  material: RED_STAINED_GLASS_PANE
+  name: '&#fc0404Cancel'
+  lore:
+    - '&7Click to cancel'
+  slots:
+    - 14
+    - 15
+    - 16

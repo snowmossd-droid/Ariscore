@@ -1,0 +1,76 @@
+title: ɴᴇᴛʜᴇʀ
+size: 27
+
+items:
+  blaze_rod:
+    slot: 9
+    material: BLAZE_ROD
+    name: '&fBlaze Rod'
+    stack: 64
+    price: 150
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  nether_wart:
+    slot: 10
+    material: NETHER_WART
+    name: '&fNether Wart'
+    stack: 64
+    price: 15
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  glowstone_dust:
+    slot: 11
+    material: GLOWSTONE_DUST
+    name: '&fGlowstone Dust'
+    stack: 64
+    price: 15
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  magma_cream:
+    slot: 12
+    material: MAGMA_CREAM
+    name: '&fMagma Cream'
+    stack: 64
+    price: 15
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  ghast_tear:
+    slot: 13
+    material: GHAST_TEAR
+    name: '&fGhast Tear'
+    stack: 64
+    price: 350
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  quartz:
+    slot: 14
+    material: QUARTZ
+    name: '&fQuartz'
+    stack: 64
+    price: 15
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  soul_sand:
+    slot: 15
+    material: SOUL_SAND
+    name: '&fSoul Sand'
+    stack: 64
+    price: 50
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  magma_block:
+    slot: 16
+    material: MAGMA_BLOCK
+    name: '&fMagma Block'
+    stack: 64
+    price: 35
+    lore:
+    - '&fGiá mua: #54FC54${price}'
+  crying_obsidian:
+    slot: 17
+    material: CRYING_OBSIDIAN
+    name: '&fCrying Obsidian'
+    stack: 64
+    price: 150
+    lore:
+    - '&fGiá mua: #54FC54${price}'

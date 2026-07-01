@@ -1,0 +1,90 @@
+mysql:
+  enabled: false
+  host: "host"
+  port: 3306
+  database: "database"
+  username: "username"
+  password: "password"
+  table-prefix: "ariscore_"
+  table-name: "spawns"
+  use-ssl: false
+
+sqlite:
+  enabled: true
+
+default-name: "spawn"
+default-material: "STONE"
+
+warmup: 5
+cancel_distance: 0.1
+
+sounds:
+  teleport_success:
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1.0
+    pitch: 1.0
+  countdown:
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 1.0
+    pitch: 1.2
+  cancel:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  damaged:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 0.8
+  setspawn:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.5
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  click:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+
+messages:
+  setspawn: "&aSpawn &f%name% &ahas been set."
+  setspawn_ab: "&aSpawn set!"
+  teleport_success: "&aTeleported successfully!"
+  teleport_success_ab: "&aTeleported successfully!"
+  teleporting_chat: "&7Teleporting in &#00A3FB{seconds}s..."
+  teleporting_ab: "&7Teleporting in &#00A3FB{seconds}s..."
+  teleport_cancelled_moved: "&cTeleport cancelled because you moved!"
+  teleport_cancelled_moved_ab: "&cTeleport cancelled because you moved!"
+  teleport_cancelled_damaged: "&cTeleport cancelled because you were attacked!"
+  teleport_cancelled_damaged_ab: "&cTeleport cancelled because you were attacked!"
+  spawn_not_exist: "&cThat spawn doesn't exist."
+  spawn_not_exist_ab: "&cThat spawn doesn't exist."
+  no_spawns: "&cNo spawns have been set yet."
+  no_spawns_ab: "&cNo spawns have been set yet."
+  delspawn: "&aSpawn &f%name% &ahas been deleted."
+  delspawn_ab: "&aSpawn deleted!"
+  delspawn_not_exist: "&cSpawn &f%name% &cdoesn't exist."
+  delspawn_not_exist_ab: "&cThat spawn doesn't exist."
+  no_permission: "&cYou don't have permission to use this command."
+  world_not_found: "&cWorld not found."
+  world_not_found_ab: "&cWorld not found."
+
+gui:
+  title: "&8ꜱᴘᴀᴡɴs"
+  size: 27
+  spawn-info:
+    spawn:
+      material: ITEM_FRAME
+      displayName: "&bꜱᴘᴀᴡɴ %name%"
+      lore:
+        - "&8%current%/%max%"
+        - "&7Click to go to this"
+        - "&7Spawn area."
+    random-spawn:
+      material: LIGHT_BLUE_GLAZED_TERRACOTTA
+      slot: 22
+      displayName: "&aꜱᴘᴀᴡɴ"
+      lore:
+        - "&fClick to teleport to a random spawn"

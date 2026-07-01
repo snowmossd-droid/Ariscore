@@ -1,0 +1,49 @@
+#Here you can change all the messages and actions bars of the plugin
+
+#Here you can change the prefix of the plugin
+prefix-enable: true
+prefix: '&#00fc88ᴏʀᴅᴇʀ &7» '
+
+messages:
+  no-permission: "&cYou don't have permission for that!"
+  only-players: "Only players can use that command!"
+  no-items-to-collect: "&cYou don't have any items to collect for this order!"
+  plugin-reloaded: "&#00FF00DonutOrder wurde neu geladen!"
+  no-orders: "&cThere are no active orders!"
+  order-created: "&fYou create an order for &#00fc88%amount% %item% &ffor &#00fc88$%price% &feach! &7(Total: $%total_price%)"
+  chat-input: "&cPlease write the %type% in the chat, or type cancel to cancel the input!"
+  chat-input-cancel: "&cInput cancelled!"
+  amount-set: "&fAmount set to &#00fc88%amount%&f!"
+  price-set: "&fPrice set to &#00fc88$%price%&f!"
+  amount-too-low: "&cThe amount must be at least %min%!"
+  amount-too-high: "&cThe amount must be at most %max%!"
+  price-too-low: "&cThe price must be at least $%min%!"
+  price-too-high: "&cThe price must be at most $%max%!"
+  no-money: "&cYou don't have enough money!"
+  no-items: "&cYou don't have enough items!"
+  order-not-available: "&cThis order is no longer available!"
+  no-items-to-deliver: "&cNo items to collect for this order!"
+  inventory-full: "&cYour inventory is full!"
+  items-collected: "&fYou received &#00fc88%amount% %item%&f!"
+  delivery-cancelled: "&cDelivery cancelled!"
+  order-finished: "&aOrder fully delivered!"
+  error: "&cYou can't do this right now!"
+  order-cancelled-success: "&aOrder cancelled successfully!"
+  cancelled-closed: "&cOrder cancellation cancelled!"
+  refund-success: "&fOrder cancelled and refunded successfully! &a+$%amount%"
+  cannot-deliver-own: "&cYou can't deliver your own orders!"
+  expired: "&cThis order has expired!"
+  already-delivered: "&cThis order has already been fully delivered!"
+  reward-messages: "&fYou received &#00fc88$%reward% &ffor delivering an order!"
+  delivered-user: "&#00fc88%player% &fdelivered you &#00fc88%amount% %item%"
+  item-set: "&fItem set to &#00fc88%item%&f!"
+  max-orders-reached: "&cYou have already reached the maximum number of %max% orders!"
+  select-material: "&fClick to select"
+
+command-usage: |
+  &#00fc88&lORDER
+  &#00fc88➤ &f/order - &#00fc88Open the order menu
+
+command-usage-admin: |
+  &#00fc88&lORDER ADMIN
+  &#00fc88➤ &f/order reload - &#00fc88Reload the plugin

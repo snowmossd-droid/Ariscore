@@ -1,0 +1,225 @@
+warmup: 5
+cancel_distance: 0.1
+request_timeout: 60
+
+blocked_worlds:
+  - world_nether
+  - world_the_end
+
+sounds:
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  cancel:
+    sound: BLOCK_NOTE_BLOCK_BASS
+    volume: 1.0
+    pitch: 0.8
+  damaged:
+    sound: ENTITY_PLAYER_HURT
+    volume: 1.0
+    pitch: 1.0
+  countdown:
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 1.0
+    pitch: 1.2
+  teleport_success:
+    sound: ENTITY_ENDERMAN_TELEPORT
+    volume: 1.0
+    pitch: 1.0
+  request_sent:
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 1.0
+    pitch: 1.0
+  request_accepted:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.0
+  toggle_on:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.5
+  toggle_off:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 0.5
+  gui_click:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+
+messages:
+  request_sent_tpa:
+    - "&7You have sent a teleport request to &#00A4FC{player}&7. &cThis request might be a trap, be careful."
+  request_sent_tpa_ab: "&7Teleport request sent to &#00A4FC{player}"
+  request_received_tpa:
+    - "&cThis teleport request might be a trap"
+  request_received_tpa_ab: "&#00A3FB{player} &7sent you a tpa request"
+  request_accepted_tpa_receiver_ab: "&7You accepted the tpa request"
+
+  request_sent_tpahere:
+    - "&7You have sent a tpahere request to &#00A4FC{player}"
+  request_sent_tpahere_ab: "&7Tpahere request sent to &#00A4FC{player}"
+  request_received_tpahere:
+    - "&cThis teleport request might be a trap"
+  request_received_tpahere_ab: "&#00A3FB{player} &7sent you a tpahere request"
+  request_accepted_tpahere_receiver_ab: "&7You accepted the tpahere request"
+
+  tpauto_enabled:
+    - "&7You turned on tpauto."
+  tpauto_enabled_ab: "&#09FF00You have tpauto on."
+  tpauto_disabled:
+    - "&7You turned off tpauto."
+  tpauto_disabled_ab: "&7You turned off tpauto."
+
+  tpatoggle_enabled:
+    - "&#55FF55You are now accepting tpa requests. &7(/tpaheretoggle to toggle tphere)"
+  tpatoggle_enabled_ab: "&#55FF55TPA &aON"
+  tpatoggle_disabled:
+    - "&#FF5555You are no longer accepting tpa requests. &7(/tpaheretoggle to toggle tphere)"
+  tpatoggle_disabled_ab: "&#FF5555TPA &cOFF"
+
+  tpaheretoggle_enabled:
+    - "&#55FF55You are now accepting tpahere requests."
+  tpaheretoggle_enabled_ab: "&#55FF55TPAHere &aON"
+  tpaheretoggle_disabled:
+    - "&#FF5555You are no longer accepting tpahere requests."
+  tpaheretoggle_disabled_ab: "&#FF5555TPAHere &cOFF"
+
+  target_tpa_disabled:
+    - "&#FF5555{player} is not accepting tpa requests."
+  target_tpa_disabled_ab: "&#FF5555{player} has tpa disabled"
+  target_tpahere_disabled:
+    - "&#FF5555{player} is not accepting tpahere requests."
+  target_tpahere_disabled_ab: "&#FF5555{player} has tpahere disabled"
+
+  teleporting_chat:
+    - "&7Teleporting in &#00A3FB{seconds}&7 seconds..."
+  teleporting_ab: "&7Teleporting in &#00A3FB{seconds}&7 seconds..."
+  teleport_success:
+    - "&aTeleported successfully!"
+  teleport_success_ab: "&aTeleported successfully!"
+  teleport_cancelled_moved:
+    - "&cTeleport cancelled because you moved!"
+  teleport_cancelled_moved_ab: "&cTeleport cancelled because you moved!"
+  teleport_cancelled_damaged:
+    - "&cTeleport cancelled because you were attacked!"
+  teleport_cancelled_damaged_ab: "&cTeleport cancelled because you were attacked!"
+
+  target_offline:
+    - "&#FF5555Player &e{player} &#FF5555is not online."
+  target_offline_ab: "&#FF5555{player} is offline"
+  request_cancelled:
+    - "&#FF5555Teleport has been cancelled."
+  request_cancelled_ab: "&#FF5555Teleport cancelled"
+  no_pending_requests:
+    - "&#FF5555You have no pending teleport requests."
+  no_pending_requests_ab: "&#FF5555No pending requests"
+  requester_offline:
+    - "&#FF5555Requester &e{player} &#FF5555is offline."
+  requester_offline_ab: "&#FF5555{player} is offline"
+  request_denied_sender:
+    - "&#FF5555Your teleport request was denied by {player}."
+  request_denied_sender_ab: "&#FF5555Denied by {player}"
+  request_denied_receiver:
+    - "&#FF5555You denied the teleport request."
+  request_denied_receiver_ab: "&#FF5555Request denied"
+  incoming_request_cancelled:
+    - "&#FF5555Teleport request from {player} doesn't exist or has expired."
+  incoming_request_cancelled_ab: "&#FF5555Request from {player} expired"
+  outgoing_request_cancelled:
+    - "&#55FF55Your teleport request to {player} has expired."
+  outgoing_request_cancelled_ab: "&#55FF55Request to {player} expired"
+
+  world_blocked:
+    - "&#FF5555You cannot send teleport requests from this world!"
+  world_blocked_ab: "&#FF5555Cannot send requests here"
+  player_not_found:
+    - "&cPlayer &e{player} &cis not online!"
+  player_not_found_ab: "&cPlayer {player} is not online"
+  cannot_tpa_self:
+    - "&cYou cannot tpa to yourself."
+  cannot_tpa_self_ab: "&cCannot tpa yourself"
+
+gui:
+  sender:
+    title: "&8ᴄᴏɴғɪʀᴍ ʀᴇǫᴜᴇsᴛ"
+    size: 27
+    icons:
+      cancel:
+        slot: 10
+        material: RED_STAINED_GLASS_PANE
+        display-name: "&4ᴄᴀɴᴄᴇʟ"
+        lore:
+          - "&7Click to cancel this request"
+      location:
+        slot: 12
+        material: GRASS_BLOCK
+        display-name: "&aʟᴏᴄᴀᴛɪᴏɴ"
+        lore:
+          - "&f{world}"
+      player:
+        slot: 13
+        material: PLAYER_HEAD
+        display-name: "&aᴘʟᴀʏᴇʀ"
+        lore:
+          - "&f{player}"
+      ping:
+        slot: 14
+        material: FEATHER
+        display-name: "&aᴘɪɴɢ"
+        lore:
+          - "&f{ping}ms"
+      confirm:
+        slot: 16
+        material: LIME_STAINED_GLASS_PANE
+        display-name: "&aᴄᴏɴғɪʀᴍ"
+        lore:
+          - "&7Click to send a teleport request"
+          - "&7to &f{player}"
+
+  accept:
+    title: "&8ᴀᴄᴄᴇᴘᴛ ʀᴇǫᴜᴇsᴛ"
+    size: 27
+    icons:
+      cancel:
+        slot: 10
+        material: RED_STAINED_GLASS_PANE
+        display-name: "&4ᴄᴀɴᴄᴇʟ"
+        lore:
+          - "&7Click to cancel this request"
+      location:
+        slot: 12
+        material: GRASS_BLOCK
+        display-name: "&aʟᴏᴄᴀᴛɪᴏɴ"
+        lore:
+          - "&f{world}"
+      player:
+        slot: 13
+        material: PLAYER_HEAD
+        display-name: "&aᴘʟᴀʏᴇʀ"
+        lore:
+          - "&f{player}"
+      ping:
+        slot: 14
+        material: FEATHER
+        display-name: "&aᴘɪɴɢ"
+        lore:
+          - "&f{ping}ms"
+      confirm:
+        slot: 16
+        material: LIME_STAINED_GLASS_PANE
+        display-name: "&aᴄᴏɴғɪʀᴍ"
+        lore:
+          - "&7Click to accept this request"
+          - "&7from &f{player}"
+
+clickable_messages:
+  accept_tpa:
+    text:
+      - "&#37BFF8{player} &7sent you a tpa request."
+      - "&#00A3FB[CLICK TO ACCEPT] &7or type &#00A3FB/tpaccept {player}"
+  accept_tpahere:
+    text:
+      - "&#37BFF8{player} &7sent you a tpahere request."
+      - "&#00A3FB[CLICK TO ACCEPT] &7or type &#00A3FB/tpahereaccept {player}"
