@@ -1,0 +1,12 @@
+spawner-name: "Villager"
+title: "%amount% VILLAGER SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2UwY2Y0MDc3ZjMzZmI0MDU3MjA0YzQyOTc1YzhjMTg4MzBjMDc1ZGM3OWMwYjJkM2M4MDgyY2UzY2RjNjgxZiJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Villager"
+xp-amount: 10
+item-layout-order:
+  - EMERALD
+drops:
+  EMERALD: 1

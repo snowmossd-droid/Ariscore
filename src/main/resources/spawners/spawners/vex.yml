@@ -1,0 +1,12 @@
+spawner-name: "Vex"
+title: "%amount% VEX SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjY2MzEzNGQ3MzA2YmI2MDQxNzVkMjU3NWQ2ODY3MTRiMDQ0MTJmZTUwMTE0MzYxMWZjZjNjYzE5YmQ3MGFiZSJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Vex"
+xp-amount: 10
+item-layout-order:
+  - IRON_SWORD
+drops:
+  IRON_SWORD: 1

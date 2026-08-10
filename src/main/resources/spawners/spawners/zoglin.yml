@@ -1,0 +1,12 @@
+spawner-name: "Zoglin"
+title: "%amount% ZOGLIN SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWY3MTg5N2E2MTgyYjEwMTY2MGFiMjQzOGU0NTBmNTdjZGFkMmIwOGMyMWI0MDU2NzQ5NTU2MTg1YTRlZjg0ZiJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Zoglin"
+xp-amount: 10
+item-layout-order:
+  - ROTTEN_FLESH
+drops:
+  ROTTEN_FLESH: 3

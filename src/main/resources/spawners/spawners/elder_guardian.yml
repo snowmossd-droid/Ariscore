@@ -1,0 +1,12 @@
+spawner-name: "Elder Guardian"
+title: "%amount% ELDER GUARDIAN SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzBmODY4Y2FmMTljZjIxMjRmMGZlZjk4ZTZiODc3M2QyN2ZiZjQyZDkzYWFiMDZiMjJlZTAzM2IyYWVlNjQ0NyJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Elder Guardian"
+xp-amount: 20
+item-layout-order:
+  - PRISMARINE_SHARD
+drops:
+  PRISMARINE_SHARD: 2

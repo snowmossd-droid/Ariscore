@@ -1,0 +1,29 @@
+license-key: "YOUR-LICENSE"
+# bạn hãy nhập license key 
+# Please enter your license key. 
+# license trong Discord
+# license in Discord
+# discord https://discord.gg/DrkWPmhuh5
+
+warmup-message:
+  chat: true
+  actionbar: true
+
+modules:
+  shards: true
+  team: true
+  tpa: true
+  rtp: true
+  home: true
+  shop: true
+  auction: true
+  sell: true
+  tab: true
+  order: true
+  spawn: true
+  afk: true
+  warp: true
+  crates: true
+  amethyst: true
+  duel: true
+  spawners: true

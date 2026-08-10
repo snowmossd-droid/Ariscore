@@ -1,0 +1,14 @@
+spawner-name: "Sheep"
+title: "%amount% ѕʜᴇᴇᴘ ѕᴘᴀᴡɴᴇʀѕ"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODRlNWNkYjBlZGIzNjJjYjQ1NDU4NmQxZmQwZWJlOTcxNDIzZjAxNWIwYjFiZmM5NWY4ZDVhZjhhZmU3ZTgxMCJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Sheep"
+xp-amount: 10
+item-layout-order:
+  - WHITE_WOOL
+  - MUTTON
+drops:
+  WHITE_WOOL: 1
+  MUTTON: 1

@@ -1,0 +1,12 @@
+spawner-name: "Enderman"
+title: "%amount% ᴇɴᴅᴇʀᴍᴀɴ ѕᴘᴀᴡɴᴇʀѕ"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGExMDhhMGE3YTM4Nzg1OWYyYzQ0ZmI5NzAyY2Y3M2RiYWZlZTNlY2ZkYzRmNWRlZjQ2YzBkNjUxYjdhNDlmNyJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Enderman"
+xp-amount: 30
+item-layout-order:
+  - ENDER_PEARL
+drops:
+  ENDER_PEARL: 1

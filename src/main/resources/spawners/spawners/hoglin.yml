@@ -1,0 +1,12 @@
+spawner-name: "Hoglin"
+title: "%amount% HOGLIN SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2FkN2I1YWViMjIwYzA3OWUzMTljZDcwYWM4ODAwZTgwNzc0YTkzMTNjMjJmMzhlNzdhZmI4OTk5OWU2ZWM4NyJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Hoglin"
+xp-amount: 5
+item-layout-order:
+  - PORKCHOP
+drops:
+  PORKCHOP: 2

@@ -1,0 +1,85 @@
+gui:
+  info:
+    size: 27
+    items:
+      open-storage:
+        material: "CHEST"
+        slot: 11
+        display-name: "&#ff9900sᴘᴀᴡɴᴇʀ sᴛᴏʀᴀɢᴇ"
+        lore:
+          - "&#ff9900%amount% &f%item%"
+
+      fullness:
+        slot: 13
+        use-small-font: true
+        display-name: "&#ff9900%amount% %spawner_name% sᴘᴀᴡɴᴇʀs"
+        lore:
+          - "&#e5a34a● &fClick to sell items and collect XP"
+          - "&#e5a34asᴛᴏʀᴀɢᴇ: &f%pct%% ꜰɪʟʟᴇᴅ"
+
+      collect-xp:
+        material: "EXPERIENCE_BOTTLE"
+        slot: 15
+        display-name: "&aᴄᴏʟʟᴇᴄᴛ xᴘ"
+        lore:
+          - "&a● &fCurrent XP: &a%xp_amount%"
+          - "&a● &fMax XP: &a%max_xp_amount%"
+          - ""
+          - "&fClick to collect all XP"
+
+storage:
+  size: 54
+  storage:
+    slot: 49
+    display-name: "&#00fc88%spawner_name% Spawner"
+    lore:
+      - "&#00fc88%amount% &f%item%"
+      - "&#00fc88(%pct%% filled)"
+  back:
+    material: "BARRIER"
+    slot: 45
+    display-name: "&4ʙᴀᴄᴋ"
+    lore: "&fClick to return to the spawner"
+  previous-page:
+    material: "ARROW"
+    slot: 48
+    display-name: "&4Previous"
+    lore: "&fClick to go back a page"
+  next-page:
+    material: "ARROW"
+    slot: 50
+    display-name: "&#00fc88Next"
+    lore: "&fClick to go to the next page"
+  drop-all:
+    material: "DROPPER"
+    slot: 52
+    display-name: "&#00fc88ᴅʀᴏᴘ ʟᴏᴏᴛ"
+    lore: "&fClick to drop all loot"
+  sell-all:
+    material: "GOLD_INGOT"
+    slot: 53
+    display-name: "&cꜱᴇʟʟ ᴀʟʟ"
+    lore: "&fClick to sell all mob drops"
+
+confirm-gui:
+  rows: 3
+  title: "&8ᴄᴏɴꜰɪʀᴍ ꜱᴇʟʟ"
+  items:
+    decline:
+      material: "RED_STAINED_GLASS_PANE"
+      slot: 10
+      displayname: "&4ᴅᴇᴄʟɪɴᴇ"
+      lore:
+        - "&fClick to cancel"
+    contents:
+      slot: 13
+      displayname: "&#00fc88ʟᴏᴏᴛ"
+      lore:
+        - "&#00fc88%amount% &f%item%"
+    confirm:
+      material: "LIME_STAINED_GLASS_PANE"
+      slot: 16
+      displayname: "&aᴄᴏɴꜰɪʀᴍ"
+      lore:
+        - "&fClick to sell all items"
+        - "&7(%items_value%)"

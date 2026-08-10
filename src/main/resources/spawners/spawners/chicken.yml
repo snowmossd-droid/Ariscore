@@ -1,0 +1,14 @@
+spawner-name: "Chicken"
+title: "%amount% ᴄʜɪᴄᴋᴇɴ ѕᴘᴀᴡɴᴇʀѕ"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU4ZjNlYTQ2NzM1YWQwYzEwNmM1NDljY2I2Y2Q0ODljOTdhNDFlNzNkMDkyNDk3ZWU0MjRiZWNkOWRmZDI5YyJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Chicken"
+xp-amount: 10
+item-layout-order:
+  - FEATHER
+  - CHICKEN
+drops:
+  FEATHER: 1
+  CHICKEN: 1

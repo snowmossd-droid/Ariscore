@@ -1,0 +1,13 @@
+spawner-name: "Zombie"
+title: "%amount% ᴢᴏᴍʙɪᴇ ѕᴘᴀᴡɴᴇʀѕ"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTY3ZTE4NjAyZTAzMDM1YWQ2ODk2N2NlMDkwMjM1ZDg5OTY2NjNmYjllYTQ3NTc4ZDNhN2ViYmM0MmE1Y2NmOSJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Zombie"
+xp-amount: 10
+item-layout-order:
+  - ROTTEN_FLESH
+drops:
+  ROTTEN_FLESH: 1
+  ROTTEN_FLESH: 3

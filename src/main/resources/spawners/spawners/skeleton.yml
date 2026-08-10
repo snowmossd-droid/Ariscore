@@ -1,0 +1,15 @@
+spawner-name: "Skeleton"
+title: "%amount% ѕᴋᴇʟᴇᴛᴏɴ ѕᴘᴀᴡɴᴇʀѕ"
+material: "SKELETON_SKULL"
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Skeleton"
+time: 60
+xp-amount: 10
+item-layout-order:
+  - BONE
+  - ARROW
+drops:
+  BONE: 2
+  ARROW: 1
+  BONE: 1

@@ -1,0 +1,12 @@
+spawner-name: "Cat"
+title: "%amount% CAT SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmI4MzYwZjc0OWUwYWNkYjRhM2IzZDNhMTBmOTQwMWI2YzllOGNmZDgyZjJiNGQ0N2FhZDlhN2JkMTY5ZDJmNyJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Cat"
+xp-amount: 3
+item-layout-order:
+  - STRING
+drops:
+  STRING: 1

@@ -1,0 +1,75 @@
+mysql:
+  enabled: false
+  host: localhost
+  port: 3306
+  database: arisspawners
+  username: root
+  password: ""
+  use-ssl: false
+  table-prefix: arisspawners_
+
+silk-touch-required: true
+max-break-stack: 5000
+max-stack-amount: 5000
+autosave-interval-seconds: 60
+
+isolation:
+  enabled: true
+  radius: 10
+  penalty-per-neighbor: 0.12
+  min-multiplier: 0.25
+  base-multiplier: 1.0
+
+storage:
+  max-per-material: 999999999
+
+xp:
+  max-amount: 1000000
+
+messages:
+  placed: "&aĐã đặt {amount}x spawner {mob}."
+  stacked: "&eSpawner {mob}: &f{amount}"
+  max_stack_reached: "&cSpawner này đã đạt số lượng xếp chồng tối đa."
+  silk_touch_required: "&cBạn cần công cụ có Silk Touch để phá spawner."
+  broke_partial: "&eĐã lấy {amount} spawner, còn lại {remaining}."
+  broke_full: "&eĐã phá spawner. Toàn bộ dữ liệu lưu trữ đã mất."
+  sold_all: "&aĐã bán toàn bộ kho, nhận {amount}."
+  storage_empty: "&cKho trống."
+  dropped_all: "&aĐã thả toàn bộ vật phẩm xuống đất."
+  no_xp: "&cKhông có XP để thu."
+  collected_xp: "&aĐã thu {amount} kinh nghiệm."
+  sell_cancelled: "&cĐã hủy bán."
+
+sounds:
+  place:
+    sound: BLOCK_ANVIL_PLACE
+    volume: 1.0
+    pitch: 1.0
+  stack:
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 1.0
+    pitch: 1.2
+  break:
+    sound: BLOCK_ANVIL_BREAK
+    volume: 1.0
+    pitch: 1.0
+  open:
+    sound: BLOCK_CHEST_OPEN
+    volume: 1.0
+    pitch: 1.0
+  sell:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.0
+  drop:
+    sound: ENTITY_ITEM_PICKUP
+    volume: 1.0
+    pitch: 1.0
+  xp:
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 1.0
+    pitch: 1.0
+  page:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0

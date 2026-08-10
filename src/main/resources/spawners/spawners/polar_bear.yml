@@ -1,0 +1,12 @@
+spawner-name: "Polar Bear"
+title: "%amount% POLAR BEAR SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGIyZjQ4NDU0ZDBjMDYxMDI0NTkxNWQyN2U5ODEyNzI5MGRmZWE5NzQxZWI1OTE5OGUzNzFmNDQ5OTlmOWNiNCJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Polar Bear"
+xp-amount: 5
+item-layout-order:
+  - COD
+drops:
+  COD: 1

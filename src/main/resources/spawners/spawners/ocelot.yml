@@ -1,0 +1,12 @@
+spawner-name: "Ocelot"
+title: "%amount% OCELOT SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjAzMDdmNWYzZTNmNTYyMzQ0NjZlZmVkNGI1Y2I4YzEwNGU4NGJlNWU4NGQ2MTBlMjRmYzJjY2NhYzIxMjcxZSJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Ocelot"
+xp-amount: 3
+item-layout-order:
+  - STRING
+drops:
+  STRING: 1

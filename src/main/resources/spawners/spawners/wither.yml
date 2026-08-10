@@ -1,0 +1,12 @@
+spawner-name: "Wither"
+title: "%amount% WITHER SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGFhOTg2YTZlMWMyZDg4ZmYxOThhYjJjMzI1OWU4ZDI2NzRjYjgzYTZkMjA2Zjg4M2JhZDJjOGFkYTgxOSJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Wither"
+xp-amount: 50
+item-layout-order:
+  - NETHER_STAR
+drops:
+  NETHER_STAR: 1

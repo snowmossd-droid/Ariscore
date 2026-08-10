@@ -1,0 +1,12 @@
+spawner-name: "Horse"
+title: "%amount% HORSE SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWNhOGQ1OTExNGViZWQ1MmFiOWVmYmRmYWM0YzVhOWViZjlkOGQwN2VjNGUzNDMzMDQzZmZjOTlkZjhlZTBjNCJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Horse"
+xp-amount: 5
+item-layout-order:
+  - LEATHER
+drops:
+  LEATHER: 1

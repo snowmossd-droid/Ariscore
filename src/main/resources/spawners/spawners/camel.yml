@@ -1,0 +1,12 @@
+spawner-name: "Camel"
+title: "%amount% CAMEL SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzY0MmM5ZjcxMTMxYjVkZjRhOGMyMWM4YzZmMTA2ODRmMjJhYmFmYjhjZDY4YTFkNTVhYzRiZjI2M2E1M2EzMSJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Camel"
+xp-amount: 5
+item-layout-order:
+  - CACTUS
+drops:
+  CACTUS: 1

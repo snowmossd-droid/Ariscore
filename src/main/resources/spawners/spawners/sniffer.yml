@@ -1,0 +1,12 @@
+spawner-name: "Sniffer"
+title: "%amount% SNIFFER SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDExOGQyYzk3YTI2NTE1MTU4MTdhZTI5MzE1Yzc3ZDhjOWVkZDJhMGU1MGI2MjJiOWRjNTBiOTQzODlkNTM1In19fQ=="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Sniffer"
+xp-amount: 10
+item-layout-order:
+  - MOSS_BLOCK
+drops:
+  MOSS_BLOCK: 1

@@ -1,0 +1,12 @@
+spawner-name: "Silverfish"
+title: "%amount% SILVERFISH SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzMzOTcxMTFiZjNmMmE1OTM3NGMxODZmYThiNzU1NmM2ZTUwNDIzYjExNmUyNTJhODlmNmI0MjI1YjM5ODBlNCJ9fX0="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Silverfish"
+xp-amount: 2
+item-layout-order:
+  - IRON_NUGGET
+drops:
+  IRON_NUGGET: 1

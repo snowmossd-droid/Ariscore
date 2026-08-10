@@ -1,0 +1,253 @@
+mysql:
+  enabled: false
+  host: localhost
+  port: 3306
+  database: ariscore
+  username: root
+  password: password
+  use-ssl: false
+  table-prefix: ariscore_
+
+queue:
+  confirm-time: 15
+
+duel:
+  invite-expire: 30
+  countdown: 5
+  loot-time: 120
+  keep-inventory: false
+
+match-blocked-commands:
+  - "/tpa"
+  - "/tpahere"
+  - "/tpaccept"
+  - "/home"
+  - "/homes"
+  - "/spawn"
+  - "/warp"
+  - "/afk"
+  - "/rtp"
+
+rewards:
+  enabled: false
+  money-per-win: 0
+
+title-defaults:
+  fade-in: 5
+  stay: 40
+  fade-out: 10
+
+titles:
+  duel_start_title: "<yellow><bold>ĐẤU TAY ĐÔI"
+  duel_start_subtitle: "<gray>gặp <white>{opponent}"
+  duel_countdown_title: "<gold>{seconds}"
+  duel_countdown_subtitle: "<gray>Chuẩn bị chiến đấu!"
+  duel_win_title: "<green><bold>CHIẾN THẮNG"
+  duel_win_subtitle: "<gray>Bạn đã đánh bại <white>{opponent}"
+  duel_lose_title: "<red><bold>THUA CUỘC"
+  duel_lose_subtitle: "<gray>Bạn đã bị <white>{opponent} <gray>đánh bại"
+  duel_draw_title: "<yellow><bold>HÒA"
+  duel_draw_subtitle: "<gray>Không ai chết cả"
+
+messages:
+  usage_duel: "&7Cách dùng: &f/duel <người chơi> &7| /duel accept &7| /duel deny &7| /duel stats [người chơi]"
+  usage_arisduel: "&7Cách dùng: &f/arisduel <set|create|delete|list>"
+  usage_arisduel_set: "&7Cách dùng: &f/arisduel set <1|2>"
+  usage_arisduel_create: "&7Cách dùng: &f/arisduel create <tên>"
+  usage_arisduel_delete: "&7Cách dùng: &f/arisduel delete <tên>"
+  no_permission: "&cBạn không có quyền làm việc này."
+  player_not_found: "&cKhông tìm thấy người chơi này."
+  player_not_found_ab: "&cKhông tìm thấy người chơi"
+  cannot_duel_self: "&cBạn không thể đấu với chính mình."
+  cannot_duel_self_ab: "&cKhông thể tự đấu với bản thân"
+  already_busy: "&cBạn đang trong hàng đợi, đang mời, hoặc đang trong một trận đấu."
+  already_busy_ab: "&cBạn đang bận"
+  target_busy: "&cNgười chơi đó đang trong hàng đợi, đang mời, hoặc đang trong một trận đấu."
+  target_busy_ab: "&cĐối phương đang bận"
+  not_in_duel: "&cBạn không ở trong trận đấu nào."
+  not_in_duel_ab: "&cBạn không trong trận đấu"
+  no_arenas: "&cChưa có khu vực đấu nào được tạo. Nhờ admin tạo bằng /arisduel create <tên>."
+  no_arenas_ab: "&cChưa có khu vực đấu nào"
+
+  queue_joined: "&aBạn đã vào hàng đợi đấu tay đôi. Chúng tôi sẽ ghép bạn với đối thủ trong giây lát."
+  queue_joined_ab: "&aĐang tìm đối thủ..."
+  queue_left: "&7Bạn đã rời khỏi hàng đợi đấu tay đôi."
+  queue_left_ab: "&7Đã rời hàng đợi"
+  queue_confirmed: "&aBạn đã xác nhận trận đấu. Đang chờ đối thủ..."
+  queue_confirmed_ab: "&aĐã xác nhận, đang chờ đối thủ..."
+  queue_confirm_declined: "&cTrận đấu đã bị hủy."
+  queue_confirm_declined_ab: "&cTrận đấu đã bị hủy"
+  queue_confirm_timeout: "&cThời gian xác nhận trận đấu đã hết."
+  queue_confirm_timeout_ab: "&cHết thời gian xác nhận"
+
+  invite_sent: "&aĐã gửi lời mời đấu tay đôi tới &f{player}&a."
+  invite_sent_ab: "&aĐã gửi lời mời tới {player}"
+  invite_received: "&e{player} &7đã thách đấu bạn! Gõ &f/duel accept &7để nhận hoặc &f/duel deny &7để từ chối."
+  invite_received_ab: "&e{player} &7muốn đấu với bạn!"
+  invite_expired: "&c{player} không phản hồi lời mời đấu của bạn kịp thời gian."
+  invite_expired_ab: "&cĐối thủ không phản hồi kịp"
+  invite_expired_target: "&cLời mời đấu từ {player} đã hết hạn."
+  invite_expired_target_ab: "&cLời mời đấu đã hết hạn"
+  invite_denied: "&c{player} đã từ chối lời mời đấu của bạn."
+  invite_denied_ab: "&cĐối thủ đã từ chối"
+  invite_denied_self: "&7Bạn đã từ chối lời mời đấu."
+  invite_denied_self_ab: "&7Đã từ chối lời mời"
+  invite_offline: "&cNgười chơi đó không còn trực tuyến."
+  invite_offline_ab: "&cĐối thủ không trực tuyến"
+  invite_unavailable: "&cBạn hoặc đối thủ hiện không thể đấu được nữa."
+  invite_unavailable_ab: "&cKhông thể đấu lúc này"
+  no_pending_invite: "&cBạn không có lời mời đấu nào đang chờ."
+  no_pending_invite_ab: "&cKhông có lời mời nào"
+
+  opponent_offline: "&cĐối thủ của bạn đã thoát mạng. Trận đấu đã bị hủy."
+  opponent_offline_ab: "&cĐối thủ đã thoát mạng"
+  opponent_disconnected: "&cĐối thủ của bạn đã mất kết nối. Trận đấu đã bị hủy."
+  opponent_disconnected_ab: "&cĐối thủ đã mất kết nối"
+
+  duel_fight: "&c&lCHIẾN! &7Chúc may mắn!"
+  duel_fight_ab: "&c&lCHIẾN!"
+  duel_win_loot: "&aBạn đã thắng! Bạn có &f{seconds} giây &ađể lượm đồ của đối thủ. Gõ &f/leave &akhi xong."
+  duel_win_loot_ab: "&aLượm đồ đối thủ! Gõ /leave khi xong"
+  duel_win_disconnect: "&aĐối thủ của bạn đã mất kết nối. Bạn thắng do đối thủ bỏ cuộc!"
+  duel_win_disconnect_ab: "&aThắng do đối thủ bỏ cuộc!"
+  duel_win_reward: "&aBạn nhận được &f${amount} &avì đã thắng trận đấu!"
+  duel_win_reward_ab: "&a+${amount} tiền thưởng!"
+  duel_spectate: "&7Bạn đang ở chế độ khán giả. Gõ &f/leave &7để về spawn."
+  duel_spectate_ab: "&7Gõ /leave để về spawn"
+  duel_returned: "&7Bạn đã được đưa về spawn."
+  duel_returned_ab: "&7Đã về spawn"
+  duel_left: "&cBạn đã rời trận đấu và xử thua."
+  duel_left_ab: "&cBạn đã bỏ cuộc"
+
+  draw_requested: "&7Bạn đã đề nghị hòa. Đang chờ đối thủ chấp nhận..."
+  draw_requested_ab: "&7Đang chờ đối thủ chấp nhận hòa..."
+  draw_offer: "&e{player} &7đã đề nghị hòa. Gõ &f/draw &7để chấp nhận."
+  draw_offer_ab: "&e{player} đề nghị hòa! Gõ /draw để chấp nhận"
+
+  stats: "&6Thống kê đấu của {player} &8- &aThắng: &f{wins} &8| &cThua: &f{losses} &8| &7Hòa: &f{draws} &8| &eChuỗi thắng: &f{streak} &8| &6Cao nhất: &f{best-streak} &8| &bTỉ lệ thắng: &f{winrate}%"
+
+  match-blocked-command: "&cBạn không thể dùng lệnh này khi đang trong trận đấu."
+  match-blocked-command_ab: "&cLệnh bị chặn khi đang đấu"
+
+  arena_pos1_set: "&aĐã đặt vị trí 1 tại vị trí hiện tại của bạn."
+  arena_pos2_set: "&aĐã đặt vị trí 2 tại vị trí hiện tại của bạn."
+  arena_positions_missing: "&cHãy đặt cả 2 vị trí trước bằng /arisduel set 1 và /arisduel set 2."
+  arena_world_mismatch: "&cCả 2 vị trí phải nằm trong cùng một thế giới."
+  arena_name_taken: "&cĐã tồn tại khu vực đấu với tên này."
+  arena_created: "&aĐã tạo khu vực đấu &f{arena}&a."
+  arena_not_found: "&cKhông tìm thấy khu vực đấu với tên này."
+  arena_deleted: "&aĐã xóa khu vực đấu &f{arena}&a."
+  arena_list: "&6Các khu vực đấu: &f{arenas}"
+
+sounds:
+  click:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+  confirm:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.5
+  success:
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    volume: 1.0
+    pitch: 1.2
+  error:
+    sound: ENTITY_VILLAGER_NO
+    volume: 1.0
+    pitch: 1.0
+  invite:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.2
+  queue_join:
+    sound: BLOCK_NOTE_BLOCK_CHIME
+    volume: 1.0
+    pitch: 1.0
+  queue_leave:
+    sound: BLOCK_NOTE_BLOCK_BASS
+    volume: 1.0
+    pitch: 1.0
+  countdown:
+    sound: BLOCK_NOTE_BLOCK_HAT
+    volume: 1.0
+    pitch: 1.0
+  fight:
+    sound: ENTITY_ENDER_DRAGON_GROWL
+    volume: 0.6
+    pitch: 1.5
+  win:
+    sound: UI_TOAST_CHALLENGE_COMPLETE
+    volume: 1.0
+    pitch: 1.0
+  lose:
+    sound: ENTITY_WITHER_HURT
+    volume: 0.6
+    pitch: 0.8
+  draw:
+    sound: BLOCK_NOTE_BLOCK_BELL
+    volume: 1.0
+    pitch: 1.0
+
+gui:
+  queue-confirm:
+    title: "&8Xác Nhận Trận Đấu"
+    size: 27
+    items:
+      opponent-info:
+        slot: 11
+        display-name: "&e{player}"
+        lore:
+          - "&7Đối thủ được ghép cặp với bạn."
+      stats:
+        slot: 13
+        material: PAPER
+        display-name: "&6Thống Kê Của Bạn"
+        lore:
+          - "&7Thắng: &f{wins}"
+          - "&7Thua: &f{losses}"
+          - "&7Chuỗi thắng: &f{streak}"
+      confirm:
+        slot: 15
+        material: LIME_STAINED_GLASS_PANE
+        display-name: "&aXác Nhận"
+        lore:
+          - "&7Bấm để xác nhận trận đấu."
+      cancel:
+        slot: 20
+        material: RED_STAINED_GLASS_PANE
+        display-name: "&cHủy"
+        lore:
+          - "&7Bấm để hủy trận đấu."
+
+  create-duel:
+    title: "&8Tạo Trận Đấu - {player}"
+    size: 27
+    random-label: "Ngẫu Nhiên"
+    items:
+      opponent-info:
+        slot: 11
+        display-name: "&e{player}"
+        lore:
+          - "&7Bạn sắp thách đấu"
+          - "&7người chơi này."
+      arena:
+        slot: 13
+        material: MAP
+        display-name: "&bKhu Vực Đấu&8: &f{arena}"
+        lore:
+          - "&7Bấm để đổi khu vực đấu."
+          - "&7Để Ngẫu Nhiên để plugin"
+          - "&7tự chọn giúp bạn."
+      confirm:
+        slot: 15
+        material: LIME_STAINED_GLASS_PANE
+        display-name: "&aGửi Lời Mời"
+        lore:
+          - "&7Bấm để gửi lời mời đấu."
+      cancel:
+        slot: 20
+        material: RED_STAINED_GLASS_PANE
+        display-name: "&cHủy"
+        lore:
+          - "&7Bấm để hủy."

@@ -1,0 +1,12 @@
+spawner-name: "Armadillo"
+title: "%amount% ARMADILLO SPAWNERS"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTc4ODMzODQ0MzE5OTA5ZjEyMzg0MDUwMTVkODc0MGFlOTZjNmZiM2ZhNGM3MzllMWNkZmMzNzljZDdlOWE2In19fQ=="
+time: 60
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Armadillo"
+xp-amount: 5
+item-layout-order:
+  - ARMADILLO_SCUTE
+drops:
+  ARMADILLO_SCUTE: 1

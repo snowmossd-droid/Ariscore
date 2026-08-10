@@ -1,0 +1,11 @@
+spawner-name: "Magma Cube"
+title: "%amount% ᴍᴀɢᴍᴀ ᴄᴜʙᴇ ѕᴘᴀᴡɴᴇʀѕ"
+material: "TEXTURE:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTFjOTdhMDZlZmRlMDRkMDAyODdiZjIwNDE2NDA0YWIyMTAzZTEwZjA4NjIzMDg3ZTFiMGMxMjY0YTFjMGYwYyJ9fX0="
+displayname: "&dSpawner"
+lore:
+  - "&#e6db22Magma Cube"
+xp-amount: 20
+item-layout-order:
+  - MAGMA_CREAM
+drops:
+  MAGMA_CREAM: 1
