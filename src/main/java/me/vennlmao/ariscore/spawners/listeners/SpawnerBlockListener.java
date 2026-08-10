@@ -127,8 +127,7 @@ public class SpawnerBlockListener implements Listener {
         event.setDropItems(false);
 
         int maxBreakStack = module.getConfig().getInt("max-break-stack", 5000);
-        long dropAmount = player.isSneaking() ? data.getAmount() : Math.min(data.getAmount(), 1);
-        if (player.isSneaking()) dropAmount = Math.min(data.getAmount(), maxBreakStack);
+        final long dropAmount = player.isSneaking() ? Math.min(data.getAmount(), maxBreakStack) : Math.min(data.getAmount(), 1);
         long remaining = data.getAmount() - dropAmount;
 
         Location dropLoc = block.getLocation().add(0.5, 0.5, 0.5);
@@ -148,4 +147,4 @@ public class SpawnerBlockListener implements Listener {
 
         SoundUtil.play(player, "break");
     }
-}
+                }
